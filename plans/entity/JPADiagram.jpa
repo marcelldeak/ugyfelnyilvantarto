@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="hu.clientbase.entity" v="1.5.5" xs="false" id="_1462734481516131" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:mapped-superclass xre="false" sm="false" abs="true" class="Person" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481581153">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="firstName" id="_1462734481581155">
+                <bv/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="lastName" id="_1462734481581156">
+                <bv/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="picture" id="_1462734481581157">
+                <bv/>
+            </basic>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481619178" visibile="true" name="contactChannels" id="_1462734481581158"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481581154">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:mapped-superclass>
+    <jpa:entity xre="false" sm="false" abs="false" class="Address" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481520132">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="city" id="_1462734481520134">
+                <bv/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="zipCode" id="_1462734481520135">
+                <bv/>
+                <jpa:column name="ZIP_CODE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="street" id="_1462734481520136">
+                <bv/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="country" id="_1462734481520137">
+                <bv/>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481520133">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Note" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481535138">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="content" id="_1462734481535140">
+                <bv/>
+            </basic>
+            <basic attribute-type="hu.clientbase.entity.Tag" visibile="true" name="tag" id="_1462734481535141">
+                <bv/>
+                <jpa:enumerated>STRING</jpa:enumerated>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481535139">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Invitation" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481543142">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="description" id="_1462734481543144">
+                <bv/>
+            </basic>
+            <one-to-one own="true" primaryKey="false" connected-entity-id="_1462734481625182" visibile="true" name="event" id="_1462734481543145"/>
+            <one-to-one own="true" primaryKey="false" connected-entity-id="_1462734481581147" visibile="true" name="recipient" id="_1462734481543146"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481543143">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="User" superclassId="_1462734481581153" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481581147">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="password" id="_1462734481581148">
+                <bv/>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="expirationDate" id="_1462734481581149">
+                <bv/>
+                <jpa:column name="EXPIRATION_DATE" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="dateOfBirth" id="_1462734481581150">
+                <bv/>
+                <jpa:column name="DATE_OF_BIRTH" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481602173" visibile="true" name="roles" id="_1462734481581152"/>
+            <many-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481625182" visibile="true" name="events" id="_1462734481581151"/>
+        </jpa:attributes>
+        <jpa:table name="APPLICATION_USER"/>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Customer" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481589159">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="name" id="_1462734481589161">
+                <bv/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="vatNumber" id="_1462734481589162">
+                <bv/>
+                <jpa:column name="VAT_NUMBER" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="String" visibile="true" name="logo" id="_1462734481589163">
+                <bv/>
+            </basic>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481613176" visibile="true" name="contacts" id="_1462734481589164"/>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481596168" visibile="true" name="projects" id="_1462734481589165"/>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481625182" visibile="true" name="events" id="_1462734481589166"/>
+            <one-to-one own="true" primaryKey="false" connected-entity-id="_1462734481520132" visibile="true" name="address" id="_1462734481589167"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481589160">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Project" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481596168">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="name" id="_1462734481596170">
+                <bv/>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="deadline" id="_1462734481596171">
+                <bv/>
+                <jpa:temporal>DATE</jpa:temporal>
+            </basic>
+            <basic attribute-type="hu.clientbase.entity.ProjectStatus" visibile="true" name="status" id="_1462734481596172">
+                <bv/>
+                <jpa:enumerated>STRING</jpa:enumerated>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481596169">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Role" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481602173">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="name" id="_1462734481602175">
+                <bv/>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481602174">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="USER_ROLE"/>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Contact" superclassId="_1462734481581153" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481613176">
+        <jpa:attributes>
+            <many-to-one primaryKey="false" connected-entity-id="_1462734481589159" visibile="true" name="customer" id="_1462734481613177"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="ContactChannel" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481619178">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="value" id="_1462734481619180">
+                <bv/>
+                <jpa:column name="CONTACT_CHANNEL_VALUE" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </basic>
+            <basic attribute-type="hu.clientbase.entity.ContactChannelType" visibile="true" name="type" id="_1462734481619181">
+                <bv/>
+                <jpa:enumerated>STRING</jpa:enumerated>
+            </basic>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481619179">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+        <jpa:table name="CONTACT_CHANNEL"/>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Event" visibile="true" minimized="false" rootElement="_1462734481516131" id="_1462734481625182">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="name" id="_1462734481625184">
+                <bv/>
+            </basic>
+            <basic attribute-type="hu.clientbase.entity.EventType" visibile="true" name="type" id="_1462734481626187">
+                <bv/>
+                <jpa:enumerated>STRING</jpa:enumerated>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="dateOfStart" id="_1462734481626188">
+                <bv/>
+                <jpa:column name="DATE_OF_START" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </basic>
+            <basic attribute-type="java.util.Calendar" visibile="true" name="dateOfEnd" id="_1462734481626189">
+                <bv/>
+                <jpa:column name="DATE_OF_END" unique="false" nullable="true" insertable="true" updatable="true"/>
+                <jpa:temporal>TIMESTAMP</jpa:temporal>
+            </basic>
+            <one-to-many own="true" collection-type="java.util.List" connected-entity-id="_1462734481535138" visibile="true" name="notes" id="_1462734481625185"/>
+            <one-to-one own="true" primaryKey="false" connected-entity-id="_1462734481520132" visibile="true" name="address" id="_1462734481626186"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_1462734481625183">
+                <jpa:generated-value/>
+            </jpa:id>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram>
+        <plane elementRef="_1462734481516131">
+            <shape elementRef="_1462734481520132">
+                <Bounds x="305.0" y="158.0" width="154.0" height="146.0"/>
+            </shape>
+            <shape elementRef="_1462734481535138">
+                <Bounds x="1310.0" y="629.0" width="130.0" height="106.0"/>
+            </shape>
+            <shape elementRef="_1462734481543142">
+                <Bounds x="551.0" y="317.0" width="163.0" height="138.0"/>
+            </shape>
+            <shape elementRef="_1462734481581147">
+                <Bounds x="572.0" y="588.0" width="142.0" height="147.0"/>
+            </shape>
+            <shape elementRef="_1462734481589159">
+                <Bounds x="816.0" y="32.0" width="164.0" height="218.0"/>
+            </shape>
+            <shape elementRef="_1462734481596168">
+                <Bounds x="551.0" y="32.0" width="146.0" height="126.0"/>
+            </shape>
+            <shape elementRef="_1462734481602173">
+                <Bounds x="912.0" y="629.0" width="128.0" height="86.0"/>
+            </shape>
+            <shape elementRef="_1462734481613176">
+                <Bounds x="1062.0" y="32.0" width="151.0" height="55.0"/>
+            </shape>
+            <shape elementRef="_1462734481619178">
+                <Bounds x="1277.0" y="32.0" width="209.0" height="106.0"/>
+            </shape>
+            <shape elementRef="_1462734481625182">
+                <Bounds x="905.0" y="304.0" width="135.0" height="198.0"/>
+            </shape>
+            <shape elementRef="_1462734481581153">
+                <Bounds x="1277.0" y="267.0" width="163.0" height="158.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
