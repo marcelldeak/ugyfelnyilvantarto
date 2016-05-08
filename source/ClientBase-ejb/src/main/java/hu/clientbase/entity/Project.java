@@ -30,7 +30,7 @@ public class Project implements Serializable {
     private ProjectStatus status;
 
     public Project() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

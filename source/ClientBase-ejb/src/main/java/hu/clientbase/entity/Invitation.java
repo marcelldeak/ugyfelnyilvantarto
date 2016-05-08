@@ -24,7 +24,7 @@ public class Invitation implements Serializable {
     private User recipient;
 
     public Invitation() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

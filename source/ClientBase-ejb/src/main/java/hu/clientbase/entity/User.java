@@ -39,7 +39,7 @@ public class User extends Person implements Serializable {
     private List<Role> roles;
 
     public User() {
-
+        // Entity - parameterless constructor
     }
 
     public String getPassword() {

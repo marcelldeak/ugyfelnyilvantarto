@@ -27,7 +27,7 @@ public class ContactChannel implements Serializable {
     private String value;
 
     public ContactChannel() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

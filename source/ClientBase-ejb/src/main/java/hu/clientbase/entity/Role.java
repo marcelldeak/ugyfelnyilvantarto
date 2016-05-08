@@ -19,7 +19,7 @@ public class Role implements Serializable {
     private String name;
 
     public Role() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

@@ -46,7 +46,7 @@ public class Event implements Serializable {
     private Address address;
 
     public Event() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

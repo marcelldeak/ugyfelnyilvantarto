@@ -40,7 +40,7 @@ public class Customer implements Serializable {
     private Address address;
 
     public Customer() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

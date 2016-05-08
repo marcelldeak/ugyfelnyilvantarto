@@ -11,7 +11,7 @@ public class Contact extends Person implements Serializable {
     private Customer customer;
     
     public Contact() {
-
+        // Entity - parameterless constructor
     }
     
     public Customer getCustomer() {

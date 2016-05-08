@@ -34,7 +34,7 @@ public abstract class Person implements Serializable {
     private List<ContactChannel> contactChannels;
 
     public Person() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

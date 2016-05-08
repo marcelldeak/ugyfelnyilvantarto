@@ -23,7 +23,7 @@ public class Note implements Serializable {
     private String content;
 
     public Note() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {

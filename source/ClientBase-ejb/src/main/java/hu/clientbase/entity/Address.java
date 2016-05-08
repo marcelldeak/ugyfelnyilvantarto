@@ -28,7 +28,7 @@ public class Address implements Serializable {
     private String country;
 
     public Address() {
-
+        // Entity - parameterless constructor
     }
 
     public Long getId() {
