@@ -15,7 +15,10 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Application_user")
 public class User extends Person implements Serializable {
-
+    
+    @Basic
+    private String email;
+    
     @Basic
     private String password;
 
@@ -42,6 +45,14 @@ public class User extends Person implements Serializable {
         // Entity - parameterless constructor
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public String getPassword() {
         return this.password;
     }
