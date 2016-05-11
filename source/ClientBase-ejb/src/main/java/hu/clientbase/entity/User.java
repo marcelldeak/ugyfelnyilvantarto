@@ -38,7 +38,7 @@ public class User extends Person implements Serializable {
     @ManyToMany(targetEntity = Event.class)
     private List<Event> events;
 
-    @OneToMany(targetEntity = Role.class)
+    @ManyToMany(targetEntity = Role.class)
     private List<Role> roles;
 
     public User() {
