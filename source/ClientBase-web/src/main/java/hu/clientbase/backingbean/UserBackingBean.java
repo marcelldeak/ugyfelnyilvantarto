@@ -2,11 +2,12 @@ package hu.clientbase.backingbean;
 
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.UserService;
-import java.awt.event.ActionEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -75,16 +76,19 @@ public class UserBackingBean {
     public UserBackingBean() {
     }
 
-    public void register() {
-        UserDTO user = new UserDTO();
-        if (!password.equals(confirmPassword)) {
-            throw new RuntimeException("your passwords dont match");
-        }
-        user.setPassword(password);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        userManager.create(user);
-    }
+public void register() throws NoSuchAlgorithmException {
+       UserDTO user = new UserDTO();
+       if (!password.equals(confirmPassword)) {
+           throw new RuntimeException("your passwords dont match");
+       }
+       MessageDigest md = MessageDigest.getInstance("SHA-256");
+       byte[] digest = md.digest(password.getBytes());
+       String b64String = Base64.getEncoder().encodeToString(digest);
+       user.setPassword(b64String);
+       user.setFirstName(firstName);
+       user.setLastName(lastName);
+       user.setEmail(email);
+       userManager.create(user);
+   }
 
 }
