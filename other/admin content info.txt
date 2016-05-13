@@ -1,0 +1,20 @@
+Teszt adatok:
+
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('0', 'Normal', 'User1', 'null', true, '1990-01-01', 'user1@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('1', 'Admin', 'User1', 'null', true, '1990-01-01', 'admin1@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('2', 'Inactive', 'User1', 'null', false, '1990-01-01', 'inactive1@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('3', 'Inactive', 'User2', 'null', false, '1990-01-01', 'inactive2@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('4', 'Admin', 'User2', 'null', true, '1990-01-01', 'admin2@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('5', 'Normal', 'User2', 'null', true, '1990-01-01', 'user2@clientbase.hu', '2100-01-01', '');
+INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('6', 'Normal', 'User3', 'null', true, '1990-01-01', 'user3@clientbase.hu', '2100-01-01', '');
+
+INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('0', 'ADMIN');
+INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('1', 'USER');
+
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('0', '1');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('1', '0');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('2', '1');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('3', '1');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('4', '0');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('5', '1');
+INSERT INTO `CRM_DB`.`Application_user_User_role` (`users_id`, `roles_id`) VALUES ('6', '1');
