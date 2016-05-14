@@ -1,6 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
+
 import MySQLdb
 import random
 import string
@@ -8,6 +9,7 @@ import warnings
 import os
 import shutil
 import getpass
+
 
 def main():
     print("   ____ _ _            _   ____\n  / ___| (_) ___ _ __ | |_| __ )  __ _ ___  ___\n | |   | | |/ _ \ '_ \| __|  _ \ / _` / __|/ _ \\\n | |___| | |  __/ | | | |_| |_) | (_| \__ \  __/\n  \____|_|_|\___|_| |_|\__|____/ \__,_|___/\___|")
@@ -671,9 +673,8 @@ def main():
     print "MySQL/MariaDB and WildFly succesfully configured for ClientBase."
     print "The WildFly administrator user is\nadmin:admin\nIt's recommended to change the password."
 
-main()
-try:
-    pass
 
+try:
+    main()
 except:
     print "Error occured.\nExiting..."
