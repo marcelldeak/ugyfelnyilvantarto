@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.UserDTO;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -7,7 +8,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,10 +15,10 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Application_user")
 public class User extends Person implements Serializable {
-    
+
     @Basic
     private String email;
-    
+
     @Basic
     private String password;
 
@@ -45,6 +45,22 @@ public class User extends Person implements Serializable {
         // Entity - parameterless constructor
     }
 
+    public User(UserDTO user){
+        setId(user.getId());
+        setFirstName(user.getFirstName());
+        setLastName(user.getLastName());
+        setPicture(user.getPicture());
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.active = user.isActive();
+        this.expirationDate = user.getExpirationDate();
+        this.dateOfBirth = user.getDateOfBirth();
+        
+        this.events = user.getEvents();
+        this.roles = user.getRoles();
+        setContactChannels(user.getContactChannels());
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -52,7 +68,7 @@ public class User extends Person implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public String getPassword() {
         return this.password;
     }
