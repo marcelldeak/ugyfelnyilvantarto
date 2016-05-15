@@ -29,9 +29,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>/login.xhtml</welcome-file>
-        <welcome-file>/dashboard.xhtml</welcome-file>
-        <welcome-file>/faces/pages/dashboard.xhtml</welcome-file>
+        <welcome-file>/pages/welcome.xhtml</welcome-file>
     </welcome-file-list>
 
     <login-config>
@@ -108,5 +106,4 @@
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
-    
 </web-app>

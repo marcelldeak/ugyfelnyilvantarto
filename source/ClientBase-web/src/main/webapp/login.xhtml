@@ -37,17 +37,16 @@
                         <div class="box">
                             <div class="content-wrap">
                                 <h6>Sign In</h6>
-                                <form method="POST" action="j_security_check" > 
-                                    <h:form>
+                                <form method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) { document.getElementById('loginButton').click(); return false; }"> 
+
                                         <h:panelGrid id="grid" columns="2" cellpadding="5" width="400"  >
                                             <p:outputLabel value="Email: " style="font-weight:bold" ></p:outputLabel>  
                                             <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />  
                                             <p:outputLabel value="Password:" style="font-weight:bold" ></p:outputLabel>  
                                             <p:password id="j_password"  required="true" requiredMessage="Please enter your password" ></p:password>
                                         </h:panelGrid>
-                                        <Button   ajax="false" type="submit" value="login" class="btn btn-info btn-lg">Login</Button>                                         
+                                        <Button id="submitButton" ajax="false" type="submit" value="login" class="btn btn-info btn-lg">Login</Button>                                         
                                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  >Sign Up</button>
-                                    </h:form>
                                 </form>        
                                 <div class="modal fade" id="myModal" role="dialog">
                                     <div class="modal-dialog">
