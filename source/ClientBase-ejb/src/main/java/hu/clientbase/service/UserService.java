@@ -37,7 +37,12 @@ public class UserService implements Serializable {
     }
 
     public boolean existEmail(String email) {
-        return entityManager.findAll(User.class).stream().anyMatch((user) -> (user.getEmail().equals(email)));
+        for (User user : entityManager.findAll(User.class)) {
+            if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

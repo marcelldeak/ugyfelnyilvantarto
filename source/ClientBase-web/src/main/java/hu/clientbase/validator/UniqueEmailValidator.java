@@ -9,20 +9,19 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 
-@FacesValidator("uniqueEmailValidator")
+@FacesValidator(value = "uniqueEmailValidator")
 public class UniqueEmailValidator implements Validator {
 
     @Inject
-    private UserService userManagaer;
+    private UserService userManager;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (value == null) {
-              throw new ValidatorException(new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "you did not enter any caracter", null));
+            return;
         }
-        String email = value.toString();
-        if (userManagaer.existEmail(email)) {
+        String email = (String) value;
+        if (userManager.existEmail(email)) {
             throw new ValidatorException(new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "Email is already in use.", null));
         }

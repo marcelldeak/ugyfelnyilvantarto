@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -76,19 +80,44 @@ public class UserBackingBean {
     public UserBackingBean() {
     }
 
-public void register() throws NoSuchAlgorithmException {
-       UserDTO user = new UserDTO();
-       if (!password.equals(confirmPassword)) {
-           throw new RuntimeException("your passwords dont match");
-       }
-       MessageDigest md = MessageDigest.getInstance("SHA-256");
-       byte[] digest = md.digest(password.getBytes());
-       String b64String = Base64.getEncoder().encodeToString(digest);
-       user.setPassword(b64String);
-       user.setFirstName(firstName);
-       user.setLastName(lastName);
-       user.setEmail(email);
-       userManager.create(user);
-   }
+    public void badPasswordError() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Passwords", "Passwords don't match"));
+    }
 
+    public void notUniqueEmailError() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Email", "Email address already in use"));
+    }
+
+    public boolean checkIfEmailExists() {
+        return userManager.existEmail(email);
+    }
+
+    public void validateEmail(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        if (checkIfEmailExists()) {
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Email", "Email address already in use"));
+        }
+    }
+
+    
+    public void register() throws NoSuchAlgorithmException {
+        UserDTO user = new UserDTO();
+        if (!password.equals(confirmPassword) && (userManager.existEmail(getEmail()))) { // check if passwords dont match and the email address is already in use ( both ) 
+            badPasswordError();
+            notUniqueEmailError();
+        } else if (!password.equals(confirmPassword)) {  // check if password are matching 
+            badPasswordError();
+        } else if (checkIfEmailExists()) { // check if email is exists in the db
+            notUniqueEmailError();
+        } else {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digest = md.digest(password.getBytes());
+            String b64String = Base64.getEncoder().encodeToString(digest);
+            user.setPassword(b64String);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            userManager.create(user);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Your Account is ready.", "Your account is ready :)"));
+        }
+    }
 }
