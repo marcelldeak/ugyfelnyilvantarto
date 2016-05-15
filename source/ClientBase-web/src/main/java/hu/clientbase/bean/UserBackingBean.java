@@ -1,4 +1,4 @@
-package hu.clientbase.backingbean;
+package hu.clientbase.bean;
 
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.UserService;

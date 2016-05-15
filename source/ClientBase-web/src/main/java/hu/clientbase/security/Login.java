@@ -1,4 +1,4 @@
-package martins.developer.world.security;
+package hu.clientbase.security;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -7,7 +7,8 @@ import javax.inject.Named;
 public class Login {
 
     public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().invalidateSession();
         return "/login";
     }
 }
