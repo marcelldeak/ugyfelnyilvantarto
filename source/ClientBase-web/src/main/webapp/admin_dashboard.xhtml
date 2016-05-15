@@ -9,6 +9,54 @@
             <ui:define name="page_title">
                 XXX
             </ui:define>
+            <ui:define name="buttons">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-tasks"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-bell"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default " aria-haspopup="true" aria-expanded="false">
+                        <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
+                    </button>
+                </div>
+            </ui:define>
+            <ui:define name="profile">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" alt="64x64" src="resources/images/facebook-avatar.jpg" data-holder-rendered="true" style="height:64px;"/>
+                        </a>
+                        <a href="" class="user-name">Admin János</a>
+                    </div>
+
+                </div>
+            </ui:define>
             <ui:define name="menu">
                 <ui:include src="templates/admin_menu.xhtml"></ui:include>
             </ui:define>
