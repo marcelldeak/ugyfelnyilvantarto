@@ -4,65 +4,101 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui" 
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <h:head>
-        <title>Home</title>
+        <title>Bootstrap Admin Theme v3</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <!-- Bootstrap -->
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+        <!-- styles -->
+        <link href="resources/css/styles.css" rel="stylesheet"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+
     </h:head>
-    <h:body>
-        <p:panel header="Login"  style="position: absolute; top: 220px; left: 450px; " >
-            <form method="POST" action="j_security_check" > 
-                <h:form>
-                    <h:panelGrid id="grid" columns="3" cellpadding="5" width="400"  >
-                        <p:outputLabel value="Your Email: " style="font-weight:bold" ></p:outputLabel>  
-                        <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />  
-                        <p:watermark for="j_username" value="email address" /> 
-                        <p:outputLabel value="Your Password:" style="font-weight:bold" ></p:outputLabel>  
-                        <p:password id="j_password"  required="true" requiredMessage="Please enter your password" ></p:password>
-                        <p:watermark for="j_password" value="password" />
-                    </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid id="buttons" columns="2" cellpadding="6" >
-                        <p:commandButton ajax="false" type="submit" value="login" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" />
-                        <p:commandButton value="Registration" type="button" onclick="PF('dlg2').show();" style="align-content: flex-end"  /> 
-                    </h:panelGrid>
-                </h:form>
-            </form>        
-            <p:dialog header="Registration" widgetVar="dlg2" modal="true" height="420" width="672">
-                <h:form id="registerForm" >  
-                    <h:panelGrid id="reg" columns="3" cellpadding="5" >
-                        <p:outputLabel for="firstName"  value="Enter Your First Name:" style="font-weight:bold" />
-                        <p:inputText id="firstName" value="#{user.firstName}"  size="40" label="firstName"
-                                     required="true" requiredMessage="Please enter your first name" />
-                        <p:watermark for="firstName" value="first name" />                 
-                        <p:outputLabel for="lastName" value="Enter Your Last Name:" style="font-weight:bold" />
-                        <p:inputText id="lastName" value="#{user.lastName}"  size="40" label="lastName"
-                                     required="true" requiredMessage="Please enter your last name" />
-                        <p:watermark for="lastName" value="last name" />
-                        <p:outputLabel for="email"  value="Enter Your Email:" style="font-weight:bold"  /> 
-                        <p:inputText id="email" required="true" label="email"  size="40" 
-                                     requiredMessage="Please enter your email address."
-                                     validatorMessage="Invalid email format"                             
-                                     value="#{user.email}">
-                            <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                            <f:validator validatorId="uniqueEmailValidator" />
-                        </p:inputText>
-                        <p:watermark for="email" value="email" />
-                        <p:outputLabel for="password"  value="Enter Password :" style="font-weight:bold"  />
-                        <p:password id="password" value="#{user.password}"   size="40" label="password"
-                                    required="true" requiredMessage="Please enter your password" /> 
-                        <p:watermark for="password" value="password" />
-                        <p:outputLabel for="confirmPassword"  value="Enter Password again:" style="font-weight:bold"  />  
-                        <p:password id="confirmPassword" value="#{user.confirmPassword}"  size="40"   /> 
-                        <p:watermark for="confirmPassword" value="password" />
-                    </h:panelGrid>
-                    <h:form>
-                        <p:messages id="errors" autoUpdate="true"/>
-                    </h:form>
-                    <p:remoteCommand name="rc" update="msgs" actionListener="#{user.register}"  />
-                    <p:growl id="msgs" showDetail="true" />
-                    <p:commandButton update="reg" type="button" onclick="rc()" validateClient="true" value="Create account" icon="ui-icon-refresh"  />
-                </h:form>  
-            </p:dialog>   
-        </p:panel>
+    <h:body class="login-bg">
+        <div class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <h1><a href="index.html">ClientBase</a></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-wrapper">
+                        <div class="box">
+                            <div class="content-wrap">
+                                <h6>Sign In</h6>
+                                <form method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) { document.getElementById('loginButton').click(); return false; }"> 
+
+                                        <h:panelGrid id="grid" columns="2" cellpadding="5" width="400"  >
+                                            <p:outputLabel value="Email: " style="font-weight:bold" ></p:outputLabel>  
+                                            <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />  
+                                            <p:outputLabel value="Password:" style="font-weight:bold" ></p:outputLabel>  
+                                            <p:password id="j_password"  required="true" requiredMessage="Please enter your password" ></p:password>
+                                        </h:panelGrid>
+                                        <Button id="submitButton" ajax="false" type="submit" value="login" class="btn btn-info btn-lg">Login</Button>                                         
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  >Sign Up</button>
+                                </form>        
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"></button>
+                                                <h4 class="modal-title">Registration</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h:form id="registerForm" >  
+                                                    <h:panelGrid id="reg" columns="2" cellpadding="12" >
+                                                        <p:outputLabel id="fn" for="firstName"  value="Enter Your First Name:" style="font-weight:bold" />
+                                                        <p:inputText id="firstName" value="#{user.firstName}"  size="40" label="firstName" placeholder="first Name ( min. 2 caracters )"
+                                                                     required="true" requiredMessage="Please enter your first name" />          
+                                                        <p:outputLabel for="lastName" value="Enter Your Last Name:" style="font-weight:bold" />
+                                                        <p:inputText id="lastName" value="#{user.lastName}"  size="40" label="lastName" placeholder="last name ( min. 2 caracters )"
+                                                                     required="true" requiredMessage="Please enter your last name" />     
+                                                        <p:outputLabel for="email"  value="Enter Your Email:" style="font-weight:bold"  /> 
+                                                        <p:inputText id="email" required="true" label="email"  size="40" placeholder="email address"
+                                                                     requiredMessage="Please enter your email address."
+                                                                     validatorMessage="Invalid email format"                             
+                                                                     value="#{user.email}">
+                                                            <f:validateRegex
+                                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                        </p:inputText>         
+                                                        <p:outputLabel for="password"  value="Enter Password :" style="font-weight:bold"  />
+                                                        <p:password id="password" value="#{user.password}"   size="40" label="password" placeholder="password ( min. 6 caracters)"
+                                                                    required="true" requiredMessage="Please enter your password" /> 
+                                                        <p:outputLabel for="confirmPassword"  value="Enter Password again:" style="font-weight:bold"  />  
+                                                        <p:password id="confirmPassword" value="#{user.confirmPassword}"  size="40" placeholder="password ( min. 6 caracters)"  /> 
+                                                    </h:panelGrid>
+                                                    <p:remoteCommand name="rc" update="msgs" actionListener="#{user.register}"  />
+                                                    <p:growl id="msgs" showDetail="true" class="z"/>
+                                                    <p:commandButton update="reg" type="button" onclick="rc()" validateClient="true" value="Create account" class="btn btn-info btn-lg"  />
+                                                </h:form> 
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+        <script src="resources/js/custom.js"></script>
     </h:body>
 </html>

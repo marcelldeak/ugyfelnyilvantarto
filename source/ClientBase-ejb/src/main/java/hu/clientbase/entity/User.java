@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,7 +39,7 @@ public class User extends Person implements Serializable {
     @ManyToMany(targetEntity = Event.class)
     private List<Event> events;
     
-    @ManyToMany(targetEntity = Role.class)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
     
     public User() {

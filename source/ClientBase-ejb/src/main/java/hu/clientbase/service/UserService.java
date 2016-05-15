@@ -1,9 +1,12 @@
 package hu.clientbase.service;
 
 import hu.clientbase.dto.UserDTO;
+import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
+import hu.clientbase.facade.UserFacade;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -12,6 +15,9 @@ public class UserService implements Serializable {
 
     @Inject
     private EntityFacade entityManager;
+    
+    @Inject
+    private UserFacade userFacade;
 
     public UserService() {
     }
@@ -43,6 +49,13 @@ public class UserService implements Serializable {
             }
         }
         return false;
+    }
+    
+    public List<Role> getUserRolesByEmail(String email)
+    {
+        Long userId = userFacade.getUserIdByUserName(email);
+        User u = find(userId);
+        return u.getRoles();
     }
 
 }
