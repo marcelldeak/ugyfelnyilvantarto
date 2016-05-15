@@ -81,11 +81,11 @@ public class UserBackingBean {
     }
 
     public void badPasswordError() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Passwords", "Passwords don't match"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Passwords", "Passwords don't match"));
     }
 
     public void notUniqueEmailError() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Email", "Email address already in use"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
     }
 
     public boolean checkIfEmailExists() {
@@ -94,7 +94,7 @@ public class UserBackingBean {
 
     public void validateEmail(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         if (checkIfEmailExists()) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bad Email", "Email address already in use"));
+            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
         }
     }
 
