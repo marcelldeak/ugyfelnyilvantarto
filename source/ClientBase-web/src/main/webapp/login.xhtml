@@ -39,8 +39,8 @@
                     <div class="login-wrapper">
                         <div class="box">
                             <div class="content-wrap">
+                                <h:graphicImage value="/resources/logo.png"/>
                                 <h6>Sign In</h6>
-
                                 <form role="form" class="form-horizontal" method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) {
                                             document.getElementById('loginButton').click();
                                             return false;
@@ -87,7 +87,7 @@
                                                         <p:inputText id="lastName" value="#{user.lastName}"  size="40" label="lastName" placeholder="last name ( min. 2 caracters )"
                                                                      required="true" requiredMessage="Please enter your last name" />     
                                                         <p:outputLabel for="email"  value="Enter Your Email:" style="font-weight:bold"  /> 
-                                                        <p:inputText id="email" required="true" label="email"  size="40" placeholder="email address"
+                                                        <p:inputText id="email" required="true" label="email"  size="40" placeholder="email address" 
                                                                      requiredMessage="Please enter your email address."
                                                                      validatorMessage="Invalid email format"                             
                                                                      value="#{user.email}">
