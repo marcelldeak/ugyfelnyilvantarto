@@ -150,7 +150,7 @@
                     </security>
                 </datasource>
                 <datasource jta="true" jndi-name="java:/crmDS" pool-name="crmDS" enabled="true" use-ccm="true">
-                    <connection-url>jdbc:mysql://localhost:3306/CRM_DB</connection-url>
+                    <connection-url>jdbc:mysql://localhost:3306/CRM_DB?autoReconnect=true&amp;useSSL=false</connection-url>
                     <driver-class>com.mysql.jdbc.Driver</driver-class>
                     <driver>mysql-connector-java-5.1.38-bin.jar_com.mysql.jdbc.Driver_5_1</driver>
                     <security>
