@@ -369,7 +369,7 @@
                         <login-module code="Database" flag="required">
                             <module-option name="dsJndiName" value="java:/crmDS"/>
                             <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
-                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.users_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
+                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.user_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
                             <module-option name="hashAlgorithm" value="SHA-256"/>
                             <module-option name="hashEncoding" value="base64"/>
                         </login-module>
@@ -378,7 +378,7 @@
                         <policy-module code="Database" flag="required">
                             <module-option name="dsJndiName" value="java:/crmDS"/>
                             <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
-                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.users_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
+                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.user_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
                             <module-option name="hashAlgorithm" value="SHA-256"/>
                             <module-option name="hashEncoding" value="base64"/>
                         </policy-module>
