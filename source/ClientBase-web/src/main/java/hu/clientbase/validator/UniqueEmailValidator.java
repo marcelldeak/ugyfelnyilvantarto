@@ -21,7 +21,7 @@ public class UniqueEmailValidator implements Validator {
             return;
         }
         String email = (String) value;
-        if (userManager.existEmail(email)) {
+        if (userManager.isEmailExist(email)) {
             throw new ValidatorException(new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "Email is already in use.", null));
         }

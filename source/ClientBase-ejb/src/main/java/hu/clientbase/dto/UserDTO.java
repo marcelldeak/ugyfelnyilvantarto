@@ -1,5 +1,6 @@
 package hu.clientbase.dto;
 
+import hu.clientbase.entity.User;
 import java.util.Objects;
 import javax.ejb.Stateless;
 
@@ -10,6 +11,7 @@ public class UserDTO {
     private String password;
     private String lastName;
     private String firstName;
+    private Boolean active;
 
     public UserDTO() {
         //default User constructor
@@ -21,6 +23,13 @@ public class UserDTO {
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
+    }
+
+    public UserDTO(User user) {
+        this.email = user.getEmail();
+        this.lastName = user.getPassword();
+        this.firstName = user.getFirstName();
+        this.active = user.isActive();
     }
 
     public String getEmail() {
@@ -53,6 +62,14 @@ public class UserDTO {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
