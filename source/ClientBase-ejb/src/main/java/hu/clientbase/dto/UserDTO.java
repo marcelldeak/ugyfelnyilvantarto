@@ -1,88 +1,31 @@
 package hu.clientbase.dto;
 
-import hu.clientbase.entity.ContactChannel;
-import hu.clientbase.entity.Event;
-import hu.clientbase.entity.Role;
-import hu.clientbase.entity.User;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Objects;
+import javax.ejb.Stateless;
 
+@Stateless
 public class UserDTO {
 
-    private Long id;
-
-    private String firstName;
-
-    private String lastName;
-    
-    private String picture;
-
     private String email;
-    
     private String password;
-
+    private String lastName;
+    private String firstName;
+    private String picture;
     private boolean active;
-
     private Calendar expirationDate;
-
     private Calendar dateOfBirth;
 
-    private List<Event> events;
-
-    private List<Role> roles;
-    
-    private List<ContactChannel> contactChannels;
-
     public UserDTO() {
-        // default constructor
-    }
-    
-    public UserDTO(User user){
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.picture = user.getPicture();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.active = user.isActive();
-        this.expirationDate = user.getExpirationDate();
-        this.dateOfBirth = user.getDateOfBirth();
-        
-        this.events = user.getEvents();
-        this.roles = user.getRoles();
-        this.contactChannels = user.getContactChannels();
-    }
-    
-    public Long getId() {
-        return id;
+        //default User constructor
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
+    public UserDTO(String email, String password, String lastName, String firstName) {
+        //for registry
+        this.email = email;
+        this.password = password;
         this.lastName = lastName;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
+        this.firstName = firstName;
     }
 
     public String getEmail() {
@@ -99,6 +42,30 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public boolean isActive() {
@@ -125,33 +92,34 @@ public class UserDTO {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<ContactChannel> getContactChannels() {
-        return contactChannels;
-    }
-
-    public void setContactChannels(List<ContactChannel> contactChannels) {
-        this.contactChannels = contactChannels;
+    @Override
+    public String toString() {
+        return "UserDTO{" + "email=" + email + ", password=" + password + ", lastName=" + lastName + ", firstName=" + firstName + '}';
     }
 
     @Override
-    public String toString() {
-        return "UserDTO{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", picture=" + picture + ", email=" + email + ", password=" + password + ", active=" + active + ", expirationDate=" + expirationDate + ", dateOfBirth=" + dateOfBirth + '}';
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.email);
+        return hash;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserDTO other = (UserDTO) obj;
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return true;
+    }
+
 }

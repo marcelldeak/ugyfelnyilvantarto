@@ -8,7 +8,7 @@
   <name>ClientBase</name>
   <modules>
     <module>ClientBase-ear</module>
-    <module>ClientBase-web</module>
     <module>ClientBase-ejb</module>
+    <module>ClientBase-web</module>
   </modules>
 </project>

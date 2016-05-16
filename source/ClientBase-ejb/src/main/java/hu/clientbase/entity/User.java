@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,29 +39,21 @@ public class User extends Person implements Serializable {
     @ManyToMany(targetEntity = Event.class)
     private List<Event> events;
 
-    @ManyToMany(targetEntity = Role.class)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
     public User() {
         // Entity - parameterless constructor
     }
 
-    public User(UserDTO user){
-        setId(user.getId());
-        setFirstName(user.getFirstName());
-        setLastName(user.getLastName());
-        setPicture(user.getPicture());
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.active = user.isActive();
-        this.expirationDate = user.getExpirationDate();
-        this.dateOfBirth = user.getDateOfBirth();
-        
-        this.events = user.getEvents();
-        this.roles = user.getRoles();
-        setContactChannels(user.getContactChannels());
+    public User(UserDTO user) {
+        this.setEmail(user.getEmail());
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+        this.setPassword(user.getPassword());
+
     }
-    
+
     public String getEmail() {
         return email;
     }
