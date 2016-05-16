@@ -5,17 +5,20 @@
       xmlns:p="http://primefaces.org/ui" 
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{redirection.redirectUserIfLoggedIn()}"/>
+    </f:metadata>
+
     <h:head>
-        <title>Bootstrap Admin Theme v3</title>
+        <title>ClientBase - Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <!-- Bootstrap -->
-        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
         <!-- styles -->
-        <link href="resources/css/styles.css" rel="stylesheet"></link>
+        <link href="#{request.contextPath}/resources/css/styles.css" rel="stylesheet"></link>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-
-
     </h:head>
+
     <h:body class="login-bg">
         <div class="header">
             <div class="container">
@@ -23,7 +26,7 @@
                     <div class="col-md-12">
                         <!-- Logo -->
                         <div class="logo">
-                            <h1><a href="index.html">ClientBase</a></h1>
+                            <h1><a href="#{request.contextPath}">ClientBase</a></h1>
                         </div>
                     </div>
                 </div>
@@ -37,17 +40,36 @@
                         <div class="box">
                             <div class="content-wrap">
                                 <h6>Sign In</h6>
-                                <form method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) { document.getElementById('loginButton').click(); return false; }"> 
 
-                                        <h:panelGrid id="grid" columns="2" cellpadding="5" width="400"  >
-                                            <p:outputLabel value="Email: " style="font-weight:bold" ></p:outputLabel>  
-                                            <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />  
-                                            <p:outputLabel value="Password:" style="font-weight:bold" ></p:outputLabel>  
-                                            <p:password id="j_password"  required="true" requiredMessage="Please enter your password" ></p:password>
-                                        </h:panelGrid>
-                                        <Button id="submitButton" ajax="false" type="submit" value="login" class="btn btn-info btn-lg">Login</Button>                                         
-                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  >Sign Up</button>
-                                </form>        
+                                <form role="form" class="form-horizontal" method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) {
+                                            document.getElementById('loginButton').click();
+                                            return false;
+                                        }"> 
+
+                                    <div class="form-group" >
+                                        <label class="control-label col-sm-2" style="text-align: center" for="j_username">Email:</label>
+                                        <div class="col-sm-10">
+                                            <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="j_password">Password:</label>
+                                        <div class="col-sm-10">
+                                            <p:password id="j_password"  required="true" requiredMessage="Please enter your password" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-2"></div>
+                                        <div class="col-xs-4">
+                                            <button id="submitButton" type="submit" value="login" class="btn btn-info btn-lg">Login</button> 
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  >Sign Up</button>
+                                        </div>
+                                        <div class="col-xs-2"></div>
+                                    </div>
+                                </form>
+
                                 <div class="modal fade" id="myModal" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -98,7 +120,7 @@
         </div>
 
         <script src="https://code.jquery.com/jquery.js"></script>
-        <script src="resources/bootstrap/js/bootstrap.min.js"></script>
-        <script src="resources/js/custom.js"></script>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+        <script src="#{request.contextPath}/resources/js/custom.js"></script>
     </h:body>
 </html>
