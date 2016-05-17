@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.ProjectDTO;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Basic;
@@ -31,6 +32,14 @@ public class Project implements Serializable {
 
     public Project() {
         // Entity - parameterless constructor
+    }
+
+    public Project(ProjectDTO project) {
+        //constructor for the project service to convert projectDTO to project entity
+        this.deadline = project.getDeadline();
+        this.id = project.getId();
+        this.name = project.getName();
+        this.status = project.getStatus();
     }
 
     public Long getId() {

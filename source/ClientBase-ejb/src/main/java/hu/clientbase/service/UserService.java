@@ -34,7 +34,7 @@ public class UserService implements Serializable {
     }
 
     public void Delete(long id) {
-        entityFacade.delete(id);
+        entityFacade.delete(entityFacade.find(User.class, id));
     }
 
     public User update(User user, long id) {

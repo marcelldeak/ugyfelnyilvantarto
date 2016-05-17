@@ -1,12 +1,53 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Projects
+        <h:form id="form">
+            <p:dataTable var="project" value="#{dtLazyView.lazyModel}" paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{dtLazyView.selectedProject}" id="projectTable" lazy="true">
+                <p:ajax event="rowSelect" listener="#{dtLazyView.onRowSelect}" update=":form:projectDetail" oncomplete="PF('projectDialog').show()" />
+                <p:column headerText="Id" sortBy="#{project.id}" filterBy="#{project.id}">
+                    <h:outputText value="#{project.id}" />
+                </p:column>
+                <p:column headerText="Name" sortBy="#{project.name}" filterBy="#{project.name}">
+                    <h:outputText value="#{project.name}" />
+                </p:column>
+                <p:column headerText="Deadline" sortBy="#{project.deadline}" filterBy="#{project.deadline}">
+                    <h:outputText value="#{project.deadline}" />
+                </p:column>
+                <p:column headerText="Status" sortBy="#{project.status}" filterBy="#{project.status}">
+                    <h:outputText value="#{project.status}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Project Detail" widgetVar="projectDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="projectDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty dtLazyView.selectedProject}" columnClasses="label,value">
+
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{dtLazyView.selectedProject.id}" />
+
+                        <h:outputText value="Name" />
+                        <h:outputText value="#{dtLazyView.selectedProject.name}" />
+
+                        <h:outputText value="Deadline" />
+                        <h:outputText value="#{dtLazyView.selectedProject.deadline}"/>
+
+                        <h:outputText value="Status" />
+                        <h:outputText value="#{dtLazyView.selectedProject.status}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
     </h:body>
 </html>
 
