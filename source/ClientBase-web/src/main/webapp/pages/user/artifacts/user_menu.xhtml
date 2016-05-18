@@ -5,26 +5,34 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition>
-        <f:ajax render=":a_page_content">
-            <h:form>
-                <ul class="nav">
-                    <li id="nav_home" class="current">
-                        <h:commandLink value="Home" action="#{navigation.setPage('artifacts/home')}" />
-                    </li>
-                    <li id="nav_projects">
-                        <h:commandLink value="Projects" action="#{navigation.setPage('artifacts/projects')}" />
-                    </li>
-                    <li id="nav_events">
-                        <h:commandLink value="Events" action="#{navigation.setPage('artifacts/events')}" />
-                    </li>    
-                    <li id="nav_notes">
-                        <h:commandLink value="Notes" action="#{navigation.setPage('artifacts/notes')}" />
-                    </li> 
-                    <li id="nav_customers">
-                        <h:commandLink value="Customers" action="#{navigation.setPage('artifacts/customers')}" />
-                    </li> 
-                </ul> 
-            </h:form>
-        </f:ajax>
+        <h:form id="menu_list">
+            <ul class="nav">
+                <li id="nav_home" class="#{navigation.getMenuClass('artifacts/home')}">
+                    <h:commandLink value="Home" action="#{navigation.setPage('artifacts/home')}">
+                        <f:ajax />
+                    </h:commandLink>
+                </li>
+                <li id="nav_projects" class="#{navigation.getMenuClass('artifacts/projects')}">
+                    <h:commandLink value="Projects" action="#{navigation.setPage('artifacts/projects')}">
+                        <f:ajax />
+                    </h:commandLink>
+                </li>
+                <li id="nav_events" class="#{navigation.getMenuClass('artifacts/events')}">
+                    <h:commandLink value="Events" action="#{navigation.setPage('artifacts/events')}">
+                        <f:ajax />
+                    </h:commandLink>
+                </li>    
+                <li id="nav_notes" class="#{navigation.getMenuClass('artifacts/notes')}">
+                    <h:commandLink value="Notes" action="#{navigation.setPage('artifacts/notes')}">
+                        <f:ajax />
+                    </h:commandLink>
+                </li> 
+                <li id="nav_customers" class="#{navigation.getMenuClass('artifacts/customers')}">
+                    <h:commandLink value="Customers" action="#{navigation.setPage('artifacts/customers')}">
+                        <f:ajax />
+                    </h:commandLink>
+                </li> 
+            </ul> 
+        </h:form>
     </ui:composition>
 </html>

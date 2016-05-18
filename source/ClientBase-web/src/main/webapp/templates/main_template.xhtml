@@ -2,47 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link rel="stylesheet" href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="#{request.contextPath}/resources/css/styles.css" />
-    <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
 
     <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
         <title>Client Base - <ui:insert name="page_title">Page Title</ui:insert></title>
     </h:head>
 
-    <h:body>
-        <div class="header">
+    <h:body style="background: url('#{request.contextPath}/resources/imgs/bg.png') center no-repeat;">
+
+        <nav class="header navbar navbar-default">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-1">
-                        <!-- Logo -->
-                        <img src="#{request.contextPath}/resources/images/logo.png" style="height:54px"/>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="logo">
-                            <h1><a href="index.html">Client Base</a></h1>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="navbar navbar-inverse" role="banner">
-
-                            <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation" id="buttons-wrapper">
-                                <ui:insert name="buttons">
-                                    Buttons
-                                </ui:insert>
-                            </nav>
-
-                        </div>
-                    </div>
+                <div class ='navbar-left' id="logo">
+                    <a href="#{request.contextPath}/pages"><img src="#{request.contextPath}/resources/imgs/logo.png" style="height:42px" alt="ClientBase" /></a>
+                </div>
+                <div class="navbar-right" id="nav-buttons">
+                    <ui:insert name="buttons">
+                        Buttons
+                    </ui:insert>
                 </div>
             </div>
-        </div>
+        </nav>
+
         <div class="page-content">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
                     <div class="sidebar content-box" style="display: block;">
                         <ui:insert name="profile">
                             Profile
@@ -52,7 +39,8 @@
                         </ui:insert>
                     </div>
                 </div>
-                <div class="col-md-10">
+
+                <div class="col-lg-10 col-md-9 col-sm-12 col-xs-12">
                     <div class="content-box-large">
                         <ui:insert name="page_content">
                             Page Content
@@ -61,10 +49,8 @@
                 </div>
             </div>
         </div>
-
         <script src="#{request.contextPath}/resources/js/jquery.min.js"></script>
-        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-        <script src="#{request.contextPath}/resources/js/custom.js"></script>
+        <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
     </h:body>
 </html>
 
