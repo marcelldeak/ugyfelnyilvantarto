@@ -2,7 +2,7 @@ package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.Project;
-import hu.clientbase.service.mv.ProjectModel;
+import hu.clientbase.service.mdel.ProjectModel;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -46,7 +46,7 @@ public class ProjectView  implements Serializable {
     }
     
       public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Selected", ((Project) event.getObject()).getId().toString());
+        FacesMessage msg = new FacesMessage("Note Selected", ((Project) event.getObject()).getId().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
       

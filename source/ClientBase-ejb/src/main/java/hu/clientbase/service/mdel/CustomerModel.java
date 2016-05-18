@@ -1,4 +1,4 @@
-package hu.clientbase.service.mv;
+package hu.clientbase.service.mdel;
 
 import hu.clientbase.dto.BasicCustomerDTO;
 import hu.clientbase.entity.Customer;

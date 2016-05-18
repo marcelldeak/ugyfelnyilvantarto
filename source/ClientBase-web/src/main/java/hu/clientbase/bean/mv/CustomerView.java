@@ -1,7 +1,7 @@
 package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicCustomerDTO;
-import hu.clientbase.service.mv.CustomerModel;
+import hu.clientbase.service.mdel.CustomerModel;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

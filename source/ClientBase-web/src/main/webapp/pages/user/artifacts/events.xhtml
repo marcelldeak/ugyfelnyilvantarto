@@ -1,12 +1,75 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Events
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" /> 
+            <p:dataTable id="eventTable"
+                         var="event"
+                         value="#{eventView.events}"
+                         selectionMode="single"
+                         paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15"
+                         selection="#{eventView.selectedEvent}"
+                         rowKey="#{event.id}"
+                         lazy="true" >
+                <p:ajax event="rowSelect" listener="#{eventView.onRowSelect}" update=":form:evetnDetails" oncomplete="PF('eventDialog').show()" />
+                <f:facet name="header">
+                    Notes
+                </f:facet>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{event.id}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{event.name}" />
+                </p:column>
+                <p:column headerText="Date of end">
+                    <h:outputText value="#{event.dateOfEnd.time}" >
+                        <f:convertDateTime type="both" dateStyle="long" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Event Details" widgetVar="eventDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="evetnDetails" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty eventView.selectedEvent}" columnClasses="label,value">
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{eventView.selectedEvent.id}" />
+
+                        <h:outputText value="Name:" />
+                        <h:outputText value="#{eventView.selectedEvent.name}" />
+
+                        <h:outputText value="Address:" />
+                        <h:outputText value="#{eventView.selectedEvent.address}" />
+
+                        <h:outputText value="Date of start:" />
+                        <h:outputText value="#{eventView.selectedEvent.dateOfStart.time}" >
+                            <f:convertDateTime type="both" dateStyle="long" />
+                        </h:outputText>
+
+                        <h:outputText value="Date of end:" />
+                        <h:outputText value="#{event.dateOfEnd.time}" >
+                            <f:convertDateTime type="both" dateStyle="long" />
+                        </h:outputText>
+
+                        <h:outputText value="Notes:" />
+                        <h:outputText value="#{eventView.selectedEvent.notes}" />
+
+                        <h:outputText value="Type:" />
+                        <h:outputText value="#{eventView.selectedEvent.type}" />
+
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
     </h:body>
 </html>
 

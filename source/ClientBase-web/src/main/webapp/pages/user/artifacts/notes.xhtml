@@ -1,12 +1,54 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Notes
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" /> 
+            <p:dataTable id="noteTable"
+                         var="note"
+                         value="#{noteView.notes}"
+                         selectionMode="single"
+                         paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15"
+                         selection="#{noteView.selectedNote}"
+                         rowKey="#{note.id}"
+                         lazy="true" >
+                <p:ajax event="rowSelect" listener="#{noteView.selectedNote}" update=":form:noteDetails" oncomplete="PF('noteDialog').show()" />
+                <f:facet name="header">
+                    Notes
+                </f:facet>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{note.id}" />
+                </p:column>
+                <p:column headerText="Tag">
+                    <h:outputText value="#{note.tag}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Note Details" widgetVar="noteDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="noteDetails" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty noteView.selectedNote}" columnClasses="label,value">
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{noteView.selectedNote.id}" />
+
+                        <h:outputText value="Tag:" />
+                        <h:outputText value="#{noteView.selectedNote.tag}" />
+
+                        <h:outputText value="Content" />
+                        <h:outputText value="#{noteView.selectedNote.content}" />
+
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
     </h:body>
 </html>
 
