@@ -18,8 +18,7 @@
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          rowsPerPageTemplate="5,10,15"
                          selection="#{eventView.selectedEvent}"
-                         rowKey="#{event.id}"
-                         lazy="true" >
+                         rowKey="#{event.id}" >
                 <p:ajax event="rowSelect" listener="#{eventView.onRowSelect}" update=":form:evetnDetails" oncomplete="PF('eventDialog').show()" />
                 <f:facet name="header">
                     Notes

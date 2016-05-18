@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -7,28 +8,43 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:dataTable id="customerTable"
-                     var="customer"
-                     value="#{customerView.customers}"
-                     selectionMode="single"
-                     selection="#{customerView.selectedCustomer}"
-                     rowKey="#{customer.id}">
-            
-        <f:facet name="header">
-            Customers
-        </f:facet>
-            
-        <p:column headerText="Id">
-            <h:outputText value="#{customer.id}" />
-        </p:column>
-        <p:column headerText="Name">
-            <h:outputText value="#{customer.name}" />
-        </p:column>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" /> 
+            <p:dataTable id="customerTable"
+                         var="customer"
+                         value="#{customerView.customers}"
+                         selectionMode="single"
+                         paginator="true" rows="5"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15"
+                         selection="#{customerView.selectedCustomer}"
+                         rowKey="#{customer.id}"
+                         lazy="true" >
+                <p:ajax event="rowSelect" listener="#{customerView.onRowSelect}" update=":form:customerDetails" oncomplete="PF('customerDialog').show()" />
+                <f:facet name="header">
+                    Projects
+                </f:facet>
+                <p:column headerText="Id">
+                    <h:outputText value="#{customer.id}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{customer.name}" />
+                </p:column>
 
-        <!--<f:facet name="footer">
-            <p:commandButton process="singleDT" update=":form:carDetail" icon="ui-icon-search" value="View" oncomplete="PF('carDialog').show()" />
-        </f:facet>-->
-    </p:dataTable>
+            </p:dataTable>
+                <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="customerDetails" style="text-align:center;">
+                        <p:panelGrid  columns="2" rendered="#{not empty customerView.selectedCustomer}" columnClasses="label,value">
+                            <h:outputText value="Id:" />
+                            <h:outputText value="#{customerView.selectedCustomer.id}" />
+
+                            <h:outputText value="Name:" />
+                            <h:outputText value="#{customerView.selectedCustomer.name}" />
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+        </h:form>
     </h:body>
 </html>
 
