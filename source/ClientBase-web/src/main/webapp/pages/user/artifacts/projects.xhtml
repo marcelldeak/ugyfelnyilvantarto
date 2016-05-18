@@ -8,28 +8,54 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:dataTable id="projectTable"
-                     var="project"
-                     value="#{projectView.projects}"
-                     selectionMode="single"
-                     selection="#{projectView.selectedProject}"
-                     rowKey="#{project.id}">
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" /> 
+            <p:dataTable id="projectTable"
+                         var="project"
+                         value="#{projectView.projects}"
+                         selectionMode="single"
+                         paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rowsPerPageTemplate="5,10,15"
+                         selection="#{projectView.selectedProject}"
+                         rowKey="#{project.id}"
+                         lazy="true" >
+                <p:ajax event="rowSelect" listener="#{projectView.onRowSelect}" update=":form:projectDetails" oncomplete="PF('projectDialog').show()" />
+                <f:facet name="header">
+                    Projects
+                </f:facet>
 
-            <f:facet name="header">
-                Projects
-            </f:facet>
+                <p:column headerText="Id">
+                    <h:outputText value="#{project.id}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{project.name}" />
+                </p:column>
+                <p:column headerText="Status:">
+                    <h:outputText value="#{project.status}" />
+                </p:column>
 
-            <p:column headerText="Id">
-                <h:outputText value="#{project.id}" />
-            </p:column>
-            <p:column headerText="Name">
-                <h:outputText value="#{project.name}" />
-            </p:column>
+            </p:dataTable>
 
-            <!--<f:facet name="footer">
-                <p:commandButton process="singleDT" update=":form:carDetail" icon="ui-icon-search" value="View" oncomplete="PF('carDialog').show()" />
-            </f:facet>-->
-        </p:dataTable>
+            <p:dialog header="Project Details" widgetVar="projectDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="projectDetails" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty projectView.selectedProject}" columnClasses="label,value">
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{projectView.selectedProject.id}" />
+
+                        <h:outputText value="Name:" />
+                        <h:outputText value="#{projectView.selectedProject.name}" />
+
+                        <h:outputText value="Deadline:" />
+                        <h:outputText value="#{projectView.selectedProject.deadline}" />
+
+                        <h:outputText value="Status:" />
+                        <h:outputText value="#{projectView.selectedProject.status}"/>
+
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
     </h:body>
 </html>
 
