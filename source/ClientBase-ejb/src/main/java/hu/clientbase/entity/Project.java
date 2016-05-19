@@ -2,6 +2,7 @@ package hu.clientbase.entity;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -65,4 +66,5 @@ public class Project implements Serializable {
         this.status = status;
     }
 
+    
 }

@@ -23,6 +23,9 @@
                 <p:ajax event="rowSelect" listener="#{customerView.onRowSelect}" update=":form:customerDetails" oncomplete="PF('customerDialog').show()" />
                 <f:facet name="header">
                     Projects
+
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="customerTable" trigger="toggler" />
                 </f:facet>
                 <p:column headerText="Id">
                     <h:outputText value="#{customer.id}" />
@@ -32,18 +35,18 @@
                 </p:column>
 
             </p:dataTable>
-                <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                    <p:outputPanel id="customerDetails" style="text-align:center;">
-                        <p:panelGrid  columns="2" rendered="#{not empty customerView.selectedCustomer}" columnClasses="label,value">
-                            <h:outputText value="Id:" />
-                            <h:outputText value="#{customerView.selectedCustomer.id}" />
+            <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="customerDetails" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty customerView.selectedCustomer}" columnClasses="label,value">
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{customerView.selectedCustomer.id}" />
 
-                            <h:outputText value="Name:" />
-                            <h:outputText value="#{customerView.selectedCustomer.name}" />
+                        <h:outputText value="Name:" />
+                        <h:outputText value="#{customerView.selectedCustomer.name}" />
 
-                        </p:panelGrid>
-                    </p:outputPanel>
-                </p:dialog>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
         </h:form>
     </h:body>
 </html>

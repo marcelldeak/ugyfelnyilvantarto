@@ -23,6 +23,9 @@
                 <p:ajax event="rowSelect" listener="#{noteView.selectedNote}" update=":form:noteDetails" oncomplete="PF('noteDialog').show()" />
                 <f:facet name="header">
                     Notes
+
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="noteTable" trigger="toggler" />
                 </f:facet>
 
                 <p:column headerText="Id">

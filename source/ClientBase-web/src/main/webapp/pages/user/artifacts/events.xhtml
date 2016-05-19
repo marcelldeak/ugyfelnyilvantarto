@@ -22,6 +22,9 @@
                 <p:ajax event="rowSelect" listener="#{eventView.onRowSelect}" update=":form:evetnDetails" oncomplete="PF('eventDialog').show()" />
                 <f:facet name="header">
                     Notes
+                    
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                    <p:columnToggler datasource="eventTable" trigger="toggler" />
                 </f:facet>
 
                 <p:column headerText="Id">
