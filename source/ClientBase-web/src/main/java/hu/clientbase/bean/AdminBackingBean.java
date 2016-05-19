@@ -19,6 +19,8 @@ public class AdminBackingBean implements Serializable {
 
     private List<BasicUserDTO> pendingRegistrations;
 
+    private BasicUserDTO userToAdd;
+
     @PostConstruct
     private void init() {
         pendingRegistrations = userService.getPendingRegistrations();
@@ -32,11 +34,48 @@ public class AdminBackingBean implements Serializable {
         this.pendingRegistrations = pendingRegistrations;
     }
 
-    public void rejectRegistration(Long id) {
-        BasicUserDTO toDelete = new BasicUserDTO();
-        toDelete.setId(id);
-        userService.deletePendingRegistration(toDelete);
+    public void rejectRegistration(BasicUserDTO dto) {
+        userService.deletePendingRegistration(dto);
         pendingRegistrations = userService.getPendingRegistrations();
         Ajax.update("users_form:pending_regs");
     }
+
+    public void acceptRegistrationQuestion(BasicUserDTO dto) {
+        userToAdd = dto;
+        Ajax.update("accept_dialog_user_name");
+        Ajax.oncomplete("$('#accept_dialog').modal('show')");
+    }
+
+    public void acceptRegistrationAsAdmin() {
+        acceptRegistration("ADMIN");
+
+    }
+
+    public void acceptRegistrationAsUser() {
+        acceptRegistration("USER");
+    }
+
+    private void acceptRegistration(String role) {
+        userService.AcceptPendingRegistration(userToAdd, role);
+        pendingRegistrations = userService.getPendingRegistrations();
+        Ajax.update("users_form:pending_regs");
+        Ajax.oncomplete("$('#accept_dialog').modal('hide')");
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public BasicUserDTO getUserToAdd() {
+        return userToAdd;
+    }
+
+    public void setUserToAdd(BasicUserDTO userToAdd) {
+        this.userToAdd = userToAdd;
+    }
+
 }

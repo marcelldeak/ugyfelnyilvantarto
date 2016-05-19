@@ -11,9 +11,10 @@
                              var="_user"
                              value="#{admin.pendingRegistrations}"
                              rowKey="#{_user.id}"
+                             emptyMessage="There are no pending registrations"
                              >
                     <f:facet name="header">
-                        Pending registrations
+                        <h4>Pending registrations</h4>
                     </f:facet>
 
                     <p:column headerText="Name" style="text-align: center">
@@ -24,19 +25,57 @@
                     </p:column>
 
                     <p:column style="text-align: center;width: 56px" >
-                        <p:commandButton title="Accept" icon="ui-icon-check" style="background: #2ecc71;color:#ecf0f1">
-
+                        <p:commandButton title="Accept" icon="ui-icon-check" style="background: #2ecc71;color:#ecf0f1" action="#{admin.acceptRegistrationQuestion(_user)}">
+                            <f:ajax />
                         </p:commandButton>
                     </p:column>
                     <p:column style="text-align: center;width: 56px">
-                        <p:commandButton icon="ui-icon-close" title="Reject" style="background: #e74c3c;color:#ecf0f1" action="#{admin.rejectRegistration(_user.id)}">
+                        <p:commandButton icon="ui-icon-close" title="Reject" style="background: #e74c3c;color:#ecf0f1" action="#{admin.rejectRegistration(_user)}">
                             <f:ajax />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
-
-
             </h:form>
+
+            <div class="modal fade" id="accept_dialog" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Accept registration</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h:form id='accept_dialog_user_name'>
+                                <h:outputText value="Please select the role of #{admin.userToAdd.name}" />
+                            </h:form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <h:form>
+                                        <h:panelGrid columns="2" cellpadding="10">
+                                            <p:commandButton value="Administrator" type="button" action='#{admin.acceptRegistrationAsAdmin()}'>
+                                                <f:ajax />
+                                            </p:commandButton>
+                                            <p:commandButton value="Application user" type="button" action='#{admin.acceptRegistrationAsUser()}'>
+                                                <f:ajax />
+                                            </p:commandButton>
+                                        </h:panelGrid>
+                                        </h:form>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-6 col-lg-3">
+                                    <h:panelGrid columns="1" cellpadding="5">
+                                        <p:commandButton value="Cancel" type="button" onclick="$('#accept_dialog').modal('hide')" />
+                                    </h:panelGrid>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </ui:composition>

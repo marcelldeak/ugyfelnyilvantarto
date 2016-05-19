@@ -39,6 +39,19 @@ public class UserService implements Serializable {
         entityFacade.delete(p);
         entityFacade.delete(u);
     }
+    
+    public void AcceptPendingRegistration(BasicUserDTO user, String role)
+    {
+        User u = entityFacade.find(User.class, user.getId());
+        PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
+        entityFacade.delete(p);
+        
+        Role r = userFacade.getRoleByName(role);
+        u.setActive(true);
+        u.getRoles().add(r);
+        
+        entityFacade.update(u);
+    }
 
     public boolean isEmailExist(String email) {
         return entityFacade.findAll(User.class).stream().anyMatch((user) -> (user.getEmail().equals(email)));
