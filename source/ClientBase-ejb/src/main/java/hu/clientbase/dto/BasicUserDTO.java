@@ -1,33 +1,33 @@
 package hu.clientbase.dto;
 
 import hu.clientbase.entity.User;
-import java.util.Objects;
 import javax.ejb.Stateless;
 
 @Stateless
-public class UserDTO {
+public class BasicUserDTO {
 
+    private Long id;
     private String email;
     private String password;
     private String lastName;
     private String firstName;
     private Boolean active;
 
-    public UserDTO() {
-        //default User constructor
+    public BasicUserDTO() {
+        //DTO
     }
 
-    public UserDTO(String email, String password, String lastName, String firstName) {
-        //for registry
+    public BasicUserDTO(String email, String password, String lastName, String firstName) {
         this.email = email;
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
     }
 
-    public UserDTO(User user) {
+    public BasicUserDTO(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
-        this.lastName = user.getPassword();
+        this.lastName = user.getLastName();
         this.firstName = user.getFirstName();
         this.active = user.isActive();
     }
@@ -72,34 +72,16 @@ public class UserDTO {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" + "email=" + email + ", password=" + password + ", lastName=" + lastName + ", firstName=" + firstName + '}';
+    public String getName() {
+        return firstName + " " + lastName;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.email);
-        return hash;
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserDTO other = (UserDTO) obj;
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
-        return true;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

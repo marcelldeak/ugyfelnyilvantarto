@@ -1,6 +1,6 @@
 package hu.clientbase.bean;
 
-import hu.clientbase.dto.UserDTO;
+import hu.clientbase.dto.BasicUserDTO;
 import hu.clientbase.service.UserService;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -100,7 +100,7 @@ public class UserBackingBean {
 
     
     public void register() throws NoSuchAlgorithmException {
-        UserDTO user = new UserDTO();
+        BasicUserDTO user = new BasicUserDTO();
         if (!password.equals(confirmPassword) && (userManager.isEmailExist(getEmail()))) { // check if passwords dont match and the email address is already in use ( both ) 
             badPasswordError();
             notUniqueEmailError();

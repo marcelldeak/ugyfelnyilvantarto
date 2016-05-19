@@ -1,76 +1,42 @@
 package hu.clientbase.bean;
 
-import hu.clientbase.dto.UserDTO;
+import hu.clientbase.dto.BasicUserDTO;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.omnifaces.util.Ajax;
 
+@Named(value = "admin")
+@ViewScoped
+public class AdminBackingBean implements Serializable {
 
-@Named(value = "adminBean")
-@SessionScoped
-public class AdminBackingBean implements Serializable{
-    
     @Inject
     private UserService userService;
-    
-    private List<UserDTO> users = new ArrayList<>();
-    
-    private List<UserDTO> filteredUsers;
 
-    public AdminBackingBean() {
-        // default constructor
-    }
+    private List<BasicUserDTO> pendingRegistrations;
 
     @PostConstruct
-    private void init(){
-        users = userService.findAllUsers();
-    }
-    
-    public List<UserDTO> getUsers() {
-        return users;
+    private void init() {
+        pendingRegistrations = userService.getPendingRegistrations();
     }
 
-    public void setUsers(List<UserDTO> users) {
-        this.users = users;
+    public List<BasicUserDTO> getPendingRegistrations() {
+        return pendingRegistrations;
     }
 
-    public List<UserDTO> getFilteredUsers() {
-        return filteredUsers;
+    public void setPendingRegistrations(List<BasicUserDTO> pendingRegistrations) {
+        this.pendingRegistrations = pendingRegistrations;
     }
 
-    public void setFilteredUsers(List<UserDTO> filteredUsers) {
-        this.filteredUsers = filteredUsers;
+    public void rejectRegistration(Long id) {
+        BasicUserDTO toDelete = new BasicUserDTO();
+        toDelete.setId(id);
+        userService.deletePendingRegistration(toDelete);
+        pendingRegistrations = userService.getPendingRegistrations();
+        Ajax.update("users_form:pending_regs");
     }
-    
-    public List<UserDTO> getAdminUsers(){
-        return userService.findAllAdmin();
-    }
-    
-    public List<UserDTO> getOrdinaryUsers(){
-        return userService.findAllOrdinaryUsers();
-    }
-    
-    public List<UserDTO> getPendingRegistrations(){
-        return userService.findAllPendingRegistrations();
-    }
-    /*
-    public void acceptRegistration(UserDTO user){
-        user.setActive(true);
-        userService.updateUser(user);
-    }
-    
-    public void declineRegistration(UserDTO user){
-        users.remove(user);
-        userService.deleteUser(user);
-    }
-    
-    public void deleteUser(UserDTO user){
-        users.remove(user);
-        userService.deleteUser(user);
-    } */
 }

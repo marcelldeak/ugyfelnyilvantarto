@@ -1,6 +1,7 @@
 package hu.clientbase.service;
 
-import hu.clientbase.dto.UserDTO;
+import hu.clientbase.dto.BasicUserDTO;
+import hu.clientbase.entity.PendingRegistration;
 import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
@@ -16,94 +17,42 @@ public class UserService implements Serializable {
 
     @Inject
     private EntityFacade entityFacade;
-    
+
     @Inject
     private UserFacade userFacade;
 
     public UserService() {
     }
 
-    public User create(UserDTO user) {
+    public void create(BasicUserDTO user) {
         User tempUser = new User(user);
         tempUser.setActive(false);
-        return entityFacade.create(tempUser);
+        PendingRegistration p = new PendingRegistration(tempUser);
+        entityFacade.create(tempUser);
+        entityFacade.create(p);
     }
-
-    public User find(long id) {
-        return entityFacade.find(User.class, id);
-    }
-
-    public void Delete(long id) {
-        entityFacade.delete(id);
-    }
-
-    public User update(User user, long id) {
-        user.setId(id);
-        entityFacade.update(user);
-        return user;
+    
+    public void deletePendingRegistration(BasicUserDTO user)
+    {
+        User u = entityFacade.find(User.class, user.getId());
+        PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
+        entityFacade.delete(p);
+        entityFacade.delete(u);
     }
 
     public boolean isEmailExist(String email) {
-        for (User user : entityFacade.findAll(User.class)) {
-            if (user.getEmail().equals(email)) {
-                return true;
-            }
-        }
-        return false;
+        return entityFacade.findAll(User.class).stream().anyMatch((user) -> (user.getEmail().equals(email)));
+    }
+
+    public List<BasicUserDTO> getPendingRegistrations() {
+        List<PendingRegistration> pendingRegistrations = userFacade.getPendingRegistrations();
+
+        List<BasicUserDTO> userDTOs = new LinkedList<>();
+
+        pendingRegistrations.stream().forEach(p -> userDTOs.add(new BasicUserDTO(p.getUser())));
+
+        return userDTOs;
     }
     
-        public List<UserDTO> findAllUsers() {
-        List<UserDTO> result = new LinkedList<>();
-
-        for (User user : entityFacade.findAll(User.class)) {
-            result.add(new UserDTO(user));
-        }
-
-        return result;
-    }
-
-    public List<UserDTO> findAllPendingRegistrations(){
-        List<UserDTO> result = new LinkedList<>();
-        
-        for(User user : entityFacade.findAll(User.class)){
-            if(!user.isActive()){
-                result.add(new UserDTO(user));
-            }
-        }
-        
-        return result;
-    }
-    
-    public List<UserDTO> findAllAdmin() {
-        List<UserDTO> result = new LinkedList<>();
-
-        for (User user : entityFacade.findAll(User.class)) {
-            if (user.isActive()) {
-                for (Role role : user.getRoles()) {
-                    if (role.getName().equals("ADMIN")) {
-                        result.add(new UserDTO(user));
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-    public List<UserDTO> findAllOrdinaryUsers() {
-        List<UserDTO> result = new LinkedList<>();
-
-        for (User user : entityFacade.findAll(User.class)) {
-            if (user.isActive()) {
-                for (Role role : user.getRoles()) {
-                    if (role.getName().equals("USER")) {
-                        result.add(new UserDTO(user));
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
 
 }

@@ -1,6 +1,6 @@
 package hu.clientbase.entity;
 
-import hu.clientbase.dto.UserDTO;
+import hu.clientbase.dto.BasicUserDTO;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -46,7 +46,7 @@ public class User extends Person implements Serializable {
         // Entity - parameterless constructor
     }
     
-    public User(UserDTO user) {
+    public User(BasicUserDTO user) {
         this.setEmail(user.getEmail());
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());

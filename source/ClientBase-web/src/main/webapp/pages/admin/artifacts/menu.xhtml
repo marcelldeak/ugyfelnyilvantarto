@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="menu_list">
+        <ul class="nav">
+            <li id="nav_home" class="#{navigation.getMenuClass('artifacts/home')}">
+                <h:commandLink value="Users" action="#{navigation.setPage('artifacts/home')}">
+                    <f:ajax />
+                </h:commandLink>
+            </li>
+            <li id="nav_projects" class="#{navigation.getMenuClass('artifacts/system')}">
+                <h:commandLink value="System settings" action="#{navigation.setPage('artifacts/system')}">
+                    <f:ajax />
+                </h:commandLink>
+            </li>
+        </ul> 
+    </h:form>
+</ui:composition>

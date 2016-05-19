@@ -174,7 +174,15 @@ CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `PendingRegistration` (
+  `ID` bigint(20) NOT NULL,
+  `USER_ID` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_PENDINGREGISTRATION_USER_ID` (`USER_ID`),
+  FOREIGN KEY (`USER_ID`) REFERENCES `Application_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+SELECT * FROM CRM_DB.Application_user;
+
 INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('0', 'ADMIN');
 INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('1', 'USER');
 INSERT INTO `CRM_DB`.`hibernate_sequence` (`next_val`) VALUES (2);
-
