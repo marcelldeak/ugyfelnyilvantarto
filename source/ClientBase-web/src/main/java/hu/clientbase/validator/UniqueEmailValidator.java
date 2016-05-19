@@ -9,7 +9,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 
-@FacesValidator(value = "uniqueEmailValidator")
+@FacesValidator("uniqueEmailValidator")
 public class UniqueEmailValidator implements Validator {
 
     @Inject

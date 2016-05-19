@@ -2,22 +2,23 @@ package hu.clientbase.bean;
 
 import hu.clientbase.dto.BasicUserDTO;
 import hu.clientbase.service.UserService;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Named("user")
-@RequestScoped
-public class UserBackingBean {
+@ViewScoped
+public class UserBackingBean implements Serializable {
 
     @Inject
     private UserService userManager;
@@ -81,11 +82,11 @@ public class UserBackingBean {
     }
 
     public void badPasswordError() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Passwords", "Passwords don't match"));
+        FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Passwords", "Passwords don't match"));
     }
 
     public void notUniqueEmailError() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
+        FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
     }
 
     public boolean checkIfEmailExists() {
@@ -117,7 +118,8 @@ public class UserBackingBean {
             user.setLastName(lastName);
             user.setEmail(email);
             userManager.create(user);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Your Account is ready.", "Your account is ready :)"));
+            FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_WARN, "Account created.", "A system administrator will verify your registration."));
+            
         }
     }
 }
