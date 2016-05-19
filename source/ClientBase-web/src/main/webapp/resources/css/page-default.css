@@ -65,6 +65,13 @@ body {
     width: 82%;
     margin: 0 auto;
 }
+
+h4 {
+    font-variant: small-caps;
+    font-weight: 600;
+    color: #2c3742;
+}
+
 #reg_modal h6,
 .login-wrapper .box h6 {
     text-transform: uppercase;

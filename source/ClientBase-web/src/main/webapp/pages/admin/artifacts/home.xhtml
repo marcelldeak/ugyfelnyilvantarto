@@ -4,15 +4,15 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <div class="row">
+    <!--UI-->
+    <div class="row" style="padding-bottom: 15px;">
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
-            <h:form id="users_form">
+            <h:form id="p_form">
                 <p:dataTable id="pending_regs"
                              var="_user"
                              value="#{admin.pendingRegistrations}"
                              rowKey="#{_user.id}"
-                             emptyMessage="There are no pending registrations"
-                             >
+                             emptyMessage="There are no pending registrations.">
                     <f:facet name="header">
                         <h4>Pending registrations</h4>
                     </f:facet>
@@ -25,57 +25,196 @@
                     </p:column>
 
                     <p:column style="text-align: center;width: 56px" >
-                        <p:commandButton title="Accept" icon="ui-icon-check" style="background: #2ecc71;color:#ecf0f1" action="#{admin.acceptRegistrationQuestion(_user)}">
+                        <p:commandButton title="Accept" icon="ui-icon-check" action="#{admin.acceptRegistrationQuestion(_user)}">
                             <f:ajax />
                         </p:commandButton>
                     </p:column>
                     <p:column style="text-align: center;width: 56px">
-                        <p:commandButton icon="ui-icon-close" title="Reject" style="background: #e74c3c;color:#ecf0f1" action="#{admin.rejectRegistration(_user)}">
+                        <p:commandButton icon="ui-icon-close" title="Reject" action="#{admin.rejectRegistration(_user)}">
                             <f:ajax />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </h:form>
+        </div>
+    </div>
+    <hr />
+    <div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
+            <h:form id="a_form">
+                <p:dataTable id="administrators"
+                             widgetVar="administratorsTable"
+                             var="_admin"
+                             value="#{admin.administrators}"
+                             rowKey="#{_admin.id}"
+                             filteredValue="#{admin.filteredAdministrators}"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="1,5,10,15"
+                             paginatorPosition="bottom"
+                             emptyMessage="There are no other administrators in the system."
+                             >
+                    <f:facet name="header">
+                        <h4>System administrators</h4>
+                    </f:facet>
 
-            <div class="modal fade" id="accept_dialog" tabindex="-1" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Accept registration</h4>
-                        </div>
-                        <div class="modal-body">
-                            <h:form id='accept_dialog_user_name'>
-                                <h:outputText value="Please select the role of #{admin.userToAdd.name}" />
+                    <p:column headerText="Name"
+                              style="text-align: center"
+                              filterBy="#{_admin.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{_admin.name}" />
+                    </p:column>
+                    <p:column headerText="Email" style="text-align: center"
+                              filterBy="#{_admin.email}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{_admin.email}" />
+                    </p:column>
+
+                    <p:column style="text-align: center;width: 56px" >
+                        <p:commandButton title="Details" icon="ui-icon-person" onclick="alert('User details')">
+                            <f:ajax />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="text-align: center;width: 56px">
+                        <p:commandButton icon="ui-icon-trash" title="Delete" action="#{admin.deleteUserQuestion(_admin)}">
+                            <f:ajax />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
+            <h:form id="u_form">
+                <p:dataTable id="users"
+                             widgetVar="usersTable"
+                             var="_auser"
+                             value="#{admin.users}"
+                             rowKey="#{_auser.id}"
+                             filteredValue="#{admin.filteredUsers}"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="1,5,10,15"
+                             paginatorPosition="bottom"
+                             emptyMessage="There are no users in the system.">
+                    <f:facet name="header">
+                        <h4>Application users</h4>
+                    </f:facet>
+
+                    <p:column headerText="Name"
+                              style="text-align: center"
+                              filterBy="#{_auser.name}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{_auser.name}" />
+                    </p:column>
+                    <p:column headerText="Email" style="text-align: center"
+                              filterBy="#{_auser.email}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{_auser.email}" />
+                    </p:column>
+
+                    <p:column style="text-align: center;width: 56px" >
+                        <p:commandButton title="Details" icon="ui-icon-person" onclick="alert('User details')">
+                            <f:ajax />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column style="text-align: center;width: 56px">
+                        <p:commandButton icon="ui-icon-trash" title="Delete" action="#{admin.deleteUserQuestion(_auser)}">
+                            <f:ajax />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+
+    <!--MODALS-->
+    <div class="modal fade" id="confirmation_dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+                        <h4 class="modal-title">Delete user</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <h:form id='confirmation_dialog_user_name'>
+                                <h:outputText value="Do you really want to delete #{admin.userToDelete.name} from the system? This action cannot be undone." />
                             </h:form>
-
                         </div>
-                        <div class="modal-footer">
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                    <h:form>
-                                        <h:panelGrid columns="2" cellpadding="10">
-                                            <p:commandButton value="Administrator" type="button" action='#{admin.acceptRegistrationAsAdmin()}'>
-                                                <f:ajax />
-                                            </p:commandButton>
-                                            <p:commandButton value="Application user" type="button" action='#{admin.acceptRegistrationAsUser()}'>
-                                                <f:ajax />
-                                            </p:commandButton>
-                                        </h:panelGrid>
-                                        </h:form>
-                                </div>
-                                <div class="col-xs-3 col-sm-3 col-md-6 col-lg-3">
-                                    <h:panelGrid columns="1" cellpadding="5">
-                                        <p:commandButton value="Cancel" type="button" onclick="$('#accept_dialog').modal('hide')" />
-                                    </h:panelGrid>
-                                </div>
-                            </div>
-
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
 
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                            <div class="pull-right">
+                                <h:form class="form-horizontal">
+                                    <p:commandButton value="Yes" type="button" action="#{admin.deleteUser()}">
+                                            <f:ajax />
+                                        </p:commandButton>
+                                        <span style="width:150px;" />
+                                        <p:commandButton value="No" type="button" onclick="$('#confirmation_dialog').modal('hide')" />
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="accept_dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+                        <h4 class="modal-title">Accept registration</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <h:form id='accept_dialog_user_name'>
+                                <h:outputText value="Please select the role of #{admin.userToAdd.name}." />
+                            </h:form>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <h:form>
+                                <p:commandButton value="Administrator" type="button" action='#{admin.acceptRegistrationAsAdmin()}'>
+                                    <f:ajax />
+                                </p:commandButton>
+                                <span style="width:150px;" />
+                                <p:commandButton value="Application user" type="button" action='#{admin.acceptRegistrationAsUser()}'>
+                                    <f:ajax />
+                                </p:commandButton>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                            <div class="pull-right">
+                                <p:commandButton value="Cancel" type="button" onclick="$('#accept_dialog').modal('hide')" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </ui:composition>

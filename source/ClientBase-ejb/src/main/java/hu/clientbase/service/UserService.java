@@ -14,35 +14,35 @@ import javax.inject.Inject;
 
 @Stateless
 public class UserService implements Serializable {
-
+    
     @Inject
     private EntityFacade entityFacade;
-
+    
     @Inject
     private UserFacade userFacade;
 
-    public UserService() {
-    }
-
-    public void create(BasicUserDTO user) {
-        User tempUser = new User(user);
-        tempUser.setActive(false);
-        PendingRegistration p = new PendingRegistration(tempUser);
-        entityFacade.create(tempUser);
+    public void create(BasicUserDTO dto) {
+        User u = new User(dto);
+        u.setActive(false);
+        PendingRegistration p = new PendingRegistration(u);
+        entityFacade.create(u);
         entityFacade.create(p);
     }
     
-    public void deletePendingRegistration(BasicUserDTO user)
-    {
-        User u = entityFacade.find(User.class, user.getId());
+    public void delete(BasicUserDTO dto) {
+        User u = entityFacade.find(User.class, dto.getId());
+        entityFacade.delete(u);
+    }
+    
+    public void deletePendingRegistration(BasicUserDTO dto) {
+        User u = entityFacade.find(User.class, dto.getId());
         PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
         entityFacade.delete(p);
         entityFacade.delete(u);
     }
     
-    public void AcceptPendingRegistration(BasicUserDTO user, String role)
-    {
-        User u = entityFacade.find(User.class, user.getId());
+    public void acceptPendingRegistration(BasicUserDTO dto, String role) {
+        User u = entityFacade.find(User.class, dto.getId());
         PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
         entityFacade.delete(p);
         
@@ -52,20 +52,53 @@ public class UserService implements Serializable {
         
         entityFacade.update(u);
     }
-
+    
+    public List<BasicUserDTO> getAdministratorsExceptOne(String email) {
+        
+        List<User> users = userFacade.getUsers();
+        
+        List<BasicUserDTO> ret = new LinkedList<>();
+        
+        for (User u : users) {
+            for (Role r : u.getRoles()) {
+                if (r.getName().toLowerCase().equals("admin") && !u.getEmail().equals(email)) {
+                    ret.add(new BasicUserDTO(u));
+                    break;
+                }
+            }
+        }
+        
+        return ret;
+    }
+    
+    public List<BasicUserDTO> getUsers() {
+        List<User> users = userFacade.getUsers();
+        
+        List<BasicUserDTO> ret = new LinkedList<>();
+        
+        for (User u : users) {
+            for (Role r : u.getRoles()) {
+                if (r.getName().toLowerCase().equals("user")) {
+                    ret.add(new BasicUserDTO(u));
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+    
     public boolean isEmailExist(String email) {
         return entityFacade.findAll(User.class).stream().anyMatch((user) -> (user.getEmail().equals(email)));
     }
-
+    
     public List<BasicUserDTO> getPendingRegistrations() {
         List<PendingRegistration> pendingRegistrations = userFacade.getPendingRegistrations();
-
-        List<BasicUserDTO> userDTOs = new LinkedList<>();
-
-        pendingRegistrations.stream().forEach(p -> userDTOs.add(new BasicUserDTO(p.getUser())));
-
-        return userDTOs;
+        
+        List<BasicUserDTO> ret = new LinkedList<>();
+        
+        pendingRegistrations.stream().forEach(p -> ret.add(new BasicUserDTO(p.getUser())));
+        
+        return ret;
     }
     
-
 }

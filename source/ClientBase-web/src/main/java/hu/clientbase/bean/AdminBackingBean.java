@@ -5,6 +5,7 @@ import hu.clientbase.service.UserService;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,25 +20,39 @@ public class AdminBackingBean implements Serializable {
 
     private List<BasicUserDTO> pendingRegistrations;
 
+    private List<BasicUserDTO> administrators;
+    private List<BasicUserDTO> filteredAdministrators;
+
+    private List<BasicUserDTO> users;
+    private List<BasicUserDTO> filteredUsers;
+
     private BasicUserDTO userToAdd;
+    private BasicUserDTO userToDelete;
 
     @PostConstruct
     private void init() {
+        updateView();
+    }
+
+    private void updateView() {
+        FacesContext context = FacesContext.getCurrentInstance();
         pendingRegistrations = userService.getPendingRegistrations();
+        administrators = userService.getAdministratorsExceptOne(context.getExternalContext().getRemoteUser());
+        users = userService.getUsers();
     }
 
-    public List<BasicUserDTO> getPendingRegistrations() {
-        return pendingRegistrations;
-    }
-
-    public void setPendingRegistrations(List<BasicUserDTO> pendingRegistrations) {
-        this.pendingRegistrations = pendingRegistrations;
+    private void acceptRegistration(String role) {
+        userService.acceptPendingRegistration(userToAdd, role);
+        pendingRegistrations = userService.getPendingRegistrations();
+        updateView();
+        Ajax.update("p_form:pending_regs","a_form:administrators","u_form:users");
+        Ajax.oncomplete("$('#accept_dialog').modal('hide')");
     }
 
     public void rejectRegistration(BasicUserDTO dto) {
         userService.deletePendingRegistration(dto);
-        pendingRegistrations = userService.getPendingRegistrations();
-        Ajax.update("users_form:pending_regs");
+        updateView();
+        Ajax.update("p_form:pending_regs");
     }
 
     public void acceptRegistrationQuestion(BasicUserDTO dto) {
@@ -46,36 +61,60 @@ public class AdminBackingBean implements Serializable {
         Ajax.oncomplete("$('#accept_dialog').modal('show')");
     }
 
+    public void deleteUserQuestion(BasicUserDTO dto) {
+        userToDelete = dto;
+        Ajax.update("confirmation_dialog_user_name");
+        Ajax.oncomplete("$('#confirmation_dialog').modal('show')");
+    }
+
     public void acceptRegistrationAsAdmin() {
         acceptRegistration("ADMIN");
-
     }
 
     public void acceptRegistrationAsUser() {
         acceptRegistration("USER");
     }
 
-    private void acceptRegistration(String role) {
-        userService.AcceptPendingRegistration(userToAdd, role);
-        pendingRegistrations = userService.getPendingRegistrations();
-        Ajax.update("users_form:pending_regs");
-        Ajax.oncomplete("$('#accept_dialog').modal('hide')");
+    public void deleteUser() {
+        userService.delete(userToDelete);
+        updateView();
+        Ajax.update("a_form:administrators","u_form:users");
+        Ajax.oncomplete("$('#confirmation_dialog').modal('hide')");
     }
 
-    public UserService getUserService() {
-        return userService;
+    public List<BasicUserDTO> getPendingRegistrations() {
+        return pendingRegistrations;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public List<BasicUserDTO> getAdministrators() {
+        return administrators;
+    }
+
+    public List<BasicUserDTO> getFilteredAdministrators() {
+        return filteredAdministrators;
+    }
+
+    public List<BasicUserDTO> getUsers() {
+        return users;
+    }
+
+    public List<BasicUserDTO> getFilteredUsers() {
+        return filteredUsers;
     }
 
     public BasicUserDTO getUserToAdd() {
         return userToAdd;
     }
 
-    public void setUserToAdd(BasicUserDTO userToAdd) {
-        this.userToAdd = userToAdd;
+    public BasicUserDTO getUserToDelete() {
+        return userToDelete;
     }
 
+    public void setFilteredAdministrators(List<BasicUserDTO> filteredAdministrators) {
+        this.filteredAdministrators = filteredAdministrators;
+    }
+
+    public void setFilteredUsers(List<BasicUserDTO> filteredUsers) {
+        this.filteredUsers = filteredUsers;
+    }
 }

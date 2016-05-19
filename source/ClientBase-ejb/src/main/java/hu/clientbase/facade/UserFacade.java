@@ -25,7 +25,10 @@ public class UserFacade {
     }
 
     public Role getRoleByName(String name) {
-        return em.createQuery("Select r FROM Role r WHERE r.name like :name", Role.class).setParameter("name", name).getSingleResult();
+        return em.createQuery("Select r FROM Role r WHERE r.name like :name", Role.class).setParameter("name", name).getResultList().get(0);
     }
 
+    public List<User> getUsers() {
+        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+    }
 }
