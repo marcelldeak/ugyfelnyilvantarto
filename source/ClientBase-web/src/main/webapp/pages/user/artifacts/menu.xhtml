@@ -1,38 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-    <ui:composition>
-        <h:form id="menu_list">
-            <ul class="nav">
-                <li id="nav_home" class="#{navigation.getMenuClass('artifacts/home')}">
-                    <h:commandLink value="Home" action="#{navigation.setPage('artifacts/home')}">
-                        <f:ajax />
-                    </h:commandLink>
-                </li>
-                <li id="nav_projects" class="#{navigation.getMenuClass('artifacts/projects')}">
-                    <h:commandLink value="Projects" action="#{navigation.setPage('artifacts/projects')}">
-                        <f:ajax />
-                    </h:commandLink>
-                </li>
-                <li id="nav_events" class="#{navigation.getMenuClass('artifacts/events')}">
-                    <h:commandLink value="Events" action="#{navigation.setPage('artifacts/events')}">
-                        <f:ajax />
-                    </h:commandLink>
-                </li>    
-                <li id="nav_notes" class="#{navigation.getMenuClass('artifacts/notes')}">
-                    <h:commandLink value="Notes" action="#{navigation.setPage('artifacts/notes')}">
-                        <f:ajax />
-                    </h:commandLink>
-                </li> 
-                <li id="nav_customers" class="#{navigation.getMenuClass('artifacts/customers')}">
-                    <h:commandLink value="Customers" action="#{navigation.setPage('artifacts/customers')}">
-                        <f:ajax />
-                    </h:commandLink>
-                </li> 
-            </ul> 
-        </h:form>
-    </ui:composition>
-</html>
+<?xml version='1.0' encoding='UTF-8' ?>    
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="menu_list">
+        <ul class="nav">
+            <li id="nav_home" class="#{navigation.getMenuClass('dashboard')}">
+                <a href="#{request.contextPath}/pages/user/dashboard.xhtml">Home</a>
+            </li>
+            <li id="nav_projects" class="#{navigation.getMenuClass('projects')}">
+                <a href="#{request.contextPath}/pages/user/projects.xhtml">Projects</a>
+            </li>
+            <li id="nav_events" class="#{navigation.getMenuClass('events')}">
+                <a href="#{request.contextPath}/pages/user/events.xhtml">Events</a>
+            </li>    
+            <li id="nav_notes" class="#{navigation.getMenuClass('notes')}">
+                <a href="#{request.contextPath}/pages/user/notes.xhtml">Notes</a>
+            </li> 
+            <li id="nav_customers" class="#{navigation.getMenuClass('customers')}">
+                <a href="#{request.contextPath}/pages/user/customers.xhtml">Customers</a>
+            </li> 
+        </ul> 
+    </h:form>
+</ui:composition>
