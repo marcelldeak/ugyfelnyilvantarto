@@ -25,16 +25,9 @@
             </ui:define>
 
             <ui:define name="profile">
-                <div class="box">
-                    <div class="content-wrap">
-                        <div class="row">
-                            <img class="media-object" alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:96px;"/>
-                        </div>
-                        <div class="row">
-                            <a href="" class="user-name">#{request.remoteUser}</a>
-                        </div>
-                    </div>
-                </div>
+                <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:table-cell;"/>
+
+                <a href="" class="user-name">#{request.remoteUser}</a>
             </ui:define>
 
             <ui:define name="menu">
