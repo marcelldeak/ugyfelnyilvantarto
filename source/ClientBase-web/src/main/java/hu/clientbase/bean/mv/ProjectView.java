@@ -15,11 +15,13 @@ import org.primefaces.event.SelectEvent;
 
 @Named("projectView")
 @ViewScoped
-public class ProjectView  implements Serializable {
+public class ProjectView implements Serializable {
 
     private BasicProjectDTO selectedProject;
 
     private List<BasicProjectDTO> projects;
+
+    private List<BasicProjectDTO> filteredProjects;
 
     @Inject
     private ProjectModel model;
@@ -27,6 +29,14 @@ public class ProjectView  implements Serializable {
     @PostConstruct
     private void init() {
         projects = model.getAllProjects();
+    }
+
+    public List<BasicProjectDTO> getFilteredProjects() {
+        return filteredProjects;
+    }
+
+    public void setFilteredProjects(List<BasicProjectDTO> filteredProjects) {
+        this.filteredProjects = filteredProjects;
     }
 
     public BasicProjectDTO getSelectedProject() {
@@ -44,10 +54,10 @@ public class ProjectView  implements Serializable {
     public void setProjects(List<BasicProjectDTO> projects) {
         this.projects = projects;
     }
-    
-      public void onRowSelect(SelectEvent event) {
+
+    public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Note Selected", ((Project) event.getObject()).getId().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-      
+
 }
