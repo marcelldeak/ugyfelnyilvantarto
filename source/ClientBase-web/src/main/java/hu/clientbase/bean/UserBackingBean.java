@@ -6,120 +6,79 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.omnifaces.util.Ajax;
 
 @Named("user")
 @ViewScoped
 public class UserBackingBean implements Serializable {
-
+    
     @Inject
     private UserService userManager;
-
-    @NotNull
+    
     private String email;
-    @NotNull
-    @Size(min = 6, message = "Your password has to be at least 6 caracters long")
     private String password;
-    @NotNull
-    @Size(min = 2, message = "Your first name has to be at least 2 caracters long")
     private String firstName;
-    @NotNull
-    @Size(min = 2, message = "Your last name has to be at least 2 caracters long")
     private String lastName;
-
-    @NotNull
     private String confirmPassword;
-
+    
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }
-
+    
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
     public String getLastName() {
         return lastName;
     }
-
+    
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    
     public String getConfirmPassword() {
         return confirmPassword;
     }
-
+    
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
-    public UserBackingBean() {
-    }
-
-    public void badPasswordError() {
-        FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Passwords", "Passwords don't match"));
-    }
-
-    public void notUniqueEmailError() {
-        FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
-    }
-
-    public boolean checkIfEmailExists() {
-        return userManager.isEmailExist(email);
-    }
-
-    public void validateEmail(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (checkIfEmailExists()) {
-            throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "wrong Email address", "Email address already in use"));
+    
+    public void checkIfEmailExists() {
+        if (userManager.isEmailExist(email)) {
+            Ajax.oncomplete("ex_email_fail()", "continue_validation()");
+        } else {
+            Ajax.oncomplete("continue_validation()");
         }
     }
-
     
     public void register() throws NoSuchAlgorithmException {
-        BasicUserDTO user = new BasicUserDTO();
-        if (!password.equals(confirmPassword) && (userManager.isEmailExist(getEmail()))) { // check if passwords dont match and the email address is already in use ( both ) 
-            badPasswordError();
-            notUniqueEmailError();
-        } else if (!password.equals(confirmPassword)) {  // check if password are matching 
-            badPasswordError();
-        } else if (checkIfEmailExists()) { // check if email is exists in the db
-            notUniqueEmailError();
-        } else {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] digest = md.digest(password.getBytes());
-            String b64String = Base64.getEncoder().encodeToString(digest);
-            user.setPassword(b64String);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            userManager.create(user);
-            FacesContext.getCurrentInstance().addMessage("gms", new FacesMessage(FacesMessage.SEVERITY_WARN, "Account created.", "A system administrator will verify your registration."));
-            
-        }
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] digest = md.digest(password.getBytes());
+        String b64String = Base64.getEncoder().encodeToString(digest);
+        BasicUserDTO user = new BasicUserDTO(email, b64String, lastName, firstName);
+        userManager.create(user);
+        Ajax.oncomplete("reg_success()");
+        
     }
 }

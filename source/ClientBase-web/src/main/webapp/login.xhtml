@@ -15,6 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/jquery.growl.css" />
         <title>ClientBase - Login</title>
     </h:head>
 
@@ -66,64 +67,76 @@
                                             <div class="modal-body">
                                                 <h:form id="registerForm" role="form" class="form-horizontal">
                                                     
+                                                    
                                                     <div class="form-group row" >
                                                         <label class="control-label col-sm-4" for="firstName">First name:</label>
                                                         <div class="col-sm-8">
-                                                            <p:inputText id="firstName" value="#{user.firstName}"  size="40" label="firstName" placeholder="Enter your first name ( min. 2 caracters )"
-                                                                         required="true" requiredMessage="Please enter your first name" />
+                                                            <p:inputText id="firstName"
+                                                                         value="#{user.firstName}"
+                                                                         size="40"
+                                                                         label="firstName"
+                                                                         placeholder="Enter your first name ( min. 2 caracters )" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row" >
                                                         <label class="control-label col-sm-4" for="lastName">Last name:</label>
                                                         <div class="col-sm-8">
-                                                            <p:inputText id="lastName" value="#{user.lastName}"  size="40" label="lastName" placeholder="Enter your last name ( min. 2 caracters )"
-                                                                         required="true" requiredMessage="Please enter your last name" />
+                                                            <p:inputText id="lastName"
+                                                                         value="#{user.lastName}"
+                                                                         size="40"
+                                                                         label="lastName"
+                                                                         placeholder="Enter your last name ( min. 2 caracters )" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row" >
-                                                        <label class="control-label col-sm-4" for="firstName">Email address:</label>
+                                                        <label class="control-label col-sm-4" for="email">Email address:</label>
                                                         <div class="col-sm-8">
-                                                            <p:inputText id="email" required="true" label="email"  size="40" placeholder="Enter your email address"
-                                                                         requiredMessage="Please enter your email address."
-                                                                         validatorMessage="Invalid email format"                             
-                                                                         value="#{user.email}">
-                                                                <f:validateRegex
-                                                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                                            </p:inputText>  
+                                                            <p:inputText id="email"
+                                                                         required="true"
+                                                                         label="email"
+                                                                         size="40"
+                                                                         placeholder="Enter your email address"
+                                                                         value="#{user.email}" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row" >
                                                         <label class="control-label col-sm-4" for="password">Password:</label>
                                                         <div class="col-sm-8">
-                                                            <p:password id="password" value="#{user.password}"   size="40" label="password" placeholder="Enter your password ( min. 6 caracters)"
-                                                                        required="true" requiredMessage="Please enter your password" /> 
+                                                            <p:password id="password"
+                                                                        value="#{user.password}"
+                                                                        size="40" label="password"
+                                                                        placeholder="Enter your password ( min. 6 caracters)" /> 
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row" >
                                                         <label class="control-label col-sm-4" for="confirmPassword">Password again:</label>
                                                         <div class="col-sm-8">
-                                                            <p:password id="confirmPassword" value="#{user.confirmPassword}"  size="40" placeholder="Enter your password again ( min. 6 caracters)" />        
+                                                            <p:password id="confirmPassword"
+                                                                        value="#{user.confirmPassword}"
+                                                                        size="40"
+                                                                        placeholder="Enter your password again ( min. 6 caracters)" />        
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row" >
-                                                        <p:commandButton update="reg" type="button" onclick="rc()" validateClient="true" value="Create account" class="btn btn-info btn-default"  />
+                                                        <p:commandButton 
+                                                                         type="button"
+                                                                         onclick="start_validation()"
+                                                                         value="Create account"
+                                                                         class="btn btn-info btn-default" />
                                                     </div>
-
-                                                    <p:remoteCommand name="rc" update="msgs" actionListener="#{user.register}"  />
-                                                    <p:growl id="msgs" showDetail="true" class="z"/>
-
+                                                    <p:remoteCommand name="reg" actionListener="#{user.register()}" />
+                                                    <p:remoteCommand name="check_mail" action="#{user.checkIfEmailExists()}" />
                                                 </h:form> 
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>    
@@ -134,5 +147,7 @@
         </div>
         <script src="#{request.contextPath}/resources/js/jquery.min.js"></script>
         <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
+        <script src="#{request.contextPath}/resources/js/jquery.growl.js"></script>
+        <script src="#{request.contextPath}/resources/js/regvalidation.jq.js"></script>
     </h:body>
 </html>
