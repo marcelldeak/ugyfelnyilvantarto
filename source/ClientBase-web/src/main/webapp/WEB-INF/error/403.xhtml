@@ -5,17 +5,15 @@
       xmlns:p="http://primefaces.org/ui" 
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <f:metadata>
-        <f:event type="preRenderView" listener="#{redirection.redirectUserIfLoggedIn()}"/>
-    </f:metadata>
-
     <h:head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
-        <meta http-equiv="refresh" content="5;url=login.xhtml" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+        <meta http-equiv="refresh" content="5;url=#{request.contextPath}" />
         <title>ClientBase - Not found</title>
     </h:head>
 
@@ -39,7 +37,6 @@
                 </div>
             </div>
         </div>
-        <script src="#{request.contextPath}/resources/js/jquery.min.js"></script>
         <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
     </h:body>
 </html>

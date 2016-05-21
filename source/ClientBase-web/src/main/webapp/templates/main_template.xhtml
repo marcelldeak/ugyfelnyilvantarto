@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
         <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
         <title>Client Base - <ui:insert name="page_title">Page Title</ui:insert></title>
     </h:head>
 
@@ -49,7 +51,6 @@
                 </div>
             </div>
         </div>
-        <script src="#{request.contextPath}/resources/js/jquery.min.js"></script>
         <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
     </h:body>
 </html>
