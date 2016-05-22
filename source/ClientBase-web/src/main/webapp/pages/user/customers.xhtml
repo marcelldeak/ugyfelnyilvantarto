@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition template="../../templates/main_template.xhtml">
 
             <ui:define name="page_title">
-                #{request.remoteUser} - Customers
+                #{request.remoteUser}
             </ui:define>
 
             <ui:define name="buttons">
@@ -15,9 +16,9 @@
             </ui:define>
 
             <ui:define name="profile">
-                            <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:table-cell;"/>
+                <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:table-cell;"/>
 
-                            <a href="" class="user-name">#{request.remoteUser}</a>
+                <a href="" class="user-name">#{request.remoteUser}</a>
             </ui:define>
 
             <ui:define name="menu">
@@ -25,10 +26,402 @@
             </ui:define>
 
             <ui:define name="page_content">
-                <!--Ide jön az oldal tartalma -->
-            </ui:define>
+                <div class="row"
+                     style="padding-top: 15px;
+                     padding-bottom: 15px;">
 
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
+
+                        <h:form id="c_list_form">
+
+                            <p:dataTable id="c_list_table"
+                                         var="_customer"
+                                         value="#{customers.customers}"
+                                         rowKey="#{_customer.id}"
+                                         filteredValue="#{customers.filteredCustomers}"
+                                         paginator="true"
+                                         rows="10"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="1,5,10,15"
+                                         paginatorPosition="bottom"
+                                         emptyMessage="There are no customers in the system.">
+
+                                <f:facet name="header">
+                                    <div class="row">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
+                                            <h4>Customers</h4>
+                                        </div>
+                                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+                                            <p:commandButton title="New customer"
+                                                             icon="ui-icon-plus"
+                                                             action="#{customerCU.openAddDialog()}"
+                                                             style="margin-top: 7px;">
+                                                <f:ajax />
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </f:facet>
+
+                                <p:column headerText="Name"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.name}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.name}" />
+                                </p:column>
+                                
+                                <p:column headerText="VAT-number"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.vatNumber}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.vatNumber}" />
+                                </p:column>
+                                
+                                <p:column headerText="Address"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.address.addressHR}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.address.addressHR}" />
+                                </p:column>
+
+                                <p:column style="text-align: center;
+                                          width: 56px">
+                                    <p:commandButton title="Details"
+                                                     icon="ui-icon-search"
+                                                     action="#{customers.selectedCustomerDetails(_customer)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                    
+                                </p:column>
+                                
+                                <p:column style="text-align: center;width: 56px">
+                                    <p:commandButton title="Edit"
+                                                     icon="ui-icon-pencil"
+                                                     action="#{customerCU.openEditDialog(_customer)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column style="text-align: center;width: 56px">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     title="Delete"
+                                                     onclick="alert('Customer delete')">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- ADD CUSTOMER -->
+
+                <div class="modal fade"
+                     id="customer_add_modal"
+                     tabindex="-1"
+                     data-keyboard="false"
+                     data-backdrop="static"
+                     role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row"
+                                     style="text-align: center;">
+                                    <h4 class="modal-title">Add customer</h4>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+
+                                        <h:form role="form"
+                                                class="form-horizontal"
+                                                id="c_add_form">
+
+                                            <p:panel id="c_data" header="Details">
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_name">Name:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_name"
+                                                                     value="#{customerCU.name}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Name"
+                                                                     placeholder="Name of the customer">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_vatn">VAT-Number:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_vatn"
+                                                                     value="#{customerCU.vatNumber}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="VAT-number"
+                                                                     placeholder="VAT-number">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <div class="form-group row row-centered">
+                                                    <p style="font-weight: 600">Address</p>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_country">Country:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_country"
+                                                                     value="#{customerCU.country}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Country"
+                                                                     placeholder="Country">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_city">City:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_city"
+                                                                     value="#{customerCU.city}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="City"
+                                                                     placeholder="City">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_street">Street and number:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_street"
+                                                                     value="#{customerCU.street}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Street and number"
+                                                                     placeholder="Street and number">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_zip">ZIP-code:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_zip"
+                                                                     value="#{customerCU.zipCode}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="ZIP-code"
+                                                                     placeholder="ZIP-code">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>    
+
+                                                <hr />
+
+                                                <p:messages autoUpdate="true"/>
+
+                                            </p:panel>
+                                            <div class="form-group row row-centered"
+                                                 style="padding-top: 10px;">
+                                                <p:commandButton value="Add customer"
+                                                                 update="c_data"
+                                                                 validateClient="true"
+                                                                 style="margin-right:10px"
+                                                                 action="#{customerCU.add()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <p:commandButton value="Cancel"
+                                                                 validateClient="false"
+                                                                 onclick="clearAndCloseAddCustomerDialog(false); return false;"
+                                                                 style="margin-right:10px"/>
+                                            </div>
+
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EDIT CUSTOMER -->
+
+                <div class="modal fade"
+                     id="customer_edit_modal"
+                     tabindex="-1"
+                     data-keyboard="false"
+                     data-backdrop="static"
+                     role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row"
+                                     style="text-align: center;">
+                                    <h4 class="modal-title">Edit customer</h4>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+
+                                        <h:form role="form"
+                                                class="form-horizontal"
+                                                id="c_edit_form">
+
+                                            <p:panel id="c_data" header="Details">
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_name">Name:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_name"
+                                                                     value="#{customerCU.name}"
+                                                                     
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Name"
+                                                                     placeholder="Name of the customer">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_vatn">VAT-Number:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_vatn"
+                                                                     value="#{customerCU.vatNumber}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="VAT-number"
+                                                                     placeholder="VAT-number">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <div class="form-group row row-centered">
+                                                    <p style="font-weight: 600">Address</p>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_country">Country:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_country"
+                                                                     value="#{customerCU.country}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Country"
+                                                                     placeholder="Country">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_city">City:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_city"
+                                                                     value="#{customerCU.city}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="City"
+                                                                     placeholder="City">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_street">Street and number:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_street"
+                                                                     value="#{customerCU.street}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Street and number"
+                                                                     placeholder="Street and number">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="c_zip">ZIP-code:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="c_zip"
+                                                                     value="#{customerCU.zipCode}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="ZIP-code"
+                                                                     placeholder="ZIP-code">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>    
+
+                                                <hr />
+
+                                                <p:messages autoUpdate="true"/>
+
+                                            </p:panel>
+                                            <div class="form-group row row-centered"
+                                                 style="padding-top: 10px;">
+                                                <p:commandButton value="Save changes"
+                                                                 update="c_data"
+                                                                 validateClient="true"
+                                                                 style="margin-right:10px"
+                                                                 action="#{customerCU.edit()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <p:commandButton value="Cancel"
+                                                                 validateClient="false"
+                                                                 onclick="clearAndCloseEditCustomerDialog(false); return false;"
+                                                                 style="margin-right:10px"/>
+                                            </div>
+
+                                        </h:form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <script src="#{request.contextPath}/resources/js/customer.js"></script>
+            </ui:define>
         </ui:composition>
     </h:body>
-
 </html>

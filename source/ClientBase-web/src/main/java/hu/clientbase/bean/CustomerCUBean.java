@@ -1,0 +1,130 @@
+package hu.clientbase.bean;
+
+import hu.clientbase.bean.mv.CustomerBean;
+import hu.clientbase.dto.AddressDTO;
+import hu.clientbase.dto.CustomerDTO;
+import hu.clientbase.service.CustomerService;
+import java.io.Serializable;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.omnifaces.util.Ajax;
+
+@Named("customerCU")
+@ViewScoped
+public class CustomerCUBean implements Serializable {
+
+    private static final long serialVersionUID = 258979332215257295L;
+    
+    @Inject
+    private CustomerService customerService;
+    
+    @Inject
+    private CustomerBean customerBean;
+    
+    private Long id;
+    
+    private String name;
+    
+    private String vatNumber;
+
+    private String city;
+
+    private String zipCode;
+
+    private String street;
+    
+    private String country;
+    
+    public void openAddDialog()
+    {
+        Ajax.oncomplete("$('#customer_add_modal').modal('show')");
+    }
+    
+    public void add() {
+        
+        CustomerDTO dto = new CustomerDTO(name, vatNumber, new AddressDTO(city, zipCode, street, country));
+        
+        customerService.create(dto);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer added succesfully."));
+        customerBean.updateModel();
+        Ajax.update("c_list_form:c_list_table");
+        Ajax.oncomplete("clearAndCloseAddCustomerDialog(true)");
+    }
+    
+    public void openEditDialog(CustomerDTO dto)
+    {
+        id = dto.getId();
+        name = dto.getName();
+        vatNumber = dto.getVatNumber();
+        city = dto.getAddress().getCity();
+        zipCode = dto.getAddress().getZipCode();
+        street = dto.getAddress().getStreet();
+        country = dto.getAddress().getCountry();
+        Ajax.update("c_edit_form");
+        Ajax.oncomplete("$('#customer_edit_modal').modal('show')");
+    }
+    
+    public void edit()
+    {
+        CustomerDTO dto = new CustomerDTO(name, vatNumber, new AddressDTO(city, zipCode, street, country));
+        dto.setId(id);
+        customerService.update(dto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer edited succesfully."));
+        customerBean.updateModel();
+        Ajax.update("c_list_form:c_list_table");
+        Ajax.oncomplete("clearAndCloseEditCustomerDialog(true)");
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getVatNumber() {
+        return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+}

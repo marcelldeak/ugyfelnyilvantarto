@@ -3,6 +3,7 @@ package hu.clientbase.service.mdel;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
 import hu.clientbase.facade.EventFacade;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -23,5 +24,13 @@ public class EventModel {
         events.stream().forEach(p -> ret.add(new BasicEventDTO(p)));
 
         return ret;
+    }
+    
+    public List<String> nameOfEvents() {
+        List<String> names = new ArrayList<>();
+        for (Event event : ef.getAllEvents()) {
+            names.add(event.getName());
+        }
+        return names;
     }
 }

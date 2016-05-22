@@ -6,14 +6,13 @@ import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.UserFacade;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 @Stateless
-public class UserService implements Serializable {
+public class UserService {
     
     @Inject
     private EntityFacade entityFacade;

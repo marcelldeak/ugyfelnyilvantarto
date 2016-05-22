@@ -1,6 +1,6 @@
 package hu.clientbase.service.mdel;
 
-import hu.clientbase.dto.BasicCustomerDTO;
+import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
 import java.util.LinkedList;
@@ -16,11 +16,11 @@ public class CustomerModel {
     @Inject
     private CustomerFacade cf;
 
-    public List<BasicCustomerDTO> getAllCustomers() {
+    public List<CustomerDTO> getAllCustomers() {
         List<Customer> customers = cf.getAllCustomers();
-        List<BasicCustomerDTO> ret = new LinkedList<>();
+        List<CustomerDTO> ret = new LinkedList<>();
 
-        customers.stream().forEach(c -> ret.add(new BasicCustomerDTO(c)));
+        customers.stream().forEach(c -> ret.add(new CustomerDTO(c)));
 
         return ret;
     }
