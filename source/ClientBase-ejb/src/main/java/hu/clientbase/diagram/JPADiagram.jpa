@@ -204,7 +204,7 @@
                 <Bounds x="604.0" y="643.0" width="135.0" height="178.0"/>
             </shape>
             <shape elementRef="_146402654596622">
-                <Bounds x="320.0" y="282.0" width="163.0" height="138.0"/>
+                <Bounds x="338.0" y="299.0" width="163.0" height="138.0"/>
             </shape>
         </plane>
     </jpa:diagram>

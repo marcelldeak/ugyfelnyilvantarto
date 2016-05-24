@@ -2,12 +2,16 @@ package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.dto.ContactChannelDTO;
+import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.entity.ContactChannelType;
 import hu.clientbase.service.CustomerService;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.omnifaces.util.Ajax;
 
 @Named("contactChannelCUD")
 @ViewScoped
@@ -29,12 +33,21 @@ public class ContactChannelCUDBean implements Serializable {
     
     private ContactChannelDTO contactChannelToDelete;
     
-    public void openAddDialog() {
-        
+    private ContactDTO selectedContact;
+    
+    public void openAddDialog(ContactDTO dto) {
+        selectedContact = dto;
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_channel_add_dialog').modal('show');");
     }
 
     public void add() {
-        
+        customerService.addContactChannel(selectedContact, new ContactChannelDTO(channelType, channelValue));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contact channel added succesfully."));
+        channelType = ContactChannelType.EMAIL;
+        channelValue = null;
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("clearAndCloseAddContactChannelDialog(true);");
     }
 
     public void openEditDialog(ContactChannelDTO dto) {
@@ -67,5 +80,10 @@ public class ContactChannelCUDBean implements Serializable {
 
     public void setChannelValue(String channelValue) {
         this.channelValue = channelValue;
+    }
+    
+    public ContactChannelType[] getChannelTypes()
+    {
+        return ContactChannelType.values();
     }
 }

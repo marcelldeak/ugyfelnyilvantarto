@@ -5,6 +5,7 @@ import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.entity.Address;
 import hu.clientbase.entity.Contact;
+import hu.clientbase.entity.ContactChannel;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.facade.EntityFacade;
@@ -86,8 +87,12 @@ public class CustomerService {
         entityFacade.delete(contact);
     }
 
-    public void addContactChannel() {
-
+    public void addContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
+        Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
+        
+        contact.getContactChannels().add(new ContactChannel(contactChannelDTO));
+        
+        entityFacade.update(contact);
     }
 
     public List<ContactChannelDTO> getContactChannels() {

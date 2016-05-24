@@ -43,6 +43,14 @@ function clearAndCloseEditContactDialog(delayed) {
 
 }
 
+function clearAndCloseAddContactChannelDialog(delayed) {
+    if (!delayed) {
+        clearAddContactChannelModal();
+    } else {
+        setTimeout(clearAddContactChannelModal, 1000);
+    }
+}
+
 function clearAddModal() {
     $('#customer_add_dialog').modal('hide');
     $('#customer_add_form').trigger('reset');
@@ -52,6 +60,12 @@ function clearAddModal() {
 function clearAddContactModal() {
     $('#contact_add_dialog').modal('hide');
     $('#contact_add_form').trigger('reset');
+    $('#customer_details_dialog').modal('show');
+}
+
+function clearAddContactChannelModal() {
+    $('#contact_channel_add_dialog').modal('hide');
+    $('#contact_channel_add_form').trigger('reset');
     $('#customer_details_dialog').modal('show');
 }
 

@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @MappedSuperclass
 public abstract class Person implements Serializable {
@@ -30,6 +32,7 @@ public abstract class Person implements Serializable {
     private String lastName;
 
     @OneToMany(targetEntity = ContactChannel.class)
+    @Cascade(CascadeType.ALL)
     private List<ContactChannel> contactChannels;
 
     public Person() {

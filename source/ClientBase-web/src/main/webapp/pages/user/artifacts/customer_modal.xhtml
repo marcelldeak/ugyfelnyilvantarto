@@ -439,6 +439,20 @@
                                                                 <f:ajax />
                                                             </p:commandButton>
                                                         </div>
+
+                                                        <p:commandButton id="add_contact_button"
+                                                                         title="New contact channel"
+                                                                         icon="ui-icon-plus"
+                                                                         class="pull-right"
+                                                                         action="#{contactChannelCUD.openAddDialog(_contact)}"
+                                                                         style="top: 0px !important;right: -72px !important;">
+                                                            <f:ajax />
+                                                        </p:commandButton>
+                                                        
+                                                        <div class="row">
+                                                            
+                                                        </div>
+
                                                     </p:panel>
                                                 </c:forEach>
                                             </h:form>
@@ -664,6 +678,86 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ADD CONTACT CHANNEL -->
+    
+     <div class="modal fade"
+         id="contact_channel_add_dialog"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <div class="row" style="text-align: center;">
+                        <h4 class="modal-title">Add contact channel</h4>
+                    </div>
+
+                </div>
+
+                <div class="modal-body">
+                    <h:form role="form"
+                            class="form-horizontal"
+                            id="contact_channel_add_form">
+
+                        <p:panel id="contact_channel_data">
+
+                            <div class="form-group row" >
+                                <label class="control-label col-sm-4" for="channel_type">Contact channel type:</label>
+                                <h:selectOneMenu value="#{contactChannelCUD.channelType}"
+                                                 id="channel_type"
+                                                 class="form-control"
+                                                 style="max-width: 280px;
+                                                        position: relative;
+                                                        left: 14px;
+                                                        max-height: 30px;">
+                                    <f:selectItems value="#{contactChannelCUD.channelTypes}" />
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="form-group row" >
+                                <label class="control-label col-sm-4" for="channel_value">Value:</label>
+                                <div class="col-sm-8">
+                                    <p:inputText id="channel_value"
+                                                 value="#{contactChannelCUD.channelValue}"
+                                                 size="40"
+                                                 required="true"
+                                                 label="Contact channel value"
+                                                 placeholder="Contact channel value">
+                                        <f:validateLength minimum="2" />
+                                        <p:clientValidator />
+                                    </p:inputText>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <p:messages autoUpdate="true"/>
+
+                        </p:panel>
+                        <div class="form-group row row-centered"
+                             style="padding-top: 10px;">
+                            <p:commandButton value="Add contact channel"
+                                             update="contact_channel_add_form"
+                                             validateClient="true"
+                                             style="margin-right:10px"
+                                             action="#{contactChannelCUD.add()}">
+                                <f:ajax />
+                            </p:commandButton>
+                            <p:commandButton value="Cancel"
+                                             validateClient="false"
+                                             type="button"
+                                             onclick="clearAndCloseAddContactChannelDialog(false);"
+                                             style="margin-right:10px"/>
+                        </div>
+
+                    </h:form>
                 </div>
             </div>
         </div>
