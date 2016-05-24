@@ -46,7 +46,7 @@ public class CustomersBean implements Serializable {
         selectedCustomer = dto;
         update();
         Ajax.update("customer_details", "customer_details_right_panel:contacts_list");
-        Ajax.oncomplete("$('#details_dialog').modal('show')");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('show')");
     }
 
     public List<CustomerDTO> getFilteredCustomers() {

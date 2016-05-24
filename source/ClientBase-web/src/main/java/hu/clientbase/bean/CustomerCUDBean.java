@@ -42,7 +42,7 @@ public class CustomerCUDBean implements Serializable {
     
     public void openAddDialog()
     {
-        Ajax.oncomplete("$('#customer_add_modal').modal('show')");
+        Ajax.oncomplete("$('#customer_add_dialog').modal('show')");
     }
     
     public void add() {
@@ -66,8 +66,8 @@ public class CustomerCUDBean implements Serializable {
         zipCode = dto.getAddress().getZipCode();
         street = dto.getAddress().getStreet();
         country = dto.getAddress().getCountry();
-        Ajax.update("c_edit_form");
-        Ajax.oncomplete("$('#customer_edit_modal').modal('show')");
+        Ajax.update("customer_edit_form");
+        Ajax.oncomplete("$('#customer_edit_dialog').modal('show')");
     }
     
     public void edit()
@@ -83,8 +83,8 @@ public class CustomerCUDBean implements Serializable {
     
    public void openDeleteDialog(CustomerDTO dto) {
         customerToDelete = dto;
-        Ajax.update("confirmation_customer_name");
-        Ajax.oncomplete("$('#confirmation_dialog').modal('show')");
+        Ajax.update("customer_delete_name");
+        Ajax.oncomplete("$('#customer_delete_dialog').modal('show')");
     }
     
     public void delete()
@@ -92,7 +92,7 @@ public class CustomerCUDBean implements Serializable {
         customerService.delete(customerToDelete);
         customerBean.update();
         Ajax.update("c_list_form:c_list_table");
-        Ajax.oncomplete("$('#confirmation_dialog').modal('hide')");
+        Ajax.oncomplete("$('#customer_delete_dialog').modal('hide')");
         
     }
 

@@ -32,7 +32,7 @@ public class ContactCUDBean implements Serializable {
     private ContactDTO contactToDelete;
 
     public void openAddDialog() {
-        Ajax.oncomplete("$('#details_dialog').modal('hide');$('#add_c_dialog').modal('show');");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_add_dialog').modal('show');");
     }
 
     public void add() {
@@ -49,8 +49,8 @@ public class ContactCUDBean implements Serializable {
         firstName = dto.getFirstName();
         lastName = dto.getLastName();
         id = dto.getId();
-        Ajax.update("c_edit_contact");
-        Ajax.oncomplete("$('#details_dialog').modal('hide');$('#edit_c_dialog').modal('show');");
+        Ajax.update("contact_edit_form");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_edit_dialog').modal('show');");
     }
 
     public void edit() {
@@ -65,15 +65,15 @@ public class ContactCUDBean implements Serializable {
 
     public void openDeleteDialog(ContactDTO dto) {
         contactToDelete = dto;
-        Ajax.update("confirmation_contact_name");
-        Ajax.oncomplete("$('#details_dialog').modal('hide');$('#delete_contact_dialog').modal('show');");
+        Ajax.update("contact_delete_name");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_delete_dialog').modal('show');");
     }
 
     public void delete() {
         customerService.deleteContact(customersBean.getSelectedCustomer(), contactToDelete);
         customersBean.update();
         Ajax.update("customer_details_right_panel:contacts_list");
-        Ajax.oncomplete("$('#delete_contact_dialog').modal('hide');$('#details_dialog').modal('show');");
+        Ajax.oncomplete("$('#contact_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show');");
     }
 
     public String getFirstName() {
