@@ -20,16 +20,16 @@ public class CustomersBean implements Serializable {
 
     @Inject
     private CustomerModel model;
-    
+
     @Inject
     private CustomerService customerService;
 
     private CustomerDTO selectedCustomer;
     private List<CustomerDTO> filteredCustomers;
     private List<CustomerDTO> customers;
-    
+
     private List<ContactDTO> contactPersons;
-    
+
     @PostConstruct
     private void init() {
         update();
@@ -37,15 +37,18 @@ public class CustomersBean implements Serializable {
 
     public void update() {
         customers = model.getAllCustomers();
+        if (selectedCustomer != null) {
+            contactPersons = customerService.getContactsByCustomer(selectedCustomer);
+        }
     }
 
     public void openSelectedCustomerDetails(CustomerDTO dto) {
         selectedCustomer = dto;
-        contactPersons = customerService.getContactsByCustomer(selectedCustomer);
-        Ajax.update("customer_details","customer_details_right_panel:contacts_list");
+        update();
+        Ajax.update("customer_details", "customer_details_right_panel:contacts_list");
         Ajax.oncomplete("$('#details_dialog').modal('show')");
     }
-    
+
     public List<CustomerDTO> getFilteredCustomers() {
         return filteredCustomers;
     }
@@ -77,5 +80,5 @@ public class CustomersBean implements Serializable {
     public void setContactPersons(List<ContactDTO> contactPersons) {
         this.contactPersons = contactPersons;
     }
-    
+
 }

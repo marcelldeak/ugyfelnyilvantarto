@@ -29,6 +29,20 @@ function clearAndCloseAddContactDialog(delayed) {
 
 }
 
+function clearAndCloseEditContactDialog(delayed) {
+
+    if (!delayed) {
+        $('#edit_c_dialog').modal('hide');
+        $('#details_dialog').modal('show');
+    } else {
+        setTimeout(function () {
+            $('#edit_c_dialog').modal('hide');
+            $('#details_dialog').modal('show');
+        }, 1000);
+    }
+
+}
+
 function clearAddModal() {
     $('#customer_add_modal').modal('hide');
     $('#c_add_form').trigger('reset');

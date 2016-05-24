@@ -13,33 +13,67 @@ import org.omnifaces.util.Ajax;
 
 @Named("contactCUD")
 @ViewScoped
-public class ContactCUDBean implements  Serializable {
-    
+public class ContactCUDBean implements Serializable {
+
     private static final long serialVersionUID = -6054306052800947292L;
-    
+
     @Inject
     private CustomerService customerService;
-    
+
     @Inject
     private CustomersBean customersBean;
-    
+
+    private Long id;
+
     private String firstName;
-    
+
     private String lastName;
-    
-    public void openAddDialog()
-    {
+
+    private ContactDTO contactToDelete;
+
+    public void openAddDialog() {
         Ajax.oncomplete("$('#details_dialog').modal('hide');$('#add_c_dialog').modal('show');");
     }
-    
-    public void add()
-    {
+
+    public void add() {
         customerService.addContactToCustomer(customersBean.getSelectedCustomer(), new ContactDTO(firstName, lastName));
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contact person added succesfully."));
         firstName = null;
         lastName = null;
+        customersBean.update();
         Ajax.update("customer_details_right_panel:contacts_list");
         Ajax.oncomplete("clearAndCloseAddContactDialog(true);");
+    }
+
+    public void openEditDialog(ContactDTO dto) {
+        firstName = dto.getFirstName();
+        lastName = dto.getLastName();
+        id = dto.getId();
+        Ajax.update("c_edit_contact");
+        Ajax.oncomplete("$('#details_dialog').modal('hide');$('#edit_c_dialog').modal('show');");
+    }
+
+    public void edit() {
+        ContactDTO dto = new ContactDTO(firstName, lastName);
+        dto.setId(id);
+        customerService.updateContact(dto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contact person edited succesfully."));
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("clearAndCloseEditContactDialog(true);");
+    }
+
+    public void openDeleteDialog(ContactDTO dto) {
+        contactToDelete = dto;
+        Ajax.update("confirmation_contact_name");
+        Ajax.oncomplete("$('#details_dialog').modal('hide');$('#delete_contact_dialog').modal('show');");
+    }
+
+    public void delete() {
+        customerService.deleteContact(customersBean.getSelectedCustomer(), contactToDelete);
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("$('#delete_contact_dialog').modal('hide');$('#details_dialog').modal('show');");
     }
 
     public String getFirstName() {
@@ -58,4 +92,11 @@ public class ContactCUDBean implements  Serializable {
         this.lastName = lastName;
     }
 
+    public ContactDTO getContactToDelete() {
+        return contactToDelete;
+    }
+
+    public void setContactToDelete(ContactDTO contactToDelete) {
+        this.contactToDelete = contactToDelete;
+    }
 }

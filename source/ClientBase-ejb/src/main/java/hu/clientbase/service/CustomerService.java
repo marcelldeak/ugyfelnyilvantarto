@@ -15,87 +15,91 @@ import javax.inject.Inject;
 
 @Stateless
 public class CustomerService {
-    
+
     @Inject
     private EntityFacade entityFacade;
-    
+
     @Inject
     private CustomerFacade customerFacade;
-    
+
     public void create(CustomerDTO dto) {
         Address address = new Address(dto.getAddress());
         Customer customer = new Customer(dto);
-        
+
         customer.setAddress(address);
-        
+
         entityFacade.create(customer);
     }
-    
+
     public void update(CustomerDTO dto) {
         Customer customer = entityFacade.find(Customer.class, dto.getId());
-        
+
         customer.getAddress().setCity(dto.getAddress().getCity());
         customer.getAddress().setCountry(dto.getAddress().getCountry());
         customer.getAddress().setStreet(dto.getAddress().getStreet());
         customer.getAddress().setZipCode(dto.getAddress().getZipCode());
-        
+
         customer.setName(dto.getName());
         customer.setVatNumber(dto.getVatNumber());
-        
+
         entityFacade.update(customer);
     }
-    
+
     public void delete(CustomerDTO dto) {
         Customer customer = entityFacade.find(Customer.class, dto.getId());
-        
+
         entityFacade.delete(customer);
     }
-    
+
     public void addContactToCustomer(CustomerDTO customerDTO, ContactDTO contactDTO) {
-        Customer customer = entityFacade.find(Customer.class, customerDTO.getId());        
+        Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         customer.getContacts().add(new Contact(contactDTO));
-        
+
         entityFacade.update(customer);
     }
-    
+
     public List<ContactDTO> getContactsByCustomer(CustomerDTO dto) {
         Customer customer = entityFacade.find(Customer.class, dto.getId());
-        
+
         List<ContactDTO> ret = new LinkedList<>();
         customer.getContacts().stream().forEach(c -> ret.add(new ContactDTO(c)));
-        
+
         return ret;
     }
-    
+
     public void updateContact(ContactDTO dto) {
         Contact contact = entityFacade.find(Contact.class, dto.getId());
-        
+
         contact.setFirstName(dto.getFirstName());
         contact.setLastName(dto.getLastName());
-        
+
         entityFacade.update(contact);
     }
-    
-    public void deleteContact(ContactDTO dto) {
-        Contact contact = entityFacade.find(Contact.class, dto.getId());
+
+    public void deleteContact(CustomerDTO customerDTO, ContactDTO contactDTO) {
+        Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
+        Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
         
+        customer.getContacts().remove(contact);
+        
+        entityFacade.update(customer);
         entityFacade.delete(contact);
     }
-    
+
     public void addContactChannel() {
-        
+
     }
-    
+
     public List<ContactChannelDTO> getContactChannels() {
         return null;
     }
-    
+
     public void updateContactChannel() {
-        
+
     }
-    
+
     public void deleteContactChannel() {
-        
+
     }
-    
+
 }

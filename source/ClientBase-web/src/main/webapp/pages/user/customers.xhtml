@@ -422,6 +422,7 @@
                 </div>
 
                 <!-- DELETE CUSTOMER -->
+                
                 <div class="modal fade" id="confirmation_dialog" tabindex="-1" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -523,15 +524,28 @@
                                                     </div>
 
                                                     <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
-  
-                                                            <h:form id="contacts_list">
-                                                                <c:forEach var="_contact" items="#{customers.contactPersons}">
-                                                                    <p:panel header="#{_contact.nameHR}" style="margin-bottom: 10px;">
-                                                                        ...
-                                                                    </p:panel>
-                                                                </c:forEach>
-                                                            </h:form>
-                                       
+
+                                                        <h:form id="contacts_list">
+                                                            <c:forEach var="_contact" items="#{customers.contactPersons}">
+                                                                <p:panel header="#{_contact.nameHR}" style="margin-bottom: 10px;">
+                                                                    <div class="pull-right" style="position:relative;top:-35px;">
+                                                                            <p:commandButton title="Edit"
+                                                                                             icon="ui-icon-pencil"
+                                                                                             action="#{contactCUD.openEditDialog(_contact)}"
+                                                                                             style="margin-right: 8px;">
+                                                                                <f:ajax />
+                                                                            </p:commandButton>
+                                                                        
+                                                                            <p:commandButton icon="ui-icon-trash"
+                                                                                             title="Delete"
+                                                                                             action="#{contactCUD.openDeleteDialog(_contact)}">
+                                                                                <f:ajax />
+                                                                            </p:commandButton>
+                                                                    </div>
+                                                                </p:panel>
+                                                            </c:forEach>
+                                                        </h:form>
+
                                                     </div>
                                                 </p:tab>
                                                 <p:tab title="Projects">
@@ -628,6 +642,131 @@
                                     </div>
 
                                 </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- EDIT CONTACT PERSON -->
+                
+                <div class="modal fade"
+                     id="edit_c_dialog"
+                     tabindex="-1"
+                     role="dialog"
+                     data-backdrop="static">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <div class="row" style="text-align: center;">
+                                    <h4 class="modal-title">Contact person details</h4>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-body">
+                                <h:form role="form"
+                                        class="form-horizontal"
+                                        id="c_edit_contact">
+
+                                    <p:panel id="c_data">
+
+                                        <div class="form-group row" >
+                                            <label class="control-label col-sm-4" for="c_first_name">First name:</label>
+                                            <div class="col-sm-8">
+                                                <p:inputText id="c_first_name"
+                                                             value="#{contactCUD.firstName}"
+                                                             size="40"
+                                                             required="true"
+                                                             label="First name"
+                                                             placeholder="First name">
+                                                    <f:validateLength minimum="2" />
+                                                    <p:clientValidator />
+                                                </p:inputText>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" >
+                                            <label class="control-label col-sm-4" for="c_last_name">Last name:</label>
+                                            <div class="col-sm-8">
+                                                <p:inputText id="c_last_name"
+                                                             value="#{contactCUD.lastName}"
+                                                             size="40"
+                                                             required="true"
+                                                             label="Last name"
+                                                             placeholder="Last name">
+                                                    <f:validateLength minimum="2" />
+                                                    <p:clientValidator />
+                                                </p:inputText>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <p:messages autoUpdate="true"/>
+
+                                    </p:panel>
+                                    <div class="form-group row row-centered"
+                                         style="padding-top: 10px;">
+                                        <p:commandButton value="Save changes"
+                                                         update="c_edit_contact"
+                                                         validateClient="true"
+                                                         style="margin-right:10px"
+                                                         action="#{contactCUD.edit()}">
+                                            <f:ajax />
+                                        </p:commandButton>
+                                        <p:commandButton value="Cancel"
+                                                         validateClient="false"
+                                                         type="button"
+                                                         onclick="clearAndCloseEditContactDialog(false);return false;"
+                                                         style="margin-right:10px"/>
+                                    </div>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DELETE CONTACT PERSON -->
+                
+                <div class="modal fade" id="delete_contact_dialog" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row" style="text-align: center;">
+                                    <h4 class="modal-title">Delete contact person</h4>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                        <h:form id='confirmation_contact_name'>
+                                            <h:outputText value="Do you really want to delete #{contactCUD.contactToDelete.nameHR} from the system? This action cannot be undone." />
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 10px;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                                        <div class="pull-right">
+                                            <h:form class="form-horizontal">
+                                                <p:commandButton value="Yes" action="#{contactCUD.delete()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <span style="width:150px;" />
+                                                <p:commandButton value="No" type="button" onclick="$('#delete_contact_dialog').modal('hide');$('#details_dialog').modal('show');" />
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
