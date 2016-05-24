@@ -30,6 +30,7 @@ public class Customer implements Serializable {
     private String vatNumber;
 
     @OneToMany(targetEntity = Contact.class)
+    @Cascade(CascadeType.ALL)
     private List<Contact> contacts;
 
     @OneToMany(targetEntity = Project.class)

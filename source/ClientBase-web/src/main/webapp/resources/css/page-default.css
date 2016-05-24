@@ -2,6 +2,26 @@
     opacity: -0.5;
 }
 
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+
 .row-centered {
     text-align:center;
 }
@@ -27,6 +47,9 @@ body {
     margin: 0px;
     font-size: 12px;
     padding: 0px;
+}
+.ui-dialog {
+    z-index: 1200 !important;
 }
 
 .page-content > .row {
@@ -82,11 +105,25 @@ body {
     width: 82%;
     margin: 0 auto;
 }
-
+.ui-dialog-title,
 h4 {
     font-variant: small-caps;
     font-weight: 600;
     color: #2c3742;
+}
+
+.ui-dialog-title {
+    font-size: 18px !important;
+    float: none !important;
+
+}
+
+.ui-dialog-titlebar {
+    text-align: center;
+}
+
+#add_c_dialog {
+    min-width: 560px;
 }
 
 h6 {
@@ -95,6 +132,7 @@ h6 {
     font-weight: 600;
     color: #2c3742;
 }
+
 #reg_modal h6 {
     margin-top: 5px;
     margin-bottom: 5px;

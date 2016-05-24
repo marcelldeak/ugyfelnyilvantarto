@@ -16,6 +16,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Application_user")
 public class User extends Person implements Serializable {
+
+    private static final long serialVersionUID = -6418067617162502071L;
     
     @Basic
     private String email;
@@ -25,6 +27,9 @@ public class User extends Person implements Serializable {
     
     @Basic
     private boolean active;
+    
+    @Basic
+    private String picture;
     
     @Temporal(TemporalType.DATE)
     @Basic
@@ -108,5 +113,13 @@ public class User extends Person implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
 }

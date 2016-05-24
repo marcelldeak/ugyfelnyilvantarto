@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.ContactChannelDTO;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Contact_channel")
 public class ContactChannel implements Serializable {
+
+    private static final long serialVersionUID = 8652458704122623142L;
 
     @Id
     @GeneratedValue
@@ -28,6 +31,11 @@ public class ContactChannel implements Serializable {
 
     public ContactChannel() {
         // Entity - parameterless constructor
+    }
+
+    public ContactChannel(ContactChannelDTO dto) {
+        this.type = dto.getType();
+        this.value = dto.getValue();
     }
 
     public Long getId() {

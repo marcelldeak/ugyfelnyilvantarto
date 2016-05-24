@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version='1.0' encoding='UTF-8' ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:body>
         <ui:composition template="../../templates/main_template.xhtml">
 
@@ -54,7 +55,7 @@
                                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
                                             <p:commandButton title="New customer"
                                                              icon="ui-icon-plus"
-                                                             action="#{customerCU.openAddDialog()}"
+                                                             action="#{customerCUD.openAddDialog()}"
                                                              style="margin-top: 7px;">
                                                 <f:ajax />
                                             </p:commandButton>
@@ -68,14 +69,14 @@
                                           filterMatchMode="contains">
                                     <h:outputText value="#{_customer.name}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="VAT-number"
                                           style="text-align: center"
                                           filterBy="#{_customer.vatNumber}"
                                           filterMatchMode="contains">
                                     <h:outputText value="#{_customer.vatNumber}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Address"
                                           style="text-align: center"
                                           filterBy="#{_customer.address.addressHR}"
@@ -86,17 +87,17 @@
                                 <p:column style="text-align: center;
                                           width: 56px">
                                     <p:commandButton title="Details"
-                                                     icon="ui-icon-search"
-                                                     action="#{customers.selectedCustomerDetails(_customer)}">
+                                                     icon="ui-icon-info"
+                                                     action="#{customers.openSelectedCustomerDetails(_customer)}">
                                         <f:ajax />
                                     </p:commandButton>
-                                    
+
                                 </p:column>
-                                
+
                                 <p:column style="text-align: center;width: 56px">
                                     <p:commandButton title="Edit"
                                                      icon="ui-icon-pencil"
-                                                     action="#{customerCU.openEditDialog(_customer)}">
+                                                     action="#{customerCUD.openEditDialog(_customer)}">
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
@@ -104,7 +105,7 @@
                                 <p:column style="text-align: center;width: 56px">
                                     <p:commandButton icon="ui-icon-trash"
                                                      title="Delete"
-                                                     onclick="alert('Customer delete')">
+                                                     action="#{customerCUD.openDeleteDialog(_customer)}">
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
@@ -145,7 +146,7 @@
                                                     <label class="control-label col-sm-4" for="c_name">Name:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_name"
-                                                                     value="#{customerCU.name}"
+                                                                     value="#{customerCUD.name}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="Name"
@@ -160,7 +161,7 @@
                                                     <label class="control-label col-sm-4" for="c_vatn">VAT-Number:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_vatn"
-                                                                     value="#{customerCU.vatNumber}"
+                                                                     value="#{customerCUD.vatNumber}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="VAT-number"
@@ -181,7 +182,7 @@
                                                     <label class="control-label col-sm-4" for="c_country">Country:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_country"
-                                                                     value="#{customerCU.country}"
+                                                                     value="#{customerCUD.country}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="Country"
@@ -196,7 +197,7 @@
                                                     <label class="control-label col-sm-4" for="c_city">City:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_city"
-                                                                     value="#{customerCU.city}"
+                                                                     value="#{customerCUD.city}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="City"
@@ -211,7 +212,7 @@
                                                     <label class="control-label col-sm-4" for="c_street">Street and number:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_street"
-                                                                     value="#{customerCU.street}"
+                                                                     value="#{customerCUD.street}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="Street and number"
@@ -226,7 +227,7 @@
                                                     <label class="control-label col-sm-4" for="c_zip">ZIP-code:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_zip"
-                                                                     value="#{customerCU.zipCode}"
+                                                                     value="#{customerCUD.zipCode}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="ZIP-code"
@@ -248,7 +249,7 @@
                                                                  update="c_data"
                                                                  validateClient="true"
                                                                  style="margin-right:10px"
-                                                                 action="#{customerCU.add()}">
+                                                                 action="#{customerCUD.add()}">
                                                     <f:ajax />
                                                 </p:commandButton>
                                                 <p:commandButton value="Cancel"
@@ -296,8 +297,8 @@
                                                     <label class="control-label col-sm-4" for="c_name">Name:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_name"
-                                                                     value="#{customerCU.name}"
-                                                                     
+                                                                     value="#{customerCUD.name}"
+
                                                                      size="40"
                                                                      required="true"
                                                                      label="Name"
@@ -312,7 +313,7 @@
                                                     <label class="control-label col-sm-4" for="c_vatn">VAT-Number:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_vatn"
-                                                                     value="#{customerCU.vatNumber}"
+                                                                     value="#{customerCUD.vatNumber}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="VAT-number"
@@ -333,7 +334,7 @@
                                                     <label class="control-label col-sm-4" for="c_country">Country:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_country"
-                                                                     value="#{customerCU.country}"
+                                                                     value="#{customerCUD.country}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="Country"
@@ -348,7 +349,7 @@
                                                     <label class="control-label col-sm-4" for="c_city">City:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_city"
-                                                                     value="#{customerCU.city}"
+                                                                     value="#{customerCUD.city}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="City"
@@ -363,7 +364,7 @@
                                                     <label class="control-label col-sm-4" for="c_street">Street and number:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_street"
-                                                                     value="#{customerCU.street}"
+                                                                     value="#{customerCUD.street}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="Street and number"
@@ -378,7 +379,7 @@
                                                     <label class="control-label col-sm-4" for="c_zip">ZIP-code:</label>
                                                     <div class="col-sm-8">
                                                         <p:inputText id="c_zip"
-                                                                     value="#{customerCU.zipCode}"
+                                                                     value="#{customerCUD.zipCode}"
                                                                      size="40"
                                                                      required="true"
                                                                      label="ZIP-code"
@@ -400,7 +401,7 @@
                                                                  update="c_data"
                                                                  validateClient="true"
                                                                  style="margin-right:10px"
-                                                                 action="#{customerCU.edit()}">
+                                                                 action="#{customerCUD.edit()}">
                                                     <f:ajax />
                                                 </p:commandButton>
                                                 <p:commandButton value="Cancel"
@@ -419,7 +420,219 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- DELETE CUSTOMER -->
+                <div class="modal fade" id="confirmation_dialog" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row" style="text-align: center;">
+                                    <h4 class="modal-title">Delete customer</h4>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                        <h:form id='confirmation_customer_name'>
+                                            <h:outputText value="Do you really want to delete #{customerCUD.customerToDelete.name} from the system? This action cannot be undone." />
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 10px;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                                        <div class="pull-right">
+                                            <h:form class="form-horizontal">
+                                                <p:commandButton value="Yes" type="button" action="#{customerCUD.delete()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <span style="width:150px;" />
+                                                <p:commandButton value="No" type="button" onclick="$('#confirmation_dialog').modal('hide')" />
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CUSTOMER DETAILS-->
+
+                <div class="modal fade"
+                     id="details_dialog"
+                     tabindex="-1"
+                     role="dialog"
+                     data-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row" style="text-align: center;">
+
+                                    <button type="button"
+                                            class="close"
+                                            data-dismiss="modal"
+                                            style="margin-right: 20px">
+                                        <span aria-hidden="true">&#215;</span>                                  
+                                    </button>
+
+                                    <h4 class="modal-title">Customer details</h4>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                            <h:form id="customer_details">
+                                                <p:panel id="c_basic_data" header="#{customers.selectedCustomer.name}" style="text-align: center;">
+                                                    <h:outputText value="VAT-number : #{customers.selectedCustomer.vatNumber}" />
+                                                    <hr />
+                                                    <h:outputText value="#{customers.selectedCustomer.address.street}" /><br />
+                                                    <h:outputText value="#{customers.selectedCustomer.address.city}" /><br />
+                                                    <h:outputText value="#{customers.selectedCustomer.address.country}" /><br />
+                                                    <h:outputText value="#{customers.selectedCustomer.address.zipCode}" />
+                                                </p:panel>
+
+                                            </h:form>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                            <p:tabView dynamic="true"
+                                                       cache="true"
+                                                       id="customer_details_right_panel">
+
+                                                <p:tab title="Contacts"
+                                                       id="contacts_tab">                                                    
+                                                    <div class="row row-centered">                                                        
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                                                            
+                                                            <p:commandButton id="add_contact_button"
+                                                                             title="New contact"
+                                                                             icon="ui-icon-plus"
+                                                                             class="pull-right"
+                                                                             action="#{contactCUD.openAddDialog()}"
+                                                                             style="top: -50px !important;right: -15px !important;">
+                                                                <f:ajax />
+                                                            </p:commandButton>
+                                                        </div>   
+                                                    </div>
+
+                                                    <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
+  
+                                                            <h:form id="contacts_list">
+                                                                <c:forEach var="_contact" items="#{customers.contactPersons}">
+                                                                    <p:panel header="#{_contact.nameHR}" style="margin-bottom: 10px;">
+                                                                        ...
+                                                                    </p:panel>
+                                                                </c:forEach>
+                                                            </h:form>
+                                       
+                                                    </div>
+                                                </p:tab>
+                                                <p:tab title="Projects">
+                                                    <h:panelGrid columns="2" cellpadding="10">
+
+                                                        <h:outputText value="Francis Ford Coppola's legendary..." />
+                                                    </h:panelGrid>
+                                                </p:tab>
+
+                                            </p:tabView>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD CONTACT PERSON -->
+
+                <div class="modal fade"
+                     id="add_c_dialog"
+                     tabindex="-1"
+                     role="dialog"
+                     data-backdrop="static">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <div class="row" style="text-align: center;">
+                                    <h4 class="modal-title">Contact person details</h4>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-body">
+                                <h:form role="form"
+                                        class="form-horizontal"
+                                        id="c_add_contact">
+
+                                    <p:panel id="c_data">
+
+                                        <div class="form-group row" >
+                                            <label class="control-label col-sm-4" for="c_first_name">First name:</label>
+                                            <div class="col-sm-8">
+                                                <p:inputText id="c_first_name"
+                                                             value="#{contactCUD.firstName}"
+                                                             size="40"
+                                                             required="true"
+                                                             label="First name"
+                                                             placeholder="First name">
+                                                    <f:validateLength minimum="2" />
+                                                    <p:clientValidator />
+                                                </p:inputText>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row" >
+                                            <label class="control-label col-sm-4" for="c_last_name">Last name:</label>
+                                            <div class="col-sm-8">
+                                                <p:inputText id="c_last_name"
+                                                             value="#{contactCUD.lastName}"
+                                                             size="40"
+                                                             required="true"
+                                                             label="Last name"
+                                                             placeholder="Last name">
+                                                    <f:validateLength minimum="2" />
+                                                    <p:clientValidator />
+                                                </p:inputText>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <p:messages autoUpdate="true"/>
+
+                                    </p:panel>
+                                    <div class="form-group row row-centered"
+                                         style="padding-top: 10px;">
+                                        <p:commandButton value="Add contact person"
+                                                         update="c_add_contact"
+                                                         validateClient="true"
+                                                         style="margin-right:10px"
+                                                         action="#{contactCUD.add()}">
+                                            <f:ajax />
+                                        </p:commandButton>
+                                        <p:commandButton value="Cancel"
+                                                         validateClient="false"
+                                                         type="button"
+                                                         onclick="clearAndCloseAddContactDialog(false);"
+                                                         style="margin-right:10px"/>
+                                    </div>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <script src="#{request.contextPath}/resources/js/customer.js"></script>
             </ui:define>
         </ui:composition>

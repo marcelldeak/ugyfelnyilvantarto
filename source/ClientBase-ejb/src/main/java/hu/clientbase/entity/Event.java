@@ -11,12 +11,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class Event implements Serializable {
+
+    private static final long serialVersionUID = 2480370132530374980L;
 
     @Id
     @GeneratedValue
@@ -41,9 +42,6 @@ public class Event implements Serializable {
 
     @OneToMany(targetEntity = Note.class)
     private List<Note> notes;
-
-    @OneToOne(targetEntity = Address.class)
-    private Address address;
 
     public Event() {
         // Entity - parameterless constructor
@@ -71,14 +69,6 @@ public class Event implements Serializable {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
-    }
-
-    public Address getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public EventType getType() {

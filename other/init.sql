@@ -15,12 +15,19 @@ CREATE TABLE `Application_user` (
   `id` bigint(20) NOT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
-  `picture` varchar(255) DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `date_of_birth` date DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `expiration_date` date DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `picture` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Contact` (
+  `id` bigint(20) NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -31,11 +38,50 @@ CREATE TABLE `Contact_channel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `Customer` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `VAT_number` varchar(255) DEFAULT NULL,
+  `address_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY (`address_id`),
+  FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Event` (
+  `id` bigint(20) NOT NULL,
+  `date_of_end` datetime DEFAULT NULL,
+  `date_of_start` datetime DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Invitation` (
+  `id` bigint(20) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `event_id` bigint(20) DEFAULT NULL,
+  `recipient_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY (`event_id`),
+  KEY (`recipient_id`),
+  FOREIGN KEY (`event_id`) REFERENCES `Event` (`id`),
+  FOREIGN KEY (`recipient_id`) REFERENCES `Application_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `Note` (
   `id` bigint(20) NOT NULL,
   `content` varchar(255) DEFAULT NULL,
   `tag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Pending_registrations` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `Application_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Project` (
@@ -52,57 +98,12 @@ CREATE TABLE `User_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Customer` (
-  `id` bigint(20) NOT NULL,
-  `logo` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `VAT_number` varchar(255) DEFAULT NULL,
-  `address_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY (`address_id`),
-  FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `Contact` (
-  `id` bigint(20) NOT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `picture` varchar(255) DEFAULT NULL,
-  `customer_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY (`customer_id`),
-  FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `Event` (
-  `id` bigint(20) NOT NULL,
-  `date_of_end` datetime DEFAULT NULL,
-  `date_of_start` datetime DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `address_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY (`address_id`),
-  FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `Invitation` (
-  `id` bigint(20) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `event_id` bigint(20) DEFAULT NULL,
-  `recipient_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY (`event_id`),
-  KEY (`recipient_id`),
-  FOREIGN KEY (`event_id`) REFERENCES `Event` (`id`),
-  FOREIGN KEY (`recipient_id`) REFERENCES `Application_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Application_user_Contact_channel` (
   `User_id` bigint(20) NOT NULL,
   `contactChannels_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_qa1lujegjx1da8ii57tcg4ikx` (`contactChannels_id`),
-  KEY `FKrwsbnqqd5lu6grci60yk6sow7` (`User_id`),
+  UNIQUE KEY (`contactChannels_id`),
+  KEY (`User_id`),
   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),
   FOREIGN KEY (`contactChannels_id`) REFERENCES `Contact_channel` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -110,8 +111,8 @@ CREATE TABLE `Application_user_Contact_channel` (
 CREATE TABLE `Application_user_Event` (
   `User_id` bigint(20) NOT NULL,
   `events_id` bigint(20) NOT NULL,
-  KEY `FKtqe0a2g8p91h8r6c77c9m5dg6` (`events_id`),
-  KEY `FKld2c00jgrto9t02q664lbl9u9` (`User_id`),
+  KEY (`events_id`),
+  KEY (`User_id`),
   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),
   FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -119,8 +120,8 @@ CREATE TABLE `Application_user_Event` (
 CREATE TABLE `Application_user_User_role` (
   `User_id` bigint(20) NOT NULL,
   `roles_id` bigint(20) NOT NULL,
-  KEY `FK1q2ybxcwjee2r3ngjgvr93b0r` (`roles_id`),
-  KEY `FK2qhqtkdwxns8rvsnysey61ij0` (`User_id`),
+  KEY (`roles_id`),
+  KEY (`User_id`),
   FOREIGN KEY (`roles_id`) REFERENCES `User_role` (`id`),
   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -143,13 +144,13 @@ CREATE TABLE `Customer_Contact` (
   FOREIGN KEY (`contacts_id`) REFERENCES `Contact` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Event_Note` (
-  `Event_id` bigint(20) NOT NULL,
-  `notes_id` bigint(20) NOT NULL,
-  UNIQUE KEY (`notes_id`),
-  KEY (`Event_id`),
-  FOREIGN KEY (`notes_id`) REFERENCES `Note` (`id`),
-  FOREIGN KEY (`Event_id`) REFERENCES `Event` (`id`)
+CREATE TABLE `Customer_Event` (
+  `Customer_id` bigint(20) NOT NULL,
+  `events_id` bigint(20) NOT NULL,
+  UNIQUE KEY (`events_id`),
+  KEY (`Customer_id`),
+  FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),
+  FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Customer_Project` (
@@ -161,27 +162,18 @@ CREATE TABLE `Customer_Project` (
   FOREIGN KEY (`projects_id`) REFERENCES `Project` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Customer_Event` (
-  `Customer_id` bigint(20) NOT NULL,
-  `events_id` bigint(20) NOT NULL,
-  UNIQUE KEY (`events_id`),
-  KEY (`Customer_id`),
-  FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),
-  FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`)
+CREATE TABLE `Event_Note` (
+  `Event_id` bigint(20) NOT NULL,
+  `notes_id` bigint(20) NOT NULL,
+  UNIQUE KEY (`notes_id`),
+  KEY (`Event_id`),
+  FOREIGN KEY (`notes_id`) REFERENCES `Note` (`id`),
+  FOREIGN KEY (`Event_id`) REFERENCES `Event` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `PendingRegistration` (
-  `ID` bigint(20) NOT NULL,
-  `USER_ID` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FK_PENDINGREGISTRATION_USER_ID` (`USER_ID`),
-  FOREIGN KEY (`USER_ID`) REFERENCES `Application_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-SELECT * FROM CRM_DB.Application_user;
 
 INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('0', 'ADMIN');
 INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('1', 'USER');

@@ -1,6 +1,6 @@
 package hu.clientbase.bean;
 
-import hu.clientbase.bean.mv.CustomerBean;
+import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.dto.AddressDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
@@ -12,9 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.omnifaces.util.Ajax;
 
-@Named("customerCU")
+@Named("customerCUD")
 @ViewScoped
-public class CustomerCUBean implements Serializable {
+public class CustomerCUDBean implements Serializable {
 
     private static final long serialVersionUID = 258979332215257295L;
     
@@ -22,7 +22,7 @@ public class CustomerCUBean implements Serializable {
     private CustomerService customerService;
     
     @Inject
-    private CustomerBean customerBean;
+    private CustomersBean customerBean;
     
     private Long id;
     
@@ -38,6 +38,8 @@ public class CustomerCUBean implements Serializable {
     
     private String country;
     
+    private CustomerDTO customerToDelete;
+    
     public void openAddDialog()
     {
         Ajax.oncomplete("$('#customer_add_modal').modal('show')");
@@ -50,7 +52,7 @@ public class CustomerCUBean implements Serializable {
         customerService.create(dto);
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer added succesfully."));
-        customerBean.updateModel();
+        customerBean.update();
         Ajax.update("c_list_form:c_list_table");
         Ajax.oncomplete("clearAndCloseAddCustomerDialog(true)");
     }
@@ -74,9 +76,24 @@ public class CustomerCUBean implements Serializable {
         dto.setId(id);
         customerService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer edited succesfully."));
-        customerBean.updateModel();
+        customerBean.update();
         Ajax.update("c_list_form:c_list_table");
         Ajax.oncomplete("clearAndCloseEditCustomerDialog(true)");
+    }
+    
+   public void openDeleteDialog(CustomerDTO dto) {
+        customerToDelete = dto;
+        Ajax.update("confirmation_customer_name");
+        Ajax.oncomplete("$('#confirmation_dialog').modal('show')");
+    }
+    
+    public void delete()
+    {
+        customerService.delete(customerToDelete);
+        customerBean.update();
+        Ajax.update("c_list_form:c_list_table");
+        Ajax.oncomplete("$('#confirmation_dialog').modal('hide')");
+        
     }
 
     public String getName() {
@@ -127,4 +144,12 @@ public class CustomerCUBean implements Serializable {
         this.country = country;
     }
 
+    public CustomerDTO getCustomerToDelete() {
+        return customerToDelete;
+    }
+
+    public void setCustomerToDelete(CustomerDTO customerToDelete) {
+        this.customerToDelete = customerToDelete;
+    }
+    
 }

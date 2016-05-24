@@ -1,6 +1,8 @@
 package hu.clientbase.bean.mv;
 
+import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
+import hu.clientbase.service.CustomerService;
 import hu.clientbase.service.mdel.CustomerModel;
 import java.io.Serializable;
 import java.util.List;
@@ -12,32 +14,38 @@ import org.omnifaces.util.Ajax;
 
 @Named("customers")
 @ViewScoped
-public class CustomerBean implements Serializable {
+public class CustomersBean implements Serializable {
 
     private static final long serialVersionUID = -961683443281866011L;
 
     @Inject
     private CustomerModel model;
+    
+    @Inject
+    private CustomerService customerService;
 
     private CustomerDTO selectedCustomer;
     private List<CustomerDTO> filteredCustomers;
     private List<CustomerDTO> customers;
-
+    
+    private List<ContactDTO> contactPersons;
+    
     @PostConstruct
     private void init() {
-        updateModel();
+        update();
     }
 
-    public void updateModel() {
+    public void update() {
         customers = model.getAllCustomers();
     }
 
-    public void selectedCustomerDetails(CustomerDTO dto) {
+    public void openSelectedCustomerDetails(CustomerDTO dto) {
         selectedCustomer = dto;
-        Ajax.update("customer_modal");
-        Ajax.oncomplete("$('#customer_modal').modal('show')");
+        contactPersons = customerService.getContactsByCustomer(selectedCustomer);
+        Ajax.update("customer_details","customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("$('#details_dialog').modal('show')");
     }
-
+    
     public List<CustomerDTO> getFilteredCustomers() {
         return filteredCustomers;
     }
@@ -61,4 +69,13 @@ public class CustomerBean implements Serializable {
     public void setCustomers(List<CustomerDTO> customers) {
         this.customers = customers;
     }
+
+    public List<ContactDTO> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(List<ContactDTO> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
+    
 }

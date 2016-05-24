@@ -1,16 +1,19 @@
 package hu.clientbase.entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
 @Entity
+@Table(name = "Pending_registrations")
 public class PendingRegistration implements Serializable {
+
+    private static final long serialVersionUID = 7870560382171902919L;
 
     @Id
     @GeneratedValue

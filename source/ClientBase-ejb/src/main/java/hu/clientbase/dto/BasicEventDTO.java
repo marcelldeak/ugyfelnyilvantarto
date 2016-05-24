@@ -15,7 +15,6 @@ public class BasicEventDTO {
     private Calendar dateOfEnd;
     private String name;
     private List<Note> notes;
-    private Address address;
 
     public BasicEventDTO() {
         //default
@@ -28,7 +27,7 @@ public class BasicEventDTO {
         this.dateOfEnd = e.getDateOfEnd();
         this.name = e.getName();
         this.notes = e.getNotes();
-        this.address = e.getAddress();
+
     }
 
     public Long getId() {
@@ -78,13 +77,4 @@ public class BasicEventDTO {
     public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
 }

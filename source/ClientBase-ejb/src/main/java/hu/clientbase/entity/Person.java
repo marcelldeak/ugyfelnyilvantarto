@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 @MappedSuperclass
 public abstract class Person implements Serializable {
 
+    private static final long serialVersionUID = -2720083551133555188L;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -26,9 +28,6 @@ public abstract class Person implements Serializable {
     @Basic
     @Column(name = "last_name")
     private String lastName;
-
-    @Basic
-    private String picture;
 
     @OneToMany(targetEntity = ContactChannel.class)
     private List<ContactChannel> contactChannels;
@@ -59,14 +58,6 @@ public abstract class Person implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPicture() {
-        return this.picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public List<ContactChannel> getContactChannels() {
