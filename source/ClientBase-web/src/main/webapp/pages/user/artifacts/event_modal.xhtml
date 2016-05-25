@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:oou="http://omnifaces.org/ui">
+
+    <!-- ADD EVENT -->
+
+    <div class="modal fade"
+         id="event_add_dialog"
+         tabindex="-1"
+         data-keyboard="false"
+         data-backdrop="static"
+         role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div class="row"
+                         style="text-align: center;">
+                        <h4 class="modal-title">Add event</h4>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+
+                            <h:form role="form"
+                                    class="form-horizontal"
+                                    id="event_add_form">
+
+                                <p:panel id="event_data" header="Details">
+
+                                    <div class="form-group row" >
+                                        <label class="control-label col-sm-4" for="e_name">Name:</label>
+                                        <div class="col-sm-8">
+                                            <p:inputText id="e_name"
+                                                         value="#{eventCUD.name}"
+                                                         size="40"
+                                                         required="true"
+                                                         label="Name"
+                                                         placeholder="Name of the event">
+                                                <f:validateLength minimum="2" />
+                                                <p:clientValidator />
+                                            </p:inputText>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" >
+                                        <label class="control-label col-sm-4" for="e_type">Type</label>
+                                        <div class="col-sm-8">
+
+                                            <oou:importConstants type="hu.clientbase.entity.EventType"/>
+                                            <h:selectOneMenu value="#{eventCUD.type}">
+                                                <f:selectItem itemLabel="Please select one" noSelectionOption="false"/>
+                                                <f:selectItems value="#{EventType}" />
+                                                <f:ajax render="@form" />
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <div class="form-group row" >
+                                        <label class="control-label col-sm-4" for="e_name">Date of Start</label>
+                                        <div class="col-sm-8">
+                                        </div>
+                                    </div>
+
+                                    <hr />
+
+                                    <p:messages autoUpdate="true"/>
+                                </p:panel>
+                                <div class="form-group row row-centered"
+                                     style="padding-top: 10px;">
+                                    <p:commandButton value="Add event"
+                                                     update="event_data"
+                                                     validateClient="true"
+                                                     style="margin-right:10px"
+                                                     action="#{eventCUD.add()}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                    <p:commandButton value="Cancel"
+                                                     validateClient="false"
+                                                     onclick="clearAndCloseAddEventDialog(false); return false;"
+                                                     style="margin-right:10px"/>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- EDIT EVENT -->
+
+</ui:composition>

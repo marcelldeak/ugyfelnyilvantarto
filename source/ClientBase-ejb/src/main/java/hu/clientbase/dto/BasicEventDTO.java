@@ -29,6 +29,14 @@ public class BasicEventDTO {
 
     }
 
+    public BasicEventDTO(EventType type, Calendar dateOfStart, Calendar dateOfEnd, String name, List<Note> notes) {
+        this.type = type;
+        this.dateOfStart = dateOfStart;
+        this.dateOfEnd = dateOfEnd;
+        this.name = name;
+        this.notes = notes;
+    }
+
     public Long getId() {
         return id;
     }

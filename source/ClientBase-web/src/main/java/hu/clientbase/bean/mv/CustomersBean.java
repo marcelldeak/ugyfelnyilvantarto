@@ -26,7 +26,9 @@ public class CustomersBean implements Serializable {
     private CustomerService customerService;
 
     private CustomerDTO selectedCustomer;
+    
     private List<CustomerDTO> filteredCustomers;
+    
     private List<CustomerDTO> customers;
 
     private List<ContactDTO> contactPersons;

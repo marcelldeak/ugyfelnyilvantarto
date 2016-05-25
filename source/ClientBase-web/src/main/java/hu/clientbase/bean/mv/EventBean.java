@@ -1,24 +1,23 @@
 package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicEventDTO;
-import hu.clientbase.service.mdel.EventModel;
-
-import javax.annotation.PostConstruct;
+import hu.clientbase.service.EventService;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
-
+import org.omnifaces.util.Ajax;
 
 @Named("events")
 @ViewScoped
-public class EventBean implements Serializable {
+public class EventBean extends AbstractBaseBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
-    private EventModel model;
+    private EventService eventService;
 
     private BasicEventDTO selectedEvent;
 
@@ -26,20 +25,35 @@ public class EventBean implements Serializable {
 
     private List<BasicEventDTO> events;
 
-    private void updateModel() {
-        events = model.getAllEvents();
-        eventItems = new LinkedList<>();
-        events.stream().forEach((e) -> eventItems.add(new SelectItem(e, e.getName())));
+    private List<BasicEventDTO> filteredEvents;
+
+    @Override
+    public void update() {
+        events = eventService.getAllEventsAsDTO();
+
     }
 
-    private void updateView() {
-        return;
+    public void openSelectedEventDetails(BasicEventDTO dto) {
+        selectedEvent = dto;
+        update();
+        Ajax.update("event_details", "customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('show')");
     }
 
-    @PostConstruct
-    private void init() {
-        updateModel();
-        updateView();
+    public List<BasicEventDTO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<BasicEventDTO> events) {
+        this.events = events;
+    }
+
+    public List<BasicEventDTO> getFilteredEvents() {
+        return filteredEvents;
+    }
+
+    public void setFilteredEvents(List<BasicEventDTO> filteredEvents) {
+        this.filteredEvents = filteredEvents;
     }
 
     public BasicEventDTO getSelectedEvent() {
@@ -50,6 +64,14 @@ public class EventBean implements Serializable {
         this.selectedEvent = selectedEvent;
     }
 
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public void setEventService(EventService eventService) {
+        this.eventService = eventService;
+    }
+
     public List<SelectItem> getEventItems() {
         return eventItems;
     }
@@ -58,11 +80,4 @@ public class EventBean implements Serializable {
         this.eventItems = eventItems;
     }
 
-    public List<BasicEventDTO> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<BasicEventDTO> events) {
-        this.events = events;
-    }
 }

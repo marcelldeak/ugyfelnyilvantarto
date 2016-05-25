@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.BasicEventDTO;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +46,15 @@ public class Event implements Serializable {
 
     public Event() {
         // Entity - parameterless constructor
+    }
+
+    public Event(BasicEventDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.notes = dto.getNotes();
+        this.dateOfEnd = dto.getDateOfEnd();
+        this.dateOfStart = dto.getDateOfStart();
+        this.type = dto.getType();
     }
 
     public Long getId() {
