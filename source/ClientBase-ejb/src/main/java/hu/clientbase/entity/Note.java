@@ -11,6 +11,8 @@ import javax.persistence.Id;
 @Entity
 public class Note implements Serializable {
 
+    private static final long serialVersionUID = 1191674170460862706L;
+
     @Id
     @GeneratedValue
     private Long id;

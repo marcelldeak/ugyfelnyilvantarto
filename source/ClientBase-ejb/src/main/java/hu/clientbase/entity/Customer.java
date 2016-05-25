@@ -1,6 +1,8 @@
 package hu.clientbase.entity;
 
 import hu.clientbase.dto.CustomerDTO;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -10,8 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Customer implements Serializable {

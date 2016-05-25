@@ -2,18 +2,21 @@ package hu.clientbase.bean;
 
 import hu.clientbase.dto.BasicUserDTO;
 import hu.clientbase.service.UserService;
+import org.omnifaces.util.Ajax;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.inject.Inject;
-import org.omnifaces.util.Ajax;
 
 @Named("user")
 @ViewScoped
-public class UserBackingBean implements Serializable {
+public class UserCBean implements Serializable {
+
+    private static final long serialVersionUID = 3447186609881280513L;
     
     @Inject
     private UserService userManager;

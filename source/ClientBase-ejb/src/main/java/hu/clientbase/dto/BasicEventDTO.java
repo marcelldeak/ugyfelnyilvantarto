@@ -1,6 +1,5 @@
 package hu.clientbase.dto;
 
-import hu.clientbase.entity.Address;
 import hu.clientbase.entity.Event;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;

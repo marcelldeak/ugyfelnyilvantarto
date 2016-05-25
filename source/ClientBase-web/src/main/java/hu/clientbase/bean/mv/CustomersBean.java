@@ -4,13 +4,14 @@ import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
 import hu.clientbase.service.mdel.CustomerModel;
-import java.io.Serializable;
-import java.util.List;
+import org.omnifaces.util.Ajax;
+
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.util.Ajax;
+import java.io.Serializable;
+import java.util.List;
 
 @Named("customers")
 @ViewScoped

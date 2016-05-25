@@ -3,12 +3,12 @@ package hu.clientbase.service.mdel;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
 import hu.clientbase.facade.EventFacade;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Stateless
 @LocalBean

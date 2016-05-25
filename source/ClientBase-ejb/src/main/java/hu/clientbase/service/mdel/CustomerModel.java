@@ -3,11 +3,11 @@ package hu.clientbase.service.mdel;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
-import java.util.LinkedList;
-import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 @Stateless
 @LocalBean

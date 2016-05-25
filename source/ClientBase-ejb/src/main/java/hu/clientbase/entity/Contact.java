@@ -1,8 +1,8 @@
 package hu.clientbase.entity;
 
 import hu.clientbase.dto.ContactDTO;
-import java.io.Serializable;
 import javax.persistence.Entity;
+import java.io.Serializable;
 
 @Entity
 public class Contact extends Person implements Serializable {

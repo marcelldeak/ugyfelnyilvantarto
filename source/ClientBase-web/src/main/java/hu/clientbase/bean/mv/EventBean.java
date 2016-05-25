@@ -2,14 +2,15 @@ package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.service.mdel.EventModel;
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Named("events")

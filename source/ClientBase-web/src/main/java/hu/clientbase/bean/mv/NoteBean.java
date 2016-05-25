@@ -3,15 +3,16 @@ package hu.clientbase.bean.mv;
 import hu.clientbase.dto.BasicNoteDTO;
 import hu.clientbase.entity.Note;
 import hu.clientbase.service.mdel.NoteModel;
-import java.io.Serializable;
-import java.util.List;
+import org.primefaces.event.SelectEvent;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.event.SelectEvent;
+import java.io.Serializable;
+import java.util.List;
 
 @Named("noteView")
 @ViewScoped

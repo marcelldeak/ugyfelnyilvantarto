@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 @Entity
 public class Invitation implements Serializable {
 
+    private static final long serialVersionUID = -6206253884461219316L;
+
     @Id
     @GeneratedValue
     private Long id;

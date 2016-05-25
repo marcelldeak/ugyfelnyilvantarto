@@ -424,8 +424,12 @@
 
                                             <h:form id="contacts_list">
                                                 <c:forEach var="_contact" items="#{customers.contactPersons}">
+
                                                     <p:panel header="#{_contact.nameHR}" style="margin-bottom: 10px;">
+
                                                         <div class="pull-right" style="position:relative;top:-35px;">
+                                                            
+                                                            
                                                             <p:commandButton title="Edit"
                                                                              icon="ui-icon-pencil"
                                                                              action="#{contactCUD.openEditDialog(_contact)}"
@@ -440,21 +444,65 @@
                                                             </p:commandButton>
                                                         </div>
 
-                                                        <p:commandButton id="add_contact_button"
-                                                                         title="New contact channel"
-                                                                         icon="ui-icon-plus"
-                                                                         class="pull-right"
-                                                                         action="#{contactChannelCUD.openAddDialog(_contact)}"
-                                                                         style="top: 0px !important;right: -72px !important;">
-                                                            <f:ajax />
-                                                        </p:commandButton>
-                                                        
                                                         <div class="row">
-                                                            
+
+                                                            <p:dataTable id="contact_channels_list"
+                                                                         var="_cc"
+                                                                         editable="true"
+                                                                         rowKey="#{_cc.id}"
+                                                                         value="#{_contact.contactChannels}">
+                                                                
+                                                                <p:ajax event="rowEdit" listener="#{contactChannelCUD.onEdit}" update="customer_details_right_panel:contacts_list"/>
+                                                              
+                                                                <f:facet name="header">
+                                                                    Contact channels
+                                                                    <p:commandLink id="add_contact_channel_button"
+                                                                                   title="New contact channel"
+
+                                                                                   class="pull-right"
+                                                                                   action="#{contactChannelCUD.openAddDialog(_contact)}"
+                                                                                   style="position: relative;right: -64px !important;">
+                                                                        <f:ajax />
+                                                                        <span class="ui-icon ui-icon-plus"></span>
+                                                                    </p:commandLink>
+
+                                                                </f:facet>
+                                                                <p:column>
+                                                                        <h:outputText value="#{_cc.type.toString()}" />
+                                                                </p:column>
+
+                                                                <p:column>
+                                                                    <p:cellEditor>
+                                                                        <f:facet name="output"><h:outputText value="#{_cc.value}" /></f:facet>
+                                                                        <f:facet name="input"><p:inputText id="contact_channel_value" value="#{_cc.value}" style="width:100%"/></f:facet>
+                                                                    </p:cellEditor>
+
+                                                                </p:column>
+                                                                
+                                                                <p:column style="width:32px">
+                                                                    <p:rowEditor />
+                                                                </p:column>
+                                                                
+                                                                <p:column style="width:32px">
+                                                                    <p:commandLink id="delete_contact_channel_button"
+                                                                                   title="Delete contact channel"
+                                                                                   action="#{contactChannelCUD.openDeleteDialog(_contact,_cc)}">
+                                                                                   
+                                                                        <f:ajax />
+                                                                        <span class="ui-icon ui-icon-trash"></span>
+                                                                    </p:commandLink>
+                                                                    
+                                                                </p:column>
+
+
+                                                            </p:dataTable>
+
                                                         </div>
 
                                                     </p:panel>
+                                                    <hr />
                                                 </c:forEach>
+                                                <p:remoteCommand name="rc" actionListener="#{contactChannelCUD.updateView()}" />
                                             </h:form>
 
                                         </div>
@@ -682,10 +730,10 @@
             </div>
         </div>
     </div>
-    
+
     <!-- ADD CONTACT CHANNEL -->
-    
-     <div class="modal fade"
+
+    <div class="modal fade"
          id="contact_channel_add_dialog"
          tabindex="-1"
          role="dialog"
@@ -710,15 +758,15 @@
 
                             <div class="form-group row" >
                                 <label class="control-label col-sm-4" for="channel_type">Contact channel type:</label>
-                                <h:selectOneMenu value="#{contactChannelCUD.channelType}"
-                                                 id="channel_type"
-                                                 class="form-control"
-                                                 style="max-width: 280px;
-                                                        position: relative;
-                                                        left: 14px;
-                                                        max-height: 30px;">
-                                    <f:selectItems value="#{contactChannelCUD.channelTypes}" />
-                                </h:selectOneMenu>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu value="#{contactChannelCUD.channelType}"
+                                                     id="channel_type"
+                                                     class="form-control"
+                                                     style="max-width: 280px;
+                                                     max-height: 30px;">
+                                        <f:selectItems value="#{contactChannelCUD.channelTypes}" />
+                                    </h:selectOneMenu>
+                                </div>
                             </div>
 
                             <div class="form-group row" >
@@ -758,6 +806,51 @@
                         </div>
 
                     </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- DELETE CONTACT CHANNEL -->
+    
+    <div class="modal fade"
+         id="contact_channel_delete_dialog"
+         tabindex="-1"
+         role="dialog">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+                        <h4 class="modal-title">Delete contact channel</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <p>Do you really want to delete the contact channel from the system? This action cannot be undone.</p>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                            <div class="pull-right">
+                                <h:form class="form-horizontal">
+                                    <p:commandButton value="Yes" type="button" action="#{contactChannelCUD.delete()}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                    <span style="width:150px;" />
+                                    <p:commandButton value="No" type="button" onclick="$('#contact_channel_delete_dialog').modal('hide')" />
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

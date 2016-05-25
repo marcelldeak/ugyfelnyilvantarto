@@ -5,36 +5,37 @@ import hu.clientbase.dto.ContactChannelDTO;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.entity.ContactChannelType;
 import hu.clientbase.service.CustomerService;
-import java.io.Serializable;
+import org.omnifaces.util.Ajax;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.util.Ajax;
+import java.io.Serializable;
+import org.primefaces.event.RowEditEvent;
 
 @Named("contactChannelCUD")
 @ViewScoped
 public class ContactChannelCUDBean implements Serializable {
 
     private static final long serialVersionUID = 5207156919569672574L;
-    
+
     @Inject
     private CustomerService customerService;
 
     @Inject
     private CustomersBean customersBean;
-    
+
     private Long id;
-    
+
     private ContactChannelType channelType;
-    
+
     private String channelValue;
-    
+
     private ContactChannelDTO contactChannelToDelete;
-    
+
     private ContactDTO selectedContact;
-    
+
     public void openAddDialog(ContactDTO dto) {
         selectedContact = dto;
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_channel_add_dialog').modal('show');");
@@ -48,22 +49,33 @@ public class ContactChannelCUDBean implements Serializable {
         customersBean.update();
         Ajax.update("customer_details_right_panel:contacts_list");
         Ajax.oncomplete("clearAndCloseAddContactChannelDialog(true);");
+
     }
 
-    public void openEditDialog(ContactChannelDTO dto) {
-     
+    public void onEdit(RowEditEvent event) {
+        ContactChannelDTO dto = (ContactChannelDTO) event.getObject();
+        customerService.updateContactChannel(dto);
+        Ajax.oncomplete("rc();");
+
     }
 
-    public void edit() {
-       
+    public void updateView() {
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:contacts_list");
     }
 
-    public void openDeleteDialog(ContactChannelDTO dto) {
-       
+    public void openDeleteDialog(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
+        contactChannelToDelete = contactChannelDTO;
+        selectedContact = contactDTO;
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_channel_delete_dialog').modal('show')");
     }
 
     public void delete() {
-       
+
+        customerService.deleteContactChannel(selectedContact, contactChannelToDelete);
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.oncomplete("$('#contact_channel_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show');");
     }
 
     public ContactChannelType getChannelType() {
@@ -81,9 +93,8 @@ public class ContactChannelCUDBean implements Serializable {
     public void setChannelValue(String channelValue) {
         this.channelValue = channelValue;
     }
-    
-    public ContactChannelType[] getChannelTypes()
-    {
+
+    public ContactChannelType[] getChannelTypes() {
         return ContactChannelType.values();
     }
 }

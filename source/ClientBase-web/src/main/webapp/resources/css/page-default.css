@@ -21,6 +21,9 @@
   vertical-align: middle;
 }
 
+#customer_details_right_panel\:contacts_list .ui-datatable-header {
+    padding-left: 90px;
+}
 
 .row-centered {
     text-align:center;

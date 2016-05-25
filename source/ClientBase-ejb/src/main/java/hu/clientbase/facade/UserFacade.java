@@ -3,11 +3,11 @@ package hu.clientbase.facade;
 import hu.clientbase.entity.PendingRegistration;
 import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
-import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 @LocalBean

@@ -3,13 +3,14 @@ package hu.clientbase.bean;
 import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.service.CustomerService;
-import java.io.Serializable;
+import org.omnifaces.util.Ajax;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.util.Ajax;
+import java.io.Serializable;
 
 @Named("contactCUD")
 @ViewScoped

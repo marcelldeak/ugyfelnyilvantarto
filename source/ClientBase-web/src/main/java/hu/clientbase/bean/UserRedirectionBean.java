@@ -1,11 +1,11 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.service.UserService;
-import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Named("redirection")
 public class UserRedirectionBean {

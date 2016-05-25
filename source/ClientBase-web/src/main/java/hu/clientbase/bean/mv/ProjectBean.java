@@ -3,16 +3,17 @@ package hu.clientbase.bean.mv;
 import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.Project;
 import hu.clientbase.service.mdel.ProjectModel;
-import java.io.Serializable;
-import java.util.List;
+import org.omnifaces.util.Ajax;
+import org.primefaces.event.SelectEvent;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.event.SelectEvent;
-import org.omnifaces.util.Ajax;
+import java.io.Serializable;
+import java.util.List;
 
 @Named("projectView")
 @ViewScoped

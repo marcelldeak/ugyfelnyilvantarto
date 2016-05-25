@@ -1,15 +1,16 @@
 package hu.clientbase.bean;
 
-import java.io.Serializable;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 @Named("navigation")
 @ViewScoped
 public class NavigationBean implements Serializable {
+
+    private static final long serialVersionUID = -9208264782252419485L;
 
     public String getMenuClass(String menuItem) {
 

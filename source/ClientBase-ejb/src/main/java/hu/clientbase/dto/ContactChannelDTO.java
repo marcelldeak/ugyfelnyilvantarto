@@ -8,6 +8,8 @@ public class ContactChannelDTO implements Serializable {
 
     private static final long serialVersionUID = -2205985382810828270L;
 
+    private Long id;
+
     private ContactChannelType type;
 
     private String value;
@@ -23,6 +25,7 @@ public class ContactChannelDTO implements Serializable {
 
     public ContactChannelDTO(ContactChannel contactChannel) {
         this(contactChannel.getType(), contactChannel.getValue());
+        this.id = contactChannel.getId();
     }
 
     public ContactChannelType getType() {
@@ -39,6 +42,14 @@ public class ContactChannelDTO implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

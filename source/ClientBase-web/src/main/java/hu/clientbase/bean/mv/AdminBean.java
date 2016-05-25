@@ -1,19 +1,22 @@
-package hu.clientbase.bean;
+package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicUserDTO;
 import hu.clientbase.service.UserService;
-import java.io.Serializable;
-import java.util.List;
+import org.omnifaces.util.Ajax;
+
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.util.Ajax;
+import java.io.Serializable;
+import java.util.List;
 
 @Named(value = "admin")
 @ViewScoped
-public class AdminBackingBean implements Serializable {
+public class AdminBean implements Serializable {
+
+    private static final long serialVersionUID = 4500091024082702835L;
 
     @Inject
     private UserService userService;

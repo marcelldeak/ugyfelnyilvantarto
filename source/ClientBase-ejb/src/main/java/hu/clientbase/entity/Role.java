@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "User_role")
 public class Role implements Serializable {
 
+    private static final long serialVersionUID = 3492921308179920151L;
+
     @Id
     @GeneratedValue
     private Long id;

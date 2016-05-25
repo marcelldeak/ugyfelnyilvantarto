@@ -9,10 +9,10 @@ import hu.clientbase.entity.ContactChannel;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.facade.EntityFacade;
-import java.util.LinkedList;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 @Stateless
 public class CustomerService {
@@ -95,16 +95,21 @@ public class CustomerService {
         entityFacade.update(contact);
     }
 
-    public List<ContactChannelDTO> getContactChannels() {
-        return null;
+    public void updateContactChannel(ContactChannelDTO dto) {
+        ContactChannel contactChannel = entityFacade.find(ContactChannel.class, dto.getId());
+        contactChannel.setValue(dto.getValue());
+        
+        entityFacade.update(contactChannel);
     }
 
-    public void updateContactChannel() {
-
-    }
-
-    public void deleteContactChannel() {
-
+    public void deleteContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
+          Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
+          ContactChannel contactChannel = entityFacade.find(ContactChannel.class, contactChannelDTO.getId());
+          
+          contact.getContactChannels().remove(contactChannel);
+          
+          entityFacade.update(contact);
+          entityFacade.delete(contactChannel);
     }
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.TemporalType;
 @Entity
 public class Project implements Serializable {
 
+    private static final long serialVersionUID = 1978904074620679679L;
+
     @Id
     @GeneratedValue
     private Long id;
