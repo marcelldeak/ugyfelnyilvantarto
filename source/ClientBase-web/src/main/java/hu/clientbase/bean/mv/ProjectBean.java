@@ -2,10 +2,9 @@ package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.Project;
-import hu.clientbase.service.mdel.ProjectModel;
+import hu.clientbase.service.mv.ProjectModel;
 import org.omnifaces.util.Ajax;
 import org.primefaces.event.SelectEvent;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

@@ -21,7 +21,7 @@ public class ContactChannelCUDBean implements Serializable {
     private static final long serialVersionUID = 5207156919569672574L;
 
     @Inject
-    private CustomerService customerService;
+    private transient CustomerService customerService;
 
     @Inject
     private CustomersBean customersBean;

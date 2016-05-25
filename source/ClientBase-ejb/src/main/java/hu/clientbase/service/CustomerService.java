@@ -23,6 +23,15 @@ public class CustomerService {
     @Inject
     private CustomerFacade customerFacade;
 
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> customers = customerFacade.getAllCustomers();
+        List<CustomerDTO> ret = new LinkedList<>();
+
+        customers.stream().forEach(c -> ret.add(new CustomerDTO(c)));
+
+        return ret;
+    }
+
     public void create(CustomerDTO dto) {
         Address address = new Address(dto.getAddress());
         Customer customer = new Customer(dto);

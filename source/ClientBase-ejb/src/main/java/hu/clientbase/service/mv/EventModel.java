@@ -1,4 +1,4 @@
-package hu.clientbase.service.mdel;
+package hu.clientbase.service.mv;
 
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;

@@ -2,7 +2,7 @@ package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicNoteDTO;
 import hu.clientbase.entity.Note;
-import hu.clientbase.service.mdel.NoteModel;
+import hu.clientbase.service.mv.NoteModel;
 import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;

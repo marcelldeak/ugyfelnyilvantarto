@@ -1,10 +1,11 @@
 package hu.clientbase.dto;
 
 import hu.clientbase.entity.User;
-import javax.ejb.Stateless;
+import java.io.Serializable;
 
-@Stateless
-public class BasicUserDTO {
+public class UserDTO implements Serializable {
+
+    private static final long serialVersionUID = -329046416249720809L;
 
     private Long id;
     private String email;
@@ -13,18 +14,18 @@ public class BasicUserDTO {
     private String firstName;
     private Boolean active;
 
-    public BasicUserDTO() {
+    public UserDTO() {
         //DTO
     }
 
-    public BasicUserDTO(String email, String password, String lastName, String firstName) {
+    public UserDTO(String email, String password, String lastName, String firstName) {
         this.email = email;
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
     }
 
-    public BasicUserDTO(User user) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.lastName = user.getLastName();
@@ -83,5 +84,4 @@ public class BasicUserDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
 }
