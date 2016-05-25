@@ -3,9 +3,7 @@ package hu.clientbase.bean.mv;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
-import hu.clientbase.service.mdel.CustomerModel;
 import org.omnifaces.util.Ajax;
-
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,10 +18,7 @@ public class CustomersBean implements Serializable {
     private static final long serialVersionUID = -961683443281866011L;
 
     @Inject
-    private CustomerModel model;
-
-    @Inject
-    private CustomerService customerService;
+    private transient CustomerService customerService;
 
     private CustomerDTO selectedCustomer;
     private List<CustomerDTO> filteredCustomers;
@@ -35,9 +30,8 @@ public class CustomersBean implements Serializable {
     private void init() {
         update();
     }
-
     public void update() {
-        customers = model.getAllCustomers();
+        customers = customerService.getAllCustomers();
         if (selectedCustomer != null) {
             contactPersons = customerService.getContactsByCustomer(selectedCustomer);
         }

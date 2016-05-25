@@ -1,6 +1,6 @@
 package hu.clientbase.bean;
 
-import hu.clientbase.dto.BasicUserDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.UserService;
 import org.omnifaces.util.Ajax;
 
@@ -19,7 +19,7 @@ public class UserCBean implements Serializable {
     private static final long serialVersionUID = 3447186609881280513L;
     
     @Inject
-    private UserService userManager;
+    private transient UserService userService;
     
     private String email;
     private String password;
@@ -68,7 +68,7 @@ public class UserCBean implements Serializable {
     }
     
     public void checkIfEmailExists() {
-        if (userManager.isEmailExist(email)) {
+        if (userService.isEmailExist(email)) {
             Ajax.oncomplete("ex_email_fail()", "continue_validation()");
         } else {
             Ajax.oncomplete("continue_validation()");
@@ -79,8 +79,8 @@ public class UserCBean implements Serializable {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] digest = md.digest(password.getBytes());
         String b64String = Base64.getEncoder().encodeToString(digest);
-        BasicUserDTO user = new BasicUserDTO(email, b64String, lastName, firstName);
-        userManager.create(user);
+        UserDTO user = new UserDTO(email, b64String, lastName, firstName);
+        userService.create(user);
         Ajax.oncomplete("reg_success()");
         
     }

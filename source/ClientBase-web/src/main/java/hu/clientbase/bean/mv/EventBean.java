@@ -1,7 +1,7 @@
 package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicEventDTO;
-import hu.clientbase.service.mdel.EventModel;
+import hu.clientbase.service.mv.EventModel;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;

@@ -1,6 +1,6 @@
 package hu.clientbase.service;
 
-import hu.clientbase.dto.BasicUserDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.PendingRegistration;
 import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
@@ -20,7 +20,7 @@ public class UserService {
     @Inject
     private UserFacade userFacade;
 
-    public void create(BasicUserDTO dto) {
+    public void create(UserDTO dto) {
         User u = new User(dto);
         u.setActive(false);
         PendingRegistration p = new PendingRegistration(u);
@@ -28,19 +28,19 @@ public class UserService {
         entityFacade.create(p);
     }
 
-    public void delete(BasicUserDTO dto) {
+    public void delete(UserDTO dto) {
         User u = entityFacade.find(User.class, dto.getId());
         entityFacade.delete(u);
     }
 
-    public void deletePendingRegistration(BasicUserDTO dto) {
+    public void deletePendingRegistration(UserDTO dto) {
         User u = entityFacade.find(User.class, dto.getId());
         PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
         entityFacade.delete(p);
         entityFacade.delete(u);
     }
 
-    public void acceptPendingRegistration(BasicUserDTO dto, String role) {
+    public void acceptPendingRegistration(UserDTO dto, String role) {
         User u = entityFacade.find(User.class, dto.getId());
         PendingRegistration p = userFacade.getPendingRegistrationByUser(u);
         entityFacade.delete(p);
@@ -52,16 +52,16 @@ public class UserService {
         entityFacade.update(u);
     }
 
-    public List<BasicUserDTO> getAdministratorsExceptOne(String email) {
+    public List<UserDTO> getAdministratorsExceptOne(String email) {
 
         List<User> users = userFacade.getUsers();
 
-        List<BasicUserDTO> ret = new LinkedList<>();
+        List<UserDTO> ret = new LinkedList<>();
 
         for (User u : users) {
             for (Role r : u.getRoles()) {
-                if (r.getName().toLowerCase().equals("admin") && !u.getEmail().equals(email)) {
-                    ret.add(new BasicUserDTO(u));
+                if ("admin".equalsIgnoreCase(r.getName()) && !u.getEmail().equals(email)) {
+                    ret.add(new UserDTO(u));
                     break;
                 }
             }
@@ -70,15 +70,15 @@ public class UserService {
         return ret;
     }
 
-    public List<BasicUserDTO> getUsers() {
+    public List<UserDTO> getUsers() {
         List<User> users = userFacade.getUsers();
 
-        List<BasicUserDTO> ret = new LinkedList<>();
+        List<UserDTO> ret = new LinkedList<>();
 
         for (User u : users) {
             for (Role r : u.getRoles()) {
-                if (r.getName().toLowerCase().equals("user")) {
-                    ret.add(new BasicUserDTO(u));
+                if ("user".equalsIgnoreCase(r.getName().toLowerCase())) {
+                    ret.add(new UserDTO(u));
                     break;
                 }
             }
@@ -87,15 +87,15 @@ public class UserService {
     }
 
     public boolean isEmailExist(String email) {
-        return entityFacade.findAll(User.class).stream().anyMatch((user) -> (user.getEmail().equals(email)));
+        return entityFacade.findAll(User.class).stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
-    public List<BasicUserDTO> getPendingRegistrations() {
+    public List<UserDTO> getPendingRegistrations() {
         List<PendingRegistration> pendingRegistrations = userFacade.getPendingRegistrations();
 
-        List<BasicUserDTO> ret = new LinkedList<>();
+        List<UserDTO> ret = new LinkedList<>();
 
-        pendingRegistrations.stream().forEach(p -> ret.add(new BasicUserDTO(p.getUser())));
+        pendingRegistrations.stream().forEach(p -> ret.add(new UserDTO(p.getUser())));
 
         return ret;
     }

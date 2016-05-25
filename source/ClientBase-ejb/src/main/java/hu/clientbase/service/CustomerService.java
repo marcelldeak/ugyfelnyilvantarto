@@ -23,6 +23,15 @@ public class CustomerService {
     @Inject
     private CustomerFacade customerFacade;
 
+    public List<CustomerDTO> getAllCustomers() {
+        List<Customer> customers = customerFacade.getAllCustomers();
+        List<CustomerDTO> ret = new LinkedList<>();
+
+        customers.stream().forEach(c -> ret.add(new CustomerDTO(c)));
+
+        return ret;
+    }
+
     public void create(CustomerDTO dto) {
         Address address = new Address(dto.getAddress());
         Customer customer = new Customer(dto);
@@ -80,36 +89,36 @@ public class CustomerService {
     public void deleteContact(CustomerDTO customerDTO, ContactDTO contactDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
-        
+
         customer.getContacts().remove(contact);
-        
+
         entityFacade.update(customer);
         entityFacade.delete(contact);
     }
 
     public void addContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
         Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
-        
+
         contact.getContactChannels().add(new ContactChannel(contactChannelDTO));
-        
+
         entityFacade.update(contact);
     }
 
     public void updateContactChannel(ContactChannelDTO dto) {
         ContactChannel contactChannel = entityFacade.find(ContactChannel.class, dto.getId());
         contactChannel.setValue(dto.getValue());
-        
+
         entityFacade.update(contactChannel);
     }
 
     public void deleteContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
-          Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
-          ContactChannel contactChannel = entityFacade.find(ContactChannel.class, contactChannelDTO.getId());
-          
-          contact.getContactChannels().remove(contactChannel);
-          
-          entityFacade.update(contact);
-          entityFacade.delete(contactChannel);
+        Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
+        ContactChannel contactChannel = entityFacade.find(ContactChannel.class, contactChannelDTO.getId());
+
+        contact.getContactChannels().remove(contactChannel);
+
+        entityFacade.update(contact);
+        entityFacade.delete(contactChannel);
     }
 
 }

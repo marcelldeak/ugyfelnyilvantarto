@@ -1,9 +1,8 @@
 package hu.clientbase.bean.mv;
 
-import hu.clientbase.dto.BasicUserDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.UserService;
 import org.omnifaces.util.Ajax;
-
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -19,18 +18,18 @@ public class AdminBean implements Serializable {
     private static final long serialVersionUID = 4500091024082702835L;
 
     @Inject
-    private UserService userService;
+    private transient UserService userService;
+    
+    private List<UserDTO> pendingRegistrations;
 
-    private List<BasicUserDTO> pendingRegistrations;
+    private List<UserDTO> administrators;
+    private List<UserDTO> filteredAdministrators;
 
-    private List<BasicUserDTO> administrators;
-    private List<BasicUserDTO> filteredAdministrators;
+    private List<UserDTO> users;
+    private List<UserDTO> filteredUsers;
 
-    private List<BasicUserDTO> users;
-    private List<BasicUserDTO> filteredUsers;
-
-    private BasicUserDTO userToAdd;
-    private BasicUserDTO userToDelete;
+    private UserDTO userToAdd;
+    private UserDTO userToDelete;
 
     @PostConstruct
     private void init() {
@@ -52,19 +51,19 @@ public class AdminBean implements Serializable {
         Ajax.oncomplete("$('#accept_dialog').modal('hide')");
     }
 
-    public void rejectRegistration(BasicUserDTO dto) {
+    public void rejectRegistration(UserDTO dto) {
         userService.deletePendingRegistration(dto);
         updateView();
         Ajax.update("p_form:pending_regs");
     }
 
-    public void acceptRegistrationQuestion(BasicUserDTO dto) {
+    public void acceptRegistrationQuestion(UserDTO dto) {
         userToAdd = dto;
         Ajax.update("accept_dialog_user_name");
         Ajax.oncomplete("$('#accept_dialog').modal('show')");
     }
 
-    public void deleteUserQuestion(BasicUserDTO dto) {
+    public void deleteUserQuestion(UserDTO dto) {
         userToDelete = dto;
         Ajax.update("confirmation_dialog_user_name");
         Ajax.oncomplete("$('#confirmation_dialog').modal('show')");
@@ -85,39 +84,39 @@ public class AdminBean implements Serializable {
         Ajax.oncomplete("$('#confirmation_dialog').modal('hide')");
     }
 
-    public List<BasicUserDTO> getPendingRegistrations() {
+    public List<UserDTO> getPendingRegistrations() {
         return pendingRegistrations;
     }
 
-    public List<BasicUserDTO> getAdministrators() {
+    public List<UserDTO> getAdministrators() {
         return administrators;
     }
 
-    public List<BasicUserDTO> getFilteredAdministrators() {
+    public List<UserDTO> getFilteredAdministrators() {
         return filteredAdministrators;
     }
 
-    public List<BasicUserDTO> getUsers() {
+    public List<UserDTO> getUsers() {
         return users;
     }
 
-    public List<BasicUserDTO> getFilteredUsers() {
+    public List<UserDTO> getFilteredUsers() {
         return filteredUsers;
     }
 
-    public BasicUserDTO getUserToAdd() {
+    public UserDTO getUserToAdd() {
         return userToAdd;
     }
 
-    public BasicUserDTO getUserToDelete() {
+    public UserDTO getUserToDelete() {
         return userToDelete;
     }
 
-    public void setFilteredAdministrators(List<BasicUserDTO> filteredAdministrators) {
+    public void setFilteredAdministrators(List<UserDTO> filteredAdministrators) {
         this.filteredAdministrators = filteredAdministrators;
     }
 
-    public void setFilteredUsers(List<BasicUserDTO> filteredUsers) {
+    public void setFilteredUsers(List<UserDTO> filteredUsers) {
         this.filteredUsers = filteredUsers;
     }
 }
