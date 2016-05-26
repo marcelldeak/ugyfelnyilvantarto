@@ -1,0 +1,142 @@
+package hu.clientbase.bean;
+
+import hu.clientbase.dto.UserDTO;
+import hu.clientbase.service.UserService;
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateful;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import org.omnifaces.util.Ajax;
+import org.primefaces.model.UploadedFile;
+
+@ManagedBean(name = "profile")
+@ViewScoped
+@Stateful
+public class ProfileBean{
+
+    @Inject
+    private UserService userService;
+
+    private Long id;
+    private String email;
+    private String password;
+    private String lastName;
+    private String firstName;
+    private Date dateOfBirth;
+    private String picture;
+    
+    private UploadedFile file;
+
+    public ProfileBean() {
+        // default constructor
+    }
+
+    @PostConstruct
+    private void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String eMail = context.getExternalContext().getRemoteUser();
+        UserDTO user = userService.getUserByEmail(eMail);
+        id = user.getId();
+        email = user.getEmail();
+        password = user.getPassword();
+        lastName = user.getLastName();
+        firstName = user.getFirstName();
+        dateOfBirth = user.getDateOfBirth().getTime();
+        picture = user.getPicture();
+    }
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+    
+    public void uploadImage(ActionEvent event){
+        picture = file.getFileName();
+    }
+    
+    public void saveChanges() throws NoSuchAlgorithmException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateOfBirth);
+        UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
+        userService.update(user);
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        try {
+            request.login(email, password);
+        } catch (ServletException ex) {
+            context.getExternalContext().setResponseStatus(404);
+        }
+        
+        init();
+
+        Ajax.updateAll();
+    }
+}

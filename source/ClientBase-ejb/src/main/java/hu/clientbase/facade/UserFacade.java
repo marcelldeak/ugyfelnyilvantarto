@@ -31,4 +31,8 @@ public class UserFacade {
     public List<User> getUsers() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
+    
+    public User getUserByEmail(String email) {
+        return em.createQuery("select u from User u where u.email like :email", User.class).setParameter("email", email).getSingleResult();
+    }
 }
