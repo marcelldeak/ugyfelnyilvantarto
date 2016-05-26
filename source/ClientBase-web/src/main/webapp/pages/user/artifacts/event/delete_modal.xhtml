@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:oou="http://omnifaces.org/ui">
+
+    <!-- DELETE EVENT -->
+    <div class="modal fade"
+         id="event_delete_dialog"
+         tabindex="-1"
+         role="dialog">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+                        <h4 class="modal-title">Delete event #{eventCUDBean.eventToDelete.name}</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <h:form id="event_delete_form">
+                                <h:outputText value="Do you really want to delete #{eventCUDBean.eventToDelete.getName()} from the system? This action cannot be undone." />
+                            </h:form>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                            <div class="pull-right">
+                                <h:form class="form-horizontal">
+                                    <p:commandButton value="Yes" type="button" action="#{eventCUD.delete()}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                    <span style="width:150px;" />
+                                    <p:commandButton value="No" type="button" onclick="$('#event_delete_dialog').modal('hide')" />
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ui:composition>

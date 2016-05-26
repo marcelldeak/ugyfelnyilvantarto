@@ -3,6 +3,7 @@ package hu.clientbase.entity;
 import hu.clientbase.dto.BasicEventDTO;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,12 +32,12 @@ public class Event implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Basic
     @Column(name = "date_of_start")
-    private Calendar dateOfStart;
+    private Date dateOfStart;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic
     @Column(name = "date_of_end")
-    private Calendar dateOfEnd;
+    private Date dateOfEnd;
 
     @Basic
     private String name;
@@ -89,19 +90,19 @@ public class Event implements Serializable {
         this.type = type;
     }
 
-    public Calendar getDateOfStart() {
+    public Date getDateOfStart() {
         return dateOfStart;
     }
 
-    public void setDateOfStart(Calendar dateOfStart) {
+    public void setDateOfStart(Date dateOfStart) {
         this.dateOfStart = dateOfStart;
     }
 
-    public Calendar getDateOfEnd() {
+    public Date getDateOfEnd() {
         return dateOfEnd;
     }
 
-    public void setDateOfEnd(Calendar dateOfEnd) {
+    public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
     }
 }

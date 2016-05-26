@@ -7,6 +7,7 @@ import hu.clientbase.entity.Note;
 import hu.clientbase.service.EventService;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -29,9 +30,9 @@ public class EventCUDBean implements Serializable {
 
     private EventType type;
 
-    private Calendar dateOfStart;
+    private Date dateOfStart;
 
-    private Calendar dateOfEnd;
+    private Date dateOfEnd;
 
     private String name;
 
@@ -70,12 +71,12 @@ public class EventCUDBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event edited succesfully."));
         eventBean.update();
         Ajax.update("e_list_form:e_list_table");
-        Ajax.oncomplete("clearAndCloseEditEvetnDialog(true)");
+        Ajax.oncomplete("clearAndCloseEditEventDialog(true)");
     }
 
     public void openDeleteDialog(BasicEventDTO dto) {
         eventToDelete = dto;
-        Ajax.update("event_delete_name");
+        Ajax.update("event_delete_form");
         Ajax.oncomplete("$('#event_delete_dialog').modal('show')");
     }
 
@@ -83,7 +84,7 @@ public class EventCUDBean implements Serializable {
         eventService.delete(eventToDelete);
         eventBean.update();
         Ajax.update("e_list_form:e_list_table");
-        Ajax.oncomplete("$('#event_delete_dialog').modal('hide')");
+        Ajax.oncomplete("clearAndCloseDeleteEventDialog(true)");
     }
 
     public Long getId() {
@@ -102,19 +103,19 @@ public class EventCUDBean implements Serializable {
         this.type = type;
     }
 
-    public Calendar getDateOfStart() {
+    public Date getDateOfStart() {
         return dateOfStart;
     }
 
-    public void setDateOfStart(Calendar dateOfStart) {
+    public void setDateOfStart(Date dateOfStart) {
         this.dateOfStart = dateOfStart;
     }
 
-    public Calendar getDateOfEnd() {
+    public Date getDateOfEnd() {
         return dateOfEnd;
     }
 
-    public void setDateOfEnd(Calendar dateOfEnd) {
+    public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
     }
 
