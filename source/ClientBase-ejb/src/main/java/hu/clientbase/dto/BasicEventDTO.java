@@ -3,15 +3,15 @@ package hu.clientbase.dto;
 import hu.clientbase.entity.Event;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BasicEventDTO {
 
     private Long id;
     private EventType type;
-    private Calendar dateOfStart;
-    private Calendar dateOfEnd;
+    private Date dateOfStart;
+    private Date dateOfEnd;
     private String name;
     private List<Note> notes;
 
@@ -29,7 +29,7 @@ public class BasicEventDTO {
 
     }
 
-    public BasicEventDTO(EventType type, Calendar dateOfStart, Calendar dateOfEnd, String name, List<Note> notes) {
+    public BasicEventDTO(EventType type, Date dateOfStart, Date dateOfEnd, String name, List<Note> notes) {
         this.type = type;
         this.dateOfStart = dateOfStart;
         this.dateOfEnd = dateOfEnd;
@@ -53,19 +53,19 @@ public class BasicEventDTO {
         this.type = type;
     }
 
-    public Calendar getDateOfStart() {
+    public Date getDateOfStart() {
         return dateOfStart;
     }
 
-    public void setDateOfStart(Calendar dateOfStart) {
+    public void setDateOfStart(Date dateOfStart) {
         this.dateOfStart = dateOfStart;
     }
 
-    public Calendar getDateOfEnd() {
+    public Date getDateOfEnd() {
         return dateOfEnd;
     }
 
-    public void setDateOfEnd(Calendar dateOfEnd) {
+    public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
     }
 

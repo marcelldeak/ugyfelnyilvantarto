@@ -37,8 +37,8 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     public void openSelectedEventDetails(BasicEventDTO dto) {
         selectedEvent = dto;
         update();
-        Ajax.update("event_details", "customer_details_right_panel:contacts_list");
-        Ajax.oncomplete("$('#customer_details_dialog').modal('show')");
+        Ajax.update("event_details_form");
+        Ajax.oncomplete("$('#event_details_dialog').modal('show')");
     }
 
     public List<BasicEventDTO> getEvents() {
@@ -80,5 +80,5 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     public void setEventItems(List<SelectItem> eventItems) {
         this.eventItems = eventItems;
     }
-
+    
 }
