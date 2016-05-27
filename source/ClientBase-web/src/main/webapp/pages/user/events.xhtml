@@ -84,7 +84,9 @@
                                           filterBy="#{_event.dateOfStart}"
                                           filterMatchMode="startsWith"
                                           >
-                                    <h:outputText value="#{_event.dateOfStart}"/>
+                                    <h:outputText value="#{_event.dateOfStart}">
+                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                    </h:outputText>
                                 </p:column>
 
                                 <p:column headerText="Ending Date" 
@@ -92,7 +94,9 @@
                                           filterBy="#{_event.dateOfEnd}"
                                           filterMatchMode="contains"
                                           >
-                                    <h:outputText value="#{_event.dateOfEnd}"/>
+                                    <h:outputText value="#{_event.dateOfEnd}">
+                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                    </h:outputText>
                                 </p:column>
 
                                 <p:column headerText="Number of Notes"

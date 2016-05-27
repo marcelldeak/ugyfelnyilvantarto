@@ -1,10 +1,19 @@
 package hu.clientbase.entity;
 
 import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.facade.CustomerFacade;
+import hu.clientbase.shared.ejb.SharedEventDTO;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Topic;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +22,31 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 public class Event implements Serializable {
 
     private static final long serialVersionUID = 2480370132530374980L;
+    @Transient
+    @Inject
+    private CustomerFacade customerFacade;
+
+    @Transient
+    @Inject
+    private JMSContext context;
+
+    @Transient
+    @Resource(lookup = "java:/jms/topic/CreatedTopic")
+    private Topic createdTopic;
+
+    @Transient
+    @Resource(lookup = "java:/jms/topic/RemovedTopic")
+    private Topic removedTopic;
 
     @Id
     @GeneratedValue
@@ -104,5 +131,29 @@ public class Event implements Serializable {
 
     public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
+    }
+
+    @PostPersist
+    public void sendEventToCreatedTopic() {
+        try {
+            SharedEventDTO sharedEventDTO = new SharedEventDTO(type.toString(),
+                    dateOfStart, dateOfEnd, name);
+
+            Message message = context.createObjectMessage(sharedEventDTO);
+            Customer customer = customerFacade.getCustomerForEvent(this);
+            message.setStringProperty("Type", type.toString());
+            message.setStringProperty("Customer name", customer.getName());
+
+            context.createProducer().send(createdTopic, message);
+        } catch (JMSException ex) {
+            Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    @PostRemove
+    public void sendEventToRemovedTopic() {
+        SharedEventDTO sharedEventDTO = new SharedEventDTO(type.toString(), dateOfStart, dateOfEnd, name);
+        context.createProducer().send(removedTopic, sharedEventDTO);
     }
 }

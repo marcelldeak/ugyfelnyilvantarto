@@ -56,7 +56,6 @@
 
                                             <oou:importConstants type="hu.clientbase.entity.EventType"/>
                                             <h:selectOneMenu value="#{eventCUD.type}" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" >
-                                                
                                                 <f:selectItems value="#{EventType.values()}" var="_eventType" itemValue="#{_eventType}" itemLabel="#{_eventType.toString()}"  />
                                             </h:selectOneMenu>
                                         </div>
@@ -65,17 +64,18 @@
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4" for="e_name">Date of Start:</label>
                                         <div class="col-sm-8">
-                                            <p:calendar id="date_of_start" value="#{eventCUD.dateOfStart}" pattern="yyyy/MM/dd HH:mm:ss" showOn="button"/>
+                                            <p:calendar id="date_of_start" value="#{eventCUD.dateOfStart}" pattern="yyyy/MM/dd HH:mm:ss" 
+                                                        showOn="button" required="true" label="Date of start"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4" for="e_name">Date of End:</label>
                                         <div class="col-sm-8">
-                                            <p:calendar id="date_of_end" value="#{eventCUD.dateOfEnd}" pattern="yyyy/MM/dd HH:mm:ss" />
+                                            <p:calendar id="date_of_end" value="#{eventCUD.dateOfEnd}" pattern="yyyy/MM/dd HH:mm:ss" 
+                                                        required="true" label="Date of end"/>
                                         </div>
                                     </div>
-
 
                                     <p:messages autoUpdate="true"/>
                                 </p:panel>
@@ -90,7 +90,7 @@
                                     </p:commandButton>
                                     <p:commandButton value="Cancel"
                                                      validateClient="false"
-                                                     onclick="clearAndCloseEditEventDialog(false); return false;"
+                                                     onclick="$('#event_edit_dialog').modal('hide')"
                                                      style="margin-right:10px">
                                     </p:commandButton>
 

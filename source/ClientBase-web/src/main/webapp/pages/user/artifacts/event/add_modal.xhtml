@@ -65,14 +65,17 @@
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4" for="e_name">Date of Start:</label>
                                         <div class="col-sm-8">
-                                            <p:calendar id="date_of_start" value="#{eventCUD.dateOfStart}" pattern="yyyy/MM/dd HH:mm:ss" showOn="button"/>
+                                            <p:calendar id="date_of_start" value="#{eventCUD.dateOfStart}" pattern="yyyy/MM/dd HH:mm:ss" 
+                                                        showOn="button" 
+                                                        required="true" label="Date of start"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4" for="e_name">Date of End:</label>
                                         <div class="col-sm-8">
-                                            <p:calendar id="date_of_end" value="#{eventCUD.dateOfEnd}" pattern="yyyy/MM/dd HH:mm:ss" />
+                                            <p:calendar id="date_of_end" value="#{eventCUD.dateOfEnd}" pattern="yyyy/MM/dd HH:mm:ss" 
+                                                        required="true" label="Date of end"/>
                                         </div>
                                     </div>
 

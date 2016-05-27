@@ -42,31 +42,35 @@
                                 <p:panel id="event_data" header="Details">
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4" for="e_name">Name:</label>
+                                        <label class="control-label col-sm-4">Name:</label>
                                         <div class="col-sm-8">
-                                            <h:outputText id="e_name" value="#{events.getSelectedEvent().getName()}"/>
+                                            <h:outputText value="#{events.selectedEvent.name}"/>
 
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4" for="e_type">Type:</label>
+                                        <label class="control-label col-sm-4" >Type:</label>
                                         <div class="col-sm-8">
                                             <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4" for="e_name">Date of Start:</label>
+                                        <label class="control-label col-sm-4" >Date of Start:</label>
                                         <div class="col-sm-8">
-                                            <h:outputText  value="#{events.selectedEvent.dateOfStart}"/>
+                                            <h:outputText  value="#{events.selectedEvent.dateOfStart}">
+                                                <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                            </h:outputText>
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4" for="e_name">Date of End:</label>
+                                        <label class="control-label col-sm-4">Date of End:</label>
                                         <div class="col-sm-8">
-                                            <h:outputText value="#{events.selectedEvent.dateOfEnd}"/>
+                                            <h:outputText value="#{events.selectedEvent.dateOfEnd}">
+                                                <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                            </h:outputText>
                                         </div>
                                     </div>
                                 </p:panel>
