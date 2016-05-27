@@ -69,3 +69,32 @@ function clearAddContactChannelModal() {
     $('#customer_details_dialog').modal('show');
 }
 
+// for the projects
+
+function clearAddProjectModal() {
+    $('#project_add_dialog').modal('hide');
+    $('#project_add_form').trigger('reset');
+
+}
+
+function clearAndCloseEditProjectDialog(delayed) {
+
+    if (!delayed) {
+        $('#project_edit_dialog').modal('hide');
+    } else {
+        setTimeout(function () {
+            $('#project_edit_dialog').modal('hide');
+        }, 1000);
+    }
+}
+
+function clearAndCloseAddProjectDialog(delayed) {
+
+    if (!delayed) {
+        clearAddProjectModal();
+    } else {
+        setTimeout(clearAddProjectModal, 1000);
+    }
+}
+
+//for the projects

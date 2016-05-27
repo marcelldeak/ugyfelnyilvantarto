@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version='1.0' encoding='UTF-8' ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:body>
         <ui:composition template="../../templates/main_template.xhtml">
 
@@ -16,9 +17,16 @@
             </ui:define>
 
             <ui:define name="profile">
-                <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:inherit;"/>
+                <img alt="#{request.remoteUser}"
+                     src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg"
+                     style="height:97px;margin: auto;display:inherit;" />
 
-                <a href="" class="user-name">#{request.remoteUser}</a>
+                <a href=""
+                   class="user-name"
+                   style="margin-top: 5px;">
+                    #{request.remoteUser}
+                </a>
+
             </ui:define>
 
             <ui:define name="menu">
@@ -26,9 +34,14 @@
             </ui:define>
 
             <ui:define name="page_content">
-                    <div class="row" style="padding-top: 15px; padding-bottom: 15px;">
+                <div class="row" 
+                     style="padding-top: 15px;
+                     padding-bottom: 15px;">
+
                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
+
                         <h:form id="a_form">
+
                             <p:dataTable id="projects"
                                          widgetVar="projectTable"
                                          var="_project"
@@ -40,73 +53,337 @@
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="1,5,10,15"
                                          paginatorPosition="bottom"
-                                         emptyMessage="There are no other projects in the system."
-                                         >
+                                         emptyMessage="There are no other projects in the system.">
+
                                 <f:facet name="header">
-                                    <h4>Projects</h4>
+                                    <div class="row">
+
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
+                                            <h4>Projects</h4>
+                                        </div>
+
+                                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+                                            <p:commandButton title="New Project"
+                                                             icon="ui-icon-plus"
+                                                             action="#{ProjectCUD.openAddDialog()}"
+                                                             style="margin-top: 7px;">
+                                                <f:ajax />
+                                            </p:commandButton>
+                                        </div>
+
+                                    </div>
                                 </f:facet>
+
                                 <p:column headerText="ID"
                                           style="text-align: center"
                                           filterBy="#{_project.id}"
                                           filterMatchMode="contains">
                                     <h:outputText value="#{_project.id}" />
                                 </p:column>
+
                                 <p:column headerText="Name" style="text-align: center"
                                           filterBy="#{_project.name}"
                                           filterMatchMode="contains">
                                     <h:outputText value="#{_project.name}" />
                                 </p:column>
-                                <p:column style="text-align: center;width: 56px" >
-                                    <p:commandButton title="Details" icon="ui-icon-newwin" action="#{projectView.openProjedtDetails(_project)}">
+
+                                <p:column style="text-align: center;
+                                          width: 56px">
+                                    <p:commandButton title="Details"
+                                                     icon="ui-icon-info"
+                                                     action="#{projectView.openProjedtDetails(_project)}">
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
+
                                 <p:column style="text-align: center;width: 56px">
-                                    <p:commandButton icon="ui-icon-trash" title="Delete" onclick="alert('Project delete')">
+                                    <p:commandButton title="Edit"
+                                                     icon="ui-icon-pencil"
+                                                     action="#{ProjectCUD.openEditDialog(_project)}">
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
+
+                                <p:column style="text-align: center;width: 56px">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     title="Delete"
+                                                     action="#{ProjectCUD.openDeleteDialog(_project)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                </p:column>
+
                             </p:dataTable>
                         </h:form>
                     </div>
                 </div>
-                <div class="modal fade" id="project_dialog" tabindex="-1" role="dialog">
-                    <div class="modal-dialog">
+
+                <!-- PROJECT DETAILS-->
+
+                <div class="modal fade"
+                     id="project_details_dialog"
+                     tabindex="-1"
+                     role="dialog"
+                     data-backdrop="static">
+                    <div class="modal-dialog ">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="row" style="text-align: center;">
-                                    <h4 class="modal-title">Details of the Project: #{projectView.selectedProject.name}</h4>
+
+                                    <button type="button"
+                                            class="close"
+                                            data-dismiss="modal"
+                                            style="margin-right: 20px">
+                                        <span aria-hidden="true">&#215;</span>                                  
+                                    </button>
+
+                                    <h4 class="modal-title">Project details</h4>
                                 </div>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align: center;">
-                                        <h:form id='project_dialog_details'>
-                                            <p:outputPanel id="ProjectDetail_table" style="text-align:center;">
-                                                <p:panelGrid  columns="2" rendered="#{not empty projectView.selectedProject}" columnClasses="label,value">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                        <div >
+                                            <h:form id="project_details">
+                                                <p:panel id="c_basic_data" header="#{projectView.selectedProject.name}" style="text-align: center;">
+                                                    <h:outputText value="ID :#{projectView.selectedProject.id}" /><br/>
+                                                    <h:outputText value="Name : #{projectView.selectedProject.name}" /><br />
+                                                    <h:outputText value="Status : #{projectView.selectedProject.status}" /><br />
+                                                    <h:outputText value="Date of end: #{projectView.selectedProjectDeadlineToString}" /><br />
+                                                </p:panel>
 
-                                                    <h:outputText value="Id:" />
-                                                    <h:outputText value="#{projectView.selectedProject.id}" />
-
-                                                    <h:outputText value="Deadline:" />
-                                                    <h:outputText value="#{projectView.selectedProject.deadline}"/>
-
-                                                    <h:outputText value="Status" />
-                                                    <h:outputText value="$#{projectView.selectedProject.status}" />
-                                                </p:panelGrid>
-                                            </p:outputPanel>
-                                        </h:form>
+                                            </h:form>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align: center;">
-                                        
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD PROJECT -->
+
+                <div class="modal fade"
+                     id="project_add_dialog"
+                     tabindex="-1"
+                     data-keyboard="false"
+                     data-backdrop="static"
+                     role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <div class="row"
+                                     style="text-align: center;">
+                                    <h4 class="modal-title">Add project</h4>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+
+                                        <h:form role="form"
+                                                class="form-horizontal"
+                                                id="project_add_form">
+
+                                            <p:panel id="project_data" header="Details">
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="p_name">Name:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="p_name"
+                                                                     value="#{ProjectCUD.name}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Name"
+                                                                     placeholder="Name of the project">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="p_deadline">Deadine:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:outputLabel for="p_deadline"
+                                                                       value="#{ProjectCUD.date}">
+                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" />
+                                                        </p:outputLabel>
+                                                    </div>
+                                                </div>
+
+
+                                                <p:messages autoUpdate="true"/>
+
+                                            </p:panel>
+                                            <div class="form-group row row-centered"
+                                                 style="padding-top: 10px;">
+                                                <p:commandButton value="Add project"
+                                                                 update="project_data"
+                                                                 validateClient="true"
+                                                                 style="margin-right:10px"
+                                                                 action="#{ProjectCUD.add()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <p:commandButton value="Cancel"
+                                                                 validateClient="false"
+                                                                 onclick="clearAndCloseAddProjectDialog(false) return false;"
+                                                                 style="margin-right:10px"/>
+
+                                            </div>
+
+                                        </h:form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </ui:define>
 
+                <!-- DELETE PROJECT -->
+
+                <div class="modal fade"
+                     id="project_delete_dialog"
+                     tabindex="-1"
+                     role="dialog">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row" style="text-align: center;">
+                                    <h4 class="modal-title">Delete project</h4>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                        <h:form id='project_delete_name'>
+                                            <h:outputText value="Do you really want to delete project: #{ProjectCUD.projectToDelete.name} from the system? This action cannot be undone." />
+                                        </h:form>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 10px;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
+                                        <div class="pull-right">
+                                            <h:form class="form-horizontal">
+                                                <p:commandButton value="Yes" type="button" action="#{ProjectCUD.delete()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <span style="width:150px;" />
+                                                <p:commandButton value="No" type="button" onclick="$('#customer_delete_dialog').modal('hide')" />
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EDIT PROJECT -->
+
+                <div class="modal fade"
+                     id="project_edit_dialog"
+                     tabindex="-1"
+                     data-keyboard="false"
+                     data-backdrop="static"
+                     role="dialog">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="row"
+                                     style="text-align: center;">
+                                    <h4 class="modal-title">Edit Project</h4>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+
+                                        <h:form role="form"
+                                                class="form-horizontal"
+                                                id="project_edit_form">
+
+                                            <p:panel id="project_data_edit" header="Details">
+
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="p_name">Name:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:inputText id="p_name"
+                                                                     value="#{ProjectCUD.name}"
+                                                                     size="40"
+                                                                     required="true"
+                                                                     label="Name"
+                                                                     placeholder="Name of the customer">
+                                                            <f:validateLength minimum="2" />
+                                                            <p:clientValidator />
+                                                        </p:inputText>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="project_status">Project status type:</label>
+                                                    <h:selectOneMenu value="#{ProjectCUD.status}"
+                                                                     id="project_status"
+                                                                     class="form-control"
+                                                                     style="max-width: 280px;
+                                                                     position: relative;
+                                                                     left: 14px;
+                                                                     max-height: 30px;">
+                                                        <f:selectItems value="#{ProjectCUD.projectStatuses}" />
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <div class="form-group row" >
+                                                    <label class="control-label col-sm-4" for="p_deadline_edit">Deadline:</label>
+                                                    <div class="col-sm-8">
+                                                        <p:outputLabel for="p_deadline_edit"
+                                                                       value="#{ProjectCUD.date}">
+                                                            <p:calendar id="p_deadline_edit" value="#{ProjectCUD.date}" mode="inline" />
+                                                        </p:outputLabel>
+                                                    </div>
+                                                </div>  
+                                                <hr />
+                                                <p:messages autoUpdate="true"/>
+
+                                            </p:panel>
+                                            <div class="form-group row row-centered"
+                                                 style="padding-top: 10px;">
+                                                <p:commandButton value="Save changes"
+                                                                 update="project_data_edit"
+                                                                 validateClient="true"
+                                                                 style="margin-right:10px"
+                                                                 action="#{ProjectCUD.edit()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                                <p:commandButton value="Cancel"
+                                                                 validateClient="false"
+                                                                 onclick="clearAndCloseEditProjectDialog(false); return false;"
+                                                                 style="margin-right:10px"/>
+                                            </div>
+
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END OF MODALS -->
+
+                <script src="#{request.contextPath}/resources/js/customer.js"></script>
+            </ui:define>
         </ui:composition>
     </h:body>
 
