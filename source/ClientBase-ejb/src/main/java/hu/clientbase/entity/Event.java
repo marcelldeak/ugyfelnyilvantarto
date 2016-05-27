@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -27,11 +28,14 @@ import javax.persistence.PostRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Event implements Serializable {
-
+    
     private static final long serialVersionUID = 2480370132530374980L;
+    
     @Transient
     @Inject
     private CustomerFacade customerFacade;
@@ -69,7 +73,8 @@ public class Event implements Serializable {
     @Basic
     private String name;
 
-    @OneToMany(targetEntity = Note.class)
+    @OneToMany(targetEntity = Note.class,fetch = FetchType.EAGER)
+    @Cascade(CascadeType.ALL)
     private List<Note> notes;
 
     public Event() {
@@ -79,7 +84,6 @@ public class Event implements Serializable {
     public Event(BasicEventDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
-        this.notes = dto.getNotes();
         this.dateOfEnd = dto.getDateOfEnd();
         this.dateOfStart = dto.getDateOfStart();
         this.type = dto.getType();
@@ -142,7 +146,7 @@ public class Event implements Serializable {
             Message message = context.createObjectMessage(sharedEventDTO);
             Customer customer = customerFacade.getCustomerForEvent(this);
             message.setStringProperty("Type", type.toString());
-            message.setStringProperty("Customer name", customer.getName());
+            message.setStringProperty("Customer name", customer==null?"":customer.getName());
 
             context.createProducer().send(createdTopic, message);
         } catch (JMSException ex) {

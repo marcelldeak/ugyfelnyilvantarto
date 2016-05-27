@@ -37,7 +37,7 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     public void openSelectedEventDetails(BasicEventDTO dto) {
         selectedEvent = dto;
         update();
-        Ajax.update("event_details_form");
+        Ajax.update("event_details_form","notes_form");
         Ajax.oncomplete("$('#event_details_dialog').modal('show')");
     }
 

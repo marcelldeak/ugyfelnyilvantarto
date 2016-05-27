@@ -2,18 +2,26 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Note;
 import hu.clientbase.entity.Tag;
+import java.io.Serializable;
 
-public class BasicNoteDTO {
+public class NoteDTO implements Serializable {
+
+    private static final long serialVersionUID = 645249867234114601L;
 
     private Long id;
     private Tag tag;
     private String content;
 
-    public BasicNoteDTO() {
+    public NoteDTO() {
         //default
     }
 
-    public BasicNoteDTO(Note n) {
+    public NoteDTO(Tag tag, String content) {
+        this.tag = tag;
+        this.content = content;
+    }
+
+    public NoteDTO(Note n) {
         this.id = n.getId();
         this.tag = n.getTag();
         this.content = n.getContent();

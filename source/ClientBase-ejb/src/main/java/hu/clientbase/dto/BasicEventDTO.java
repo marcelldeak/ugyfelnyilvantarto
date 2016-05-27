@@ -4,6 +4,7 @@ import hu.clientbase.entity.Event;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BasicEventDTO {
@@ -13,10 +14,10 @@ public class BasicEventDTO {
     private Date dateOfStart;
     private Date dateOfEnd;
     private String name;
-    private List<Note> notes;
+    private List<NoteDTO> notes;
 
     public BasicEventDTO() {
-        //default
+        notes = new LinkedList<>();
     }
 
     public BasicEventDTO(Event e) {
@@ -25,16 +26,16 @@ public class BasicEventDTO {
         this.dateOfStart = e.getDateOfStart();
         this.dateOfEnd = e.getDateOfEnd();
         this.name = e.getName();
-        this.notes = e.getNotes();
 
+        notes = new LinkedList<>();
+        e.getNotes().stream().forEach(n -> notes.add(new NoteDTO(n)));
     }
 
-    public BasicEventDTO(EventType type, Date dateOfStart, Date dateOfEnd, String name, List<Note> notes) {
+    public BasicEventDTO(EventType type, Date dateOfStart, Date dateOfEnd, String name) {
         this.type = type;
         this.dateOfStart = dateOfStart;
         this.dateOfEnd = dateOfEnd;
         this.name = name;
-        this.notes = notes;
     }
 
     public Long getId() {
@@ -77,11 +78,12 @@ public class BasicEventDTO {
         this.name = name;
     }
 
-    public List<Note> getNotes() {
+    public List<NoteDTO> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(List<NoteDTO> notes) {
         this.notes = notes;
     }
+
 }

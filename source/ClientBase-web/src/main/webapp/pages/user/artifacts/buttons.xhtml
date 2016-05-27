@@ -1,37 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <div class="btn-group">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-envelope"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-bell"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                    </ul>
-                </div>
-                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-user">
-                        <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><p:commandLink value="Logout" action="#{login.logout}"/></li>
-                    </ul>
-                </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-envelope"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-bell"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>Upcoming events</li>
+                        <li><hr /></li>
+                <c:choose>
+                    <c:when test="#{information.nextEvents == null || information.nextEvents.size() == 0}">
+                        <li>No upcoming events.</li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="_event" items="#{information.nextEvents}">
+                            <li><p:commandLink action="#{information.openSelectedEventDetails(_event)}">#{_event.name}</p:commandLink></li>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-user">
+                <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><p:commandLink value="Logout" action="#{login.logout}"/></li>
+            </ul>
+        </div>
     </div>
 </ui:composition>

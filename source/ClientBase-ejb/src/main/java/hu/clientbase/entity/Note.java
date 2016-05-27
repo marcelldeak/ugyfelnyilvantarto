@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.NoteDTO;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -19,13 +20,18 @@ public class Note implements Serializable {
 
     @Basic
     @Enumerated(EnumType.STRING)
-    private Tag tag ;
+    private Tag tag;
 
     @Basic
     private String content;
 
     public Note() {
         // Entity - parameterless constructor
+    }
+
+    public Note(NoteDTO dto) {
+        this.tag = dto.getTag();
+        this.content = dto.getContent();
     }
 
     public Long getId() {
@@ -51,5 +57,5 @@ public class Note implements Serializable {
     public void setTag(Tag tag) {
         this.tag = tag;
     }
-    
+
 }

@@ -6,7 +6,6 @@ import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
 import hu.clientbase.service.EventService;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -19,6 +18,8 @@ import org.omnifaces.util.Ajax;
 @Named("eventCUD")
 @ViewScoped
 public class EventCUDBean implements Serializable {
+
+    private static final long serialVersionUID = -3566912365821488578L;
 
     @Inject
     private EventService eventService;
@@ -45,7 +46,7 @@ public class EventCUDBean implements Serializable {
     }
 
     public void add() {
-        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name, notes);
+        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
         eventService.create(dto);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
@@ -59,13 +60,12 @@ public class EventCUDBean implements Serializable {
         name = dto.getName();
         dateOfStart = dto.getDateOfEnd();
         dateOfEnd = dto.getDateOfEnd();
-        notes = dto.getNotes();
         Ajax.update("event_edit_form");
         Ajax.oncomplete("$('#event_edit_dialog').modal('show')");
     }
 
     public void edit() {
-        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name, notes);
+        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
         dto.setId(id);
         eventService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event edited succesfully."));

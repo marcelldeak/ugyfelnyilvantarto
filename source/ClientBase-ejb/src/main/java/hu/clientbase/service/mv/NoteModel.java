@@ -1,6 +1,6 @@
 package hu.clientbase.service.mv;
 
-import hu.clientbase.dto.BasicNoteDTO;
+import hu.clientbase.dto.NoteDTO;
 import hu.clientbase.entity.Note;
 import hu.clientbase.facade.NoteFacade;
 import javax.ejb.LocalBean;
@@ -16,11 +16,11 @@ public class NoteModel {
     @Inject
     private NoteFacade nf;
 
-    public List<BasicNoteDTO> getAllNotes() {
+    public List<NoteDTO> getAllNotes() {
         List<Note> notes = nf.getAllNotes();
-        List<BasicNoteDTO> ret = new LinkedList<>();
+        List<NoteDTO> ret = new LinkedList<>();
 
-        notes.stream().forEach(n -> ret.add(new BasicNoteDTO(n)));
+        notes.stream().forEach(n -> ret.add(new NoteDTO(n)));
 
         return ret;
     }
