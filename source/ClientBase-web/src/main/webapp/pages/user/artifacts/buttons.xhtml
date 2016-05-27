@@ -20,7 +20,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li>Upcoming events</li>
-                        <li><hr /></li>
+                <li><hr /></li>
                 <c:choose>
                     <c:when test="#{information.nextEvents == null || information.nextEvents.size() == 0}">
                         <li>No upcoming events.</li>
@@ -44,4 +44,8 @@
             </ul>
         </div>
     </div>
+
+
+    <ui:include src="profile.xhtml" />
+
 </ui:composition>

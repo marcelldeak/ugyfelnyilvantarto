@@ -78,29 +78,31 @@
 
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                            <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
-                                <h:form role="form"
-                                        class="form-horizontal"
-                                        id="notes_form">
-                                    <p:panel id="event_data" header="Notes">
-                                        <div class="pull-right" style="position:relative;top:-35px;">
+
+                            <h:form role="form"
+                                    class="form-horizontal"
+                                    id="notes_form">
+                                <p:panel id="event_data" header="Notes">
+                                    <div class="pull-right" style="position:relative;top:-35px;">
 
 
-                                            <p:commandButton title="Add note"
-                                                             icon="ui-icon-plus"
-                                                             action="#{noteC.openAddDialog(events.selectedEvent)}"
-                                                             style="margin-right: 8px;">
-                                                <f:ajax />
-                                            </p:commandButton>
-                                        </div>
+                                        <p:commandButton title="Add note"
+                                                         icon="ui-icon-plus"
+                                                         action="#{noteC.openAddDialog(events.selectedEvent)}"
+                                                         style="margin-right: 8px;">
+                                            <f:ajax />
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
                                         <c:forEach var="_note" items="#{events.selectedEvent.notes}">
                                             <p:panel header="#{_note.tag}" style="padding-bottom: 10px;">
                                                 <h:outputText value="#{_note.content}" />
                                             </p:panel>
                                         </c:forEach>
-                                    </p:panel> 
-                                </h:form>
-                            </div>
+                                    </div>
+                                </p:panel> 
+                            </h:form>
+
                         </div>
                     </div>
                 </div>

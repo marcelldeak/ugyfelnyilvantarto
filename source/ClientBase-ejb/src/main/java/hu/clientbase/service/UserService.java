@@ -6,6 +6,9 @@ import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.UserFacade;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -98,6 +101,28 @@ public class UserService {
         pendingRegistrations.stream().forEach(p -> ret.add(new UserDTO(p.getUser())));
 
         return ret;
+    }
+
+    public UserDTO getUserByEmail(String eMail) throws NoSuchAlgorithmException {
+        return new UserDTO(userFacade.getUserByEmail(eMail));
+    }
+
+    public void update(UserDTO user) throws NoSuchAlgorithmException {
+        User u = entityFacade.find(User.class, user.getId());
+
+        u.setFirstName(user.getFirstName());
+        u.setLastName(user.getLastName());
+        u.setEmail(user.getEmail());
+
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] digest = md.digest(user.getPassword().getBytes());
+        String b64String = Base64.getEncoder().encodeToString(digest);
+
+        u.setPassword(b64String);
+        u.setDateOfBirth(user.getDateOfBirth());
+        u.setPicture(user.getPicture());
+
+        entityFacade.update(u);
     }
 
 }

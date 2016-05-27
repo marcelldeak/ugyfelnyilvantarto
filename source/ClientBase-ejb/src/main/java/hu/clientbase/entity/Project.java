@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.BasicProjectDTO;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Basic;
@@ -13,8 +14,6 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class Project implements Serializable {
-
-    private static final long serialVersionUID = 1978904074620679679L;
 
     @Id
     @GeneratedValue
@@ -33,6 +32,13 @@ public class Project implements Serializable {
 
     public Project() {
         // Entity - parameterless constructor
+    }
+
+    public Project(BasicProjectDTO dto) {
+        this.deadline = dto.getDeadline();
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.status = dto.getStatus();
     }
 
     public Long getId() {

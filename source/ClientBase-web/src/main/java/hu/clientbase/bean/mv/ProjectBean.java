@@ -3,20 +3,23 @@ package hu.clientbase.bean.mv;
 import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.Project;
 import hu.clientbase.service.mv.ProjectModel;
-import org.omnifaces.util.Ajax;
-import org.primefaces.event.SelectEvent;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.List;
+import org.primefaces.event.SelectEvent;
+import org.omnifaces.util.Ajax;
 
 @Named("projectView")
 @ViewScoped
 public class ProjectBean implements Serializable {
+
+    private static final long serialVersionUID = -961683443281866021L;
 
     private BasicProjectDTO selectedProject;
 
@@ -24,12 +27,29 @@ public class ProjectBean implements Serializable {
 
     private List<BasicProjectDTO> filteredProjects;
 
+    private String SelectedProjectDeadlineToString;
+
     @Inject
     private ProjectModel model;
 
     @PostConstruct
     private void init() {
+        update();
+    }
+
+    public void update() {
         projects = model.getAllProjects();
+    }
+
+    public void openProjedtDetails(BasicProjectDTO dto) {
+        selectedProject = dto;
+        if (dto.getDeadline() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            SelectedProjectDeadlineToString = sdf.format(dto.getDeadline().getTime());
+        }
+        update();
+        Ajax.update("project_details");
+        Ajax.oncomplete("$('#project_details_dialog').modal('show')");
     }
 
     public List<BasicProjectDTO> getFilteredProjects() {
@@ -44,6 +64,14 @@ public class ProjectBean implements Serializable {
         return selectedProject;
     }
 
+    public String getSelectedProjectDeadlineToString() {
+        return SelectedProjectDeadlineToString;
+    }
+
+    public void setSelectedProjectDeadlineToString(String SelectedProjectDeadlineToString) {
+        this.SelectedProjectDeadlineToString = SelectedProjectDeadlineToString;
+    }
+
     public void setSelectedProject(BasicProjectDTO selectedProject) {
         this.selectedProject = selectedProject;
     }
@@ -54,12 +82,6 @@ public class ProjectBean implements Serializable {
 
     public void setProjects(List<BasicProjectDTO> projects) {
         this.projects = projects;
-    }
-
-    public void openProjedtDetails(BasicProjectDTO dto) {
-        selectedProject = dto;
-        Ajax.update("project_dialog_details");
-        Ajax.oncomplete("$('#project_dialog').modal('show')");
     }
 
     public void onRowSelect(SelectEvent event) {

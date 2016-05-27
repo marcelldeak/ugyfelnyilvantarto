@@ -2,18 +2,21 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Project;
 import hu.clientbase.entity.ProjectStatus;
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class BasicProjectDTO {
+public class BasicProjectDTO implements Serializable {
+
+    private static final long serialVersionUID = 258979332215257296L;
 
     private Long id;
 
     private String name;
 
     private Calendar deadline;
-    
+
     private ProjectStatus status;
-            
+
     public BasicProjectDTO() {
         // default
     }
@@ -21,8 +24,22 @@ public class BasicProjectDTO {
     public BasicProjectDTO(Project p) {
         this.id = p.getId();
         this.name = p.getName();
-        this.deadline=p.getDeadline();
+        this.deadline = p.getDeadline();
         this.status = p.getStatus();
+    }
+
+    public BasicProjectDTO(String name, Calendar deadline) {
+        if (status == null) {
+            this.status = ProjectStatus.IN_PROGRESS;
+        }
+        this.name = name;
+        this.deadline = deadline;
+    }
+
+    public BasicProjectDTO(String name, Calendar deadline, ProjectStatus status) {
+        this.name = name;
+        this.deadline = deadline;
+        this.status = status;
     }
 
     public Long getId() {
@@ -56,5 +73,5 @@ public class BasicProjectDTO {
     public void setStatus(ProjectStatus status) {
         this.status = status;
     }
-    
+
 }
