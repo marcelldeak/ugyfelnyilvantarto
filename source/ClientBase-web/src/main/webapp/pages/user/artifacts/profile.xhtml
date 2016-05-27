@@ -28,10 +28,9 @@
                                     <p:fileUpload class="text-center center-block well well-sm" 
                                                   allowTypes="\\.(jpe?g|png)" mode="simple"
                                                   value="#{profile.file}"
-                                                  invalidFileMessage="Invalid file type"
-                                                  update="@form" >
+                                                  invalidFileMessage="Invalid file type" >
                                     </p:fileUpload>
-                                    <p:commandButton ajax="false" class="btn btn-info" value="Upload" action="#{profile.uploadImage()}"/>
+                                    <p:commandButton class="btn btn-info" value="Upload" action="#{profile.uploadImage()}"/>
                                 </h:form>
                             </div>
                         </div>
@@ -89,8 +88,7 @@
                                     <div class="col-md-8">
                                         <p:commandButton class="btn btn-info" 
                                                          type="submit" value="Save Changes" 
-                                                         action="#{profile.saveChanges()}"
-                                                         validateClient="true" >
+                                                         action="#{profile.saveChanges()}">
                                             <f:ajax />
                                         </p:commandButton>
                                         <span/>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <div class="container">
+        <div class="row">
+            <pe:timeline  value="#{home.getTimeLine()}" height="250px" zoomable="true" stackEvents="true" 
+                          showCurrentTime="true" eventStyle="box" style="margin-bottom: 10px">
+                <p:ajax event="select" listener="#{home.selectEventOnTimeline}"/>
+            </pe:timeline>
+        </div>
+        <div class="row">
+            <p:dataList id="notification-list" value="" var="notification" paginator="true" style="margin-bottom: 10px">
+                <f:facet name="header" class="header">
+                    <p:selectOneMenu class="" value="#{home.numberOfNotifications}" style="width:50px" valueChangeListener="#{home.changeNumberOfNotifications()}">
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                        <f:selectItem itemLabel="10" itemValue="10" />
+                        <f:selectItem itemLabel="15" itemValue="15" />
+                        <f:selectItem itemLabel="20" itemValue="20" />
+                    </p:selectOneMenu>
+                    Last #{home.numberOfNotifications} notification
+                </f:facet>
+
+            </p:dataList>
+        </div>
+        <div class="row">
+            <p:dataList value="" var="project" paginator="true" style="margin-bottom: 10px">
+                <f:facet name="header" class="header">
+                    <h6>Projects will expire on this week</h6>
+                </f:facet>
+
+            </p:dataList>
+        </div>
+    </div>
+
+</ui:composition>
+

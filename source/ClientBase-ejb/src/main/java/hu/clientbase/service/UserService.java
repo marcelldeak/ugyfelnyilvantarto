@@ -125,4 +125,12 @@ public class UserService {
         entityFacade.update(u);
     }
 
+    public void updatePicture(Long id, String picture) {
+        User u = entityFacade.find(User.class, id);
+        
+        u.setPicture(picture);
+        
+        entityFacade.update(u);
+    }
+
 }
