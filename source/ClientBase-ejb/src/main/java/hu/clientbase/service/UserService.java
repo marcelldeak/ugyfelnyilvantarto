@@ -104,13 +104,7 @@ public class UserService {
     }
 
     public UserDTO getUserByEmail(String eMail) throws NoSuchAlgorithmException {
-        User u = userFacade.getUserByEmail(eMail);
-/*
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] decodedPassword = Base64.getDecoder().decode(u.getPassword());
-        u.setPassword(new String(decodedPassword));
-*/
-        return new UserDTO(u);
+        return new UserDTO(userFacade.getUserByEmail(eMail));
     }
 
     public void update(UserDTO user) throws NoSuchAlgorithmException {

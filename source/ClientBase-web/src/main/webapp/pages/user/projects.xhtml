@@ -19,12 +19,6 @@
             <ui:define name="profile">
                 <img alt="#{request.remoteUser}" src="#{profile.getProfileImgPath()}" style="height:97px;margin: auto;display:inherit;"/>
 
-                <a href=""
-                   class="user-name"
-                   style="margin-top: 5px;">
-                    #{request.remoteUser}
-                </a>
-
                 <a class="user-name" href="#" data-toggle="modal" data-target="#profile_modal" tabindex="-1">#{request.remoteUser}</a>
             </ui:define>
 
