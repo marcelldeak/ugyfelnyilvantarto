@@ -5,6 +5,7 @@ import hu.clientbase.entity.Customer;
 import hu.clientbase.entity.Project;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.ProjectFacade;
+import hu.clientbase.validate.InterceptorBinding;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -17,6 +18,7 @@ public class ProjectService {
     @Inject
     private ProjectFacade projectFacade;
 
+    @InterceptorBinding
     public void create(BasicProjectDTO projectDTO) {
         Project project = new Project(projectDTO);
         entityFacade.create(project);

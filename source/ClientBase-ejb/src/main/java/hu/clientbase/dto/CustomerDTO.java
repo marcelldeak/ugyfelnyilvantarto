@@ -2,17 +2,24 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Customer;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class CustomerDTO implements Serializable {
 
     private static final long serialVersionUID = -6308209911161694194L;
 
     private Long id;
-
+    @NotNull
+    @Size(min = 2)
     private String name;
 
+    @NotNull
     private String vatNumber;
 
+    @NotNull
     private AddressDTO address;
 
     public CustomerDTO() {
@@ -24,7 +31,7 @@ public class CustomerDTO implements Serializable {
         this.vatNumber = vatNumber;
         this.address = address;
     }
-    
+
     public CustomerDTO(Customer customer) {
         this.id = customer.getId();
         this.name = customer.getName();

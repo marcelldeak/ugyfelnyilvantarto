@@ -3,7 +3,10 @@ package hu.clientbase.dto;
 import hu.clientbase.entity.ContactChannel;
 import hu.clientbase.entity.ContactChannelType;
 import java.io.Serializable;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class ContactChannelDTO implements Serializable {
 
     private static final long serialVersionUID = -2205985382810828270L;
@@ -12,6 +15,7 @@ public class ContactChannelDTO implements Serializable {
 
     private ContactChannelType type;
 
+    @Size(min = 2)
     private String value;
 
     public ContactChannelDTO() {

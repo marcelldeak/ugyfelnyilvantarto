@@ -2,19 +2,23 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Address;
 import java.io.Serializable;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class AddressDTO implements Serializable {
 
     private static final long serialVersionUID = -169417360460788582L;
 
     private Long id;
 
+    @Size(min = 2)
     private String city;
-
+    @Size(min = 2)
     private String zipCode;
-
+    @Size(min = 2)
     private String street;
-
+    @Size(min = 2)
     private String country;
 
     public AddressDTO() {
@@ -27,7 +31,7 @@ public class AddressDTO implements Serializable {
         this.street = street;
         this.country = country;
     }
-    
+
     public AddressDTO(Address address) {
         this.id = address.getId();
         this.city = address.getCity();
@@ -75,9 +79,8 @@ public class AddressDTO implements Serializable {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    public String getAddressHR()
-    {
-        return city + " " + street + " (" + zipCode + " " + country + ")"; 
+
+    public String getAddressHR() {
+        return city + " " + street + " (" + zipCode + " " + country + ")";
     }
 }

@@ -38,6 +38,8 @@ public class ProjectCUDBean implements Serializable {
 
     private BasicProjectDTO projectToDelete;
 
+    private final Date currentDate = new Date();
+
     public void openAddDialog() {
         Ajax.oncomplete("$('#project_add_dialog').modal('show')");
     }
@@ -110,6 +112,10 @@ public class ProjectCUDBean implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
     }
 
     public Long getId() {

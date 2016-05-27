@@ -9,6 +9,7 @@ import hu.clientbase.entity.ContactChannel;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.facade.EntityFacade;
+import hu.clientbase.validate.InterceptorBinding;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -32,6 +33,7 @@ public class CustomerService {
         return ret;
     }
 
+    @InterceptorBinding
     public void create(CustomerDTO dto) {
         Address address = new Address(dto.getAddress());
         Customer customer = new Customer(dto);
@@ -61,6 +63,7 @@ public class CustomerService {
         entityFacade.delete(customer);
     }
 
+    @InterceptorBinding
     public void addContactToCustomer(CustomerDTO customerDTO, ContactDTO contactDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         customer.getContacts().add(new Contact(contactDTO));
@@ -96,6 +99,7 @@ public class CustomerService {
         entityFacade.delete(contact);
     }
 
+    @InterceptorBinding
     public void addContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
         Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
 

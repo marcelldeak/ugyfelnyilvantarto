@@ -5,13 +5,21 @@ import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class BasicEventDTO {
 
     private Long id;
+    @NotNull
     private EventType type;
+    @NotNull
     private Date dateOfStart;
+    @NotNull
     private Date dateOfEnd;
+    @Size(min = 2)
     private String name;
     private List<Note> notes;
 

@@ -6,6 +6,7 @@ import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.UserFacade;
+import hu.clientbase.validate.InterceptorBinding;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ public class UserService {
     @Inject
     private UserFacade userFacade;
 
+    @InterceptorBinding
     public void create(UserDTO dto) {
         User u = new User(dto);
         u.setActive(false);

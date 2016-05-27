@@ -4,15 +4,19 @@ import hu.clientbase.entity.Contact;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class ContactDTO implements Serializable {
 
     private static final long serialVersionUID = 1154329184668216510L;
 
     private Long id;
 
+    @Size(min = 2)
     private String firstName;
-
+    @Size(min = 2)
     private String lastName;
 
     private List<ContactChannelDTO> contactChannels;
@@ -65,9 +69,8 @@ public class ContactDTO implements Serializable {
     public void setContactChannels(List<ContactChannelDTO> contactChannels) {
         this.contactChannels = contactChannels;
     }
-    
-    public String getNameHR()
-    {
+
+    public String getNameHR() {
         return firstName + " " + lastName;
     }
 

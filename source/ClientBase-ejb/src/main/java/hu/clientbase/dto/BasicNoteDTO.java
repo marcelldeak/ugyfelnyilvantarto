@@ -2,11 +2,15 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Note;
 import hu.clientbase.entity.Tag;
+import javax.validation.constraints.NotNull;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class BasicNoteDTO {
 
     private Long id;
     private Tag tag;
+    @NotNull
     private String content;
 
     public BasicNoteDTO() {

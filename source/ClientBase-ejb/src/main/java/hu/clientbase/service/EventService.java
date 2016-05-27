@@ -4,6 +4,7 @@ import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
+import hu.clientbase.validate.InterceptorBinding;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,6 +19,7 @@ public class EventService {
     @Inject
     private EventFacade eventFacade;
 
+    @InterceptorBinding
     public void create(BasicEventDTO dto) {
         Event event = new Event(dto);
 
