@@ -15,9 +15,9 @@
             </ui:define>
 
             <ui:define name="profile">
-                <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:inherit;"/>
+                <img alt="#{request.remoteUser}" src="#{profile.getProfileImgPath()}" style="height:97px;margin: auto;display:inherit;"/>
 
-                <a href="" class="user-name">#{request.remoteUser}</a>
+                <a class="user-name" href="#" data-toggle="modal" data-target="#profile_modal" tabindex="-1">#{request.remoteUser}</a>
             </ui:define>
 
             <ui:define name="menu">
@@ -28,6 +28,8 @@
                 <!--Ide jön az oldal tartalma -->
             </ui:define>
 
+            <ui:include src="artifacts/profile.xhtml" />
+            
         </ui:composition>
     </h:body>
 

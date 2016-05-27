@@ -2,6 +2,7 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.User;
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class UserDTO implements Serializable {
 
@@ -13,6 +14,8 @@ public class UserDTO implements Serializable {
     private String lastName;
     private String firstName;
     private Boolean active;
+    private Calendar dateOfBirth;
+    private String picture;
 
     public UserDTO() {
         //DTO
@@ -25,12 +28,22 @@ public class UserDTO implements Serializable {
         this.firstName = firstName;
     }
 
+    public UserDTO(Long id,String email, String password, String lastName, String firstName, Boolean active, Calendar dateOfBirth, String picture) {
+        this(email,password,lastName,firstName);
+        this.id = id;
+        this.active = active;
+        this.dateOfBirth = dateOfBirth;
+        this.picture = picture;
+    }
+    
     public UserDTO(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.lastName = user.getLastName();
         this.firstName = user.getFirstName();
         this.active = user.isActive();
+        this.dateOfBirth = user.getDateOfBirth();
+        this.picture = user.getPicture();
     }
 
     public String getEmail() {
@@ -84,4 +97,21 @@ public class UserDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Calendar getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Calendar dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+    
 }

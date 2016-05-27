@@ -28,10 +28,13 @@
                         <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#profile_modal" tabindex="-1" >Profile</a></li>
                         <li role="separator" class="divider"></li>
                         <li><p:commandLink value="Logout" action="#{login.logout}"/></li>
                     </ul>
                 </div>
     </div>
+    
+    <ui:include src="profile.xhtml" />
+    
 </ui:composition>

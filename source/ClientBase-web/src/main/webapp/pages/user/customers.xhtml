@@ -17,14 +17,10 @@
 
             <ui:define name="profile">
                 <img alt="#{request.remoteUser}"
-                     src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg"
+                     src="#{profile.getProfileImgPath()}"
                      style="height:97px;margin: auto;display:inherit;" />
 
-                <a href=""
-                   class="user-name"
-                   style="margin-top: 5px;">
-                    #{request.remoteUser}
-                </a>
+                <a class="user-name" href="#" data-toggle="modal" data-target="#profile_modal" tabindex="-1">#{request.remoteUser}</a>
 
             </ui:define>
 
@@ -127,6 +123,8 @@
 
                 <ui:include src="artifacts/customer_modal.xhtml" />
 
+                <ui:include src="artifacts/profile.xhtml" />
+                
                 <script src="#{request.contextPath}/resources/js/customer.js"></script>
             </ui:define>
         </ui:composition>
