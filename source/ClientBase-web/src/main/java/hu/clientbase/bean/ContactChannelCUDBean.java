@@ -26,8 +26,6 @@ public class ContactChannelCUDBean implements Serializable {
     @Inject
     private CustomersBean customersBean;
 
-    private Long id;
-
     private ContactChannelType channelType;
 
     private String channelValue;
@@ -35,6 +33,8 @@ public class ContactChannelCUDBean implements Serializable {
     private ContactChannelDTO contactChannelToDelete;
 
     private ContactDTO selectedContact;
+    
+    private static final String CONTACTS_LIST = "customer_details_right_panel:contacts_list";
 
     public void openAddDialog(ContactDTO dto) {
         selectedContact = dto;
@@ -47,7 +47,7 @@ public class ContactChannelCUDBean implements Serializable {
         channelType = ContactChannelType.EMAIL;
         channelValue = null;
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
         Ajax.oncomplete("clearAndCloseAddContactChannelDialog(true);");
 
     }
@@ -61,7 +61,7 @@ public class ContactChannelCUDBean implements Serializable {
 
     public void updateView() {
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
     }
 
     public void openDeleteDialog(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
@@ -74,7 +74,7 @@ public class ContactChannelCUDBean implements Serializable {
 
         customerService.deleteContactChannel(selectedContact, contactChannelToDelete);
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
         Ajax.oncomplete("$('#contact_channel_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show');");
     }
 

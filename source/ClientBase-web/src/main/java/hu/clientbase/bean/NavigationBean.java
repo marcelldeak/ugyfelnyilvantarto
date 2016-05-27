@@ -15,7 +15,7 @@ public class NavigationBean implements Serializable {
     public String getMenuClass(String menuItem) {
 
         FacesContext context = FacesContext.getCurrentInstance();
-        String uri[] = ((HttpServletRequest) context.getExternalContext().getRequest()).getRequestURI().split("/");
+        String[] uri = ((HttpServletRequest) context.getExternalContext().getRequest()).getRequestURI().split("/");
         if (uri[uri.length - 1].startsWith(menuItem)) {
             return "current";
         } else {

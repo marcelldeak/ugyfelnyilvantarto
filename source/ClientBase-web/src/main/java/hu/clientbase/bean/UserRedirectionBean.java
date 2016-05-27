@@ -1,6 +1,5 @@
 package hu.clientbase.bean;
 
-import ch.qos.logback.classic.Logger;
 import hu.clientbase.service.UserService;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;

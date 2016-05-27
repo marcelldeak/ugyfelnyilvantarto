@@ -41,6 +41,8 @@ public class CustomerCUDBean implements Serializable {
     
     private CustomerDTO customerToDelete;
     
+    private static final String CUSTOMERS_LIST = "c_list_form:c_list_table";
+    
     public void openAddDialog()
     {
         Ajax.oncomplete("$('#customer_add_dialog').modal('show')");
@@ -54,7 +56,7 @@ public class CustomerCUDBean implements Serializable {
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer added succesfully."));
         customerBean.update();
-        Ajax.update("c_list_form:c_list_table");
+        Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("clearAndCloseAddCustomerDialog(true)");
     }
     
@@ -78,7 +80,7 @@ public class CustomerCUDBean implements Serializable {
         customerService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer edited succesfully."));
         customerBean.update();
-        Ajax.update("c_list_form:c_list_table");
+        Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("clearAndCloseEditCustomerDialog(true)");
     }
     
@@ -92,7 +94,7 @@ public class CustomerCUDBean implements Serializable {
     {
         customerService.delete(customerToDelete);
         customerBean.update();
-        Ajax.update("c_list_form:c_list_table");
+        Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("$('#customer_delete_dialog').modal('hide')");
         
     }

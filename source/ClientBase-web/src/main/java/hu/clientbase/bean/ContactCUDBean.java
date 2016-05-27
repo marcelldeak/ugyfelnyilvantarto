@@ -32,6 +32,8 @@ public class ContactCUDBean implements Serializable {
 
     private ContactDTO contactToDelete;
 
+    private static final String CONTACTS_LIST = "customer_details_right_panel:contacts_list";
+
     public void openAddDialog() {
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#contact_add_dialog').modal('show');");
     }
@@ -42,7 +44,7 @@ public class ContactCUDBean implements Serializable {
         firstName = null;
         lastName = null;
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
         Ajax.oncomplete("clearAndCloseAddContactDialog(true);");
     }
 
@@ -60,7 +62,7 @@ public class ContactCUDBean implements Serializable {
         customerService.updateContact(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contact person edited succesfully."));
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
         Ajax.oncomplete("clearAndCloseEditContactDialog(true);");
     }
 
@@ -73,7 +75,7 @@ public class ContactCUDBean implements Serializable {
     public void delete() {
         customerService.deleteContact(customersBean.getSelectedCustomer(), contactToDelete);
         customersBean.update();
-        Ajax.update("customer_details_right_panel:contacts_list");
+        Ajax.update(CONTACTS_LIST);
         Ajax.oncomplete("$('#contact_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show');");
     }
 
