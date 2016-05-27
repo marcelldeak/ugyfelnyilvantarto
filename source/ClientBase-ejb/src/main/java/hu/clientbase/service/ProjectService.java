@@ -5,6 +5,8 @@ import hu.clientbase.entity.Customer;
 import hu.clientbase.entity.Project;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.ProjectFacade;
+import java.util.LinkedList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -42,4 +44,14 @@ public class ProjectService {
         entityFacade.update(tempProject);
     }
 
+    public List<BasicProjectDTO> getAllProject(){
+        List<BasicProjectDTO> result = new LinkedList<>();
+        
+        for(Project p : projectFacade.getAllProjects()){
+            result.add(new BasicProjectDTO(p));
+        }
+        
+        return result;
+    }
+    
 }

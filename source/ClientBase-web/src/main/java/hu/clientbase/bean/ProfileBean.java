@@ -30,8 +30,8 @@ import org.primefaces.model.UploadedFile;
 @ManagedBean(name = "profile")
 @ViewScoped
 @Stateful
-public class ProfileBean{
-    
+public class ProfileBean {
+
     @Inject
     private UserService userService;
 
@@ -42,7 +42,7 @@ public class ProfileBean{
     private String firstName;
     private Date dateOfBirth;
     private String picture;
-    
+
     private UploadedFile upFile;
 
     public ProfileBean() {
@@ -67,7 +67,7 @@ public class ProfileBean{
         dateOfBirth = user.getDateOfBirth().getTime();
         picture = user.getPicture();
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -131,13 +131,12 @@ public class ProfileBean{
     public void setFile(UploadedFile file) {
         this.upFile = file;
     }
-        
-    public void uploadImage() throws NoSuchAlgorithmException{
-        String[] emailParts = email.split("@");
-        String[] domainParts = emailParts[1].split("\\.");
+
+    public void uploadImage() throws NoSuchAlgorithmException {
+        String filename = email.replaceAll("(\\.|@)", "_");
         String extension = ".";
-        
-        switch(upFile.getContentType()){
+
+        switch (upFile.getContentType()) {
             case "image/jpeg":
                 extension = extension.concat("jpg");
                 break;
@@ -147,36 +146,30 @@ public class ProfileBean{
             default:
                 break;
         }
-        
-        picture = emailParts[0] + "_" + domainParts[0] + "_" + domainParts[1] + extension;
-        
-        Path folder = Paths.get(Faces.getServletContext().getRealPath(""),"resources","profile_images");
+
+        picture = filename + extension;
+
+        Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
         File file = new File(folder.toString() + File.separatorChar + picture);
         file.mkdirs();
-        
-        try(InputStream fileInput = upFile.getInputstream()) {
+
+        try (InputStream fileInput = upFile.getInputstream()) {
             Files.copy(fileInput, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
             FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
         }
-        
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateOfBirth);
-        UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
-            userService.update(user);
-        
+
+        userService.updatePicture(id, picture);
         
         init();
-        
-        Ajax.update("profile_picture");
     }
-    
+
     public void saveChanges() throws NoSuchAlgorithmException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfBirth);
         UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
         userService.update(user);
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
@@ -184,25 +177,25 @@ public class ProfileBean{
         } catch (ServletException ex) {
             context.getExternalContext().setResponseStatus(404);
         }
-        
+
         init();
 
         Ajax.updateAll();
     }
 
-    public String getProfileImgPath(){
+    public String getProfileImgPath() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         String contextPath = request.getContextPath();
-        
-        if(!picture.equals("null") && picture != null){
-            String fileURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + 
-                    request.getContextPath() + "/resources/profile_images/" + picture;
+
+        if (!picture.equals("null") && picture != null) {
+            String fileURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                    + request.getContextPath() + "/resources/profile_images/" + picture;
             return fileURL;
-        }else{
+        } else {
             return contextPath + "/resources/imgs/facebook-avatar.jpg";
         }
-            
+
     }
-    
+
 }
