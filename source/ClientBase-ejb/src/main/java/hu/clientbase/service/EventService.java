@@ -48,24 +48,15 @@ public class EventService {
     @Resource(lookup = "java:/jms/topic/RemovedTopic")
     private Topic removedTopic;
 
-    public void create(UserDTO userDTO, BasicEventDTO eventDTO, CustomerDTO customerDTO) {
-        try {
-            Event event = new Event(eventDTO);
+    public void create(UserDTO userDTO, BasicEventDTO eventDTO) {
 
-            User user = entityFacade.find(User.class, userDTO.getId());
+        Event event = new Event(eventDTO);
 
-            Invitation i = new Invitation(event, user);
-            entityFacade.create(i);
+        User user = entityFacade.find(User.class, userDTO.getId());
 
-            SharedEventDTO sharedEventDTO = new SharedEventDTO(eventDTO.getName(), eventDTO.getType().toString(), eventDTO.getDateOfStart(), eventDTO.getDateOfEnd());
-            Message message = context.createObjectMessage(sharedEventDTO);
-            message.setStringProperty("type", eventDTO.getType().toString());
-            message.setStringProperty("customerName", "XXX");
-            context.createProducer().send(createdTopic, message);
+        Invitation i = new Invitation(event, user);
+        entityFacade.create(i);
 
-        } catch (JMSException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     public void update(BasicEventDTO dto) {

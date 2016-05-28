@@ -37,6 +37,7 @@ public class Customer implements Serializable {
     private List<Project> projects;
 
     @OneToMany(targetEntity = Event.class)
+    @Cascade(CascadeType.ALL)
     private List<Event> events;
 
     @OneToOne(targetEntity = Address.class)

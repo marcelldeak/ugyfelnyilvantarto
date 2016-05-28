@@ -121,11 +121,15 @@
                     </div>
                 </div>
 
-                <ui:include src="artifacts/customer_modal.xhtml" />
+                <ui:include src="artifacts/event/delete_modal.xhtml" />
                 <ui:include src="artifacts/event/details_modal.xhtml"/>
+                <ui:include src="artifacts/event/add_modal.xhtml"/>
+                <ui:include src="artifacts/event/edit_modal.xhtml" />
                 <ui:include src="artifacts/profile.xhtml" />
-               
+                <ui:include src="artifacts/customer_modal.xhtml" />
+
                 <script src="#{request.contextPath}/resources/js/customer.js"></script>
+                <script src="#{request.contextPath}/resources/js/event.js"></script>
             </ui:define>
         </ui:composition>
     </h:body>
