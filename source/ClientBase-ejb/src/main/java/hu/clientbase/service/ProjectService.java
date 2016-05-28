@@ -39,7 +39,7 @@ public class ProjectService {
         Project tempProject = entityFacade.find(Project.class, dto.getId());
         tempProject.setDeadline(dto.getDeadline());
         tempProject.setName(dto.getName());
-        tempProject.setStatus(tempProject.getStatus());
+        tempProject.setStatus(dto.getStatus());
 
         entityFacade.update(tempProject);
     }

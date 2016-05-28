@@ -31,13 +31,15 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     @Override
     public void update() {
         events = eventService.getAllEventsAsDTO();
-
+        if (selectedEvent != null) {
+            selectedEvent = events.get(events.indexOf(selectedEvent));
+        }
     }
 
     public void openSelectedEventDetails(BasicEventDTO dto) {
         selectedEvent = dto;
         update();
-        Ajax.update("event_details_form","notes_form");
+        Ajax.update("event_details_form", "notes_form");
         Ajax.oncomplete("$('#event_details_dialog').modal('show')");
     }
 
@@ -80,5 +82,5 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     public void setEventItems(List<SelectItem> eventItems) {
         this.eventItems = eventItems;
     }
-    
+
 }

@@ -5,6 +5,7 @@ import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.ProjectStatus;
 import hu.clientbase.service.ProjectService;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
@@ -64,12 +65,19 @@ public class ProjectCUDBean implements Serializable {
 
     public void add() {
 
+        if (date == null) {
+            date = Date.from(Instant.now());
+        }
+
         deadline = dateToCalendar(date);
-        BasicProjectDTO dto = new BasicProjectDTO(name, deadline);
+        BasicProjectDTO dto = new BasicProjectDTO(name, deadline, ProjectStatus.NOT_STARTED);
 
         ProjectService.create(dto);
         projectBean.update();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project added succesfully."));
+        name = null;
+        date = null;
+        deadline = null;
         Ajax.update("a_form:projects");
         Ajax.oncomplete("clearAndCloseAddProjectDialog(true)");
     }
@@ -79,6 +87,7 @@ public class ProjectCUDBean implements Serializable {
         name = dto.getName();
         status = dto.getStatus();
         deadline = dto.getDeadline();
+        date = Date.from(deadline.toInstant());
         Ajax.update("project_edit_form");
         Ajax.oncomplete("$('#project_edit_dialog').modal('show')");
     }

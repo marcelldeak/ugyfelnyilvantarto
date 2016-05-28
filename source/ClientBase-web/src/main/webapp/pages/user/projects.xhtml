@@ -3,8 +3,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition template="../../templates/main_template.xhtml">
 
@@ -201,8 +200,8 @@
                                                     <label class="control-label col-sm-4" for="p_deadline">Deadine:</label>
                                                     <div class="col-sm-8">
                                                         <p:outputLabel for="p_deadline"
-                                                                       value="#{ProjectCUD.date}">
-                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" />
+                                                                       value="#{ProjectCUD.date.toLocaleString().split(' ')[0]}">
+                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" style="padding-top: 7px;" />
                                                         </p:outputLabel>
                                                     </div>
                                                 </div>
@@ -340,7 +339,7 @@
                                                     <label class="control-label col-sm-4" for="p_deadline_edit">Deadline:</label>
                                                     <div class="col-sm-8">
                                                         <p:outputLabel for="p_deadline_edit"
-                                                                       value="#{ProjectCUD.date}">
+                                                                       value="#{ProjectCUD.date.toLocaleString().split(' ')[0]}" style="padding-top: 7px;">
                                                             <p:calendar id="p_deadline_edit" value="#{ProjectCUD.date}" mode="inline" />
                                                         </p:outputLabel>
                                                     </div>

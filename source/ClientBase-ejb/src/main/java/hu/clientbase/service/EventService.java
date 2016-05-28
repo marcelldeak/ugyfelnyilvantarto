@@ -2,8 +2,11 @@ package hu.clientbase.service;
 
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.dto.NoteDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.Event;
+import hu.clientbase.entity.Invitation;
 import hu.clientbase.entity.Note;
+import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
 import java.util.LinkedList;
@@ -20,9 +23,15 @@ public class EventService {
     @Inject
     private EventFacade eventFacade;
     
-    public void create(BasicEventDTO dto) {
-        Event event = new Event(dto);
-        entityFacade.create(event);
+    public void create(UserDTO userDTO, BasicEventDTO eventDTO) {
+        Event event = new Event(eventDTO);
+        
+        User user = entityFacade.find(User.class, userDTO.getId());
+        
+        Invitation i = new Invitation(event, user);
+        
+        entityFacade.create(i);
+        
     }
     
     public void update(BasicEventDTO dto) {

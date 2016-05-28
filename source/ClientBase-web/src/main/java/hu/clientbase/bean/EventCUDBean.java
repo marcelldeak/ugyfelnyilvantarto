@@ -2,9 +2,12 @@ package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.EventBean;
 import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.NoteDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
 import hu.clientbase.service.EventService;
+import hu.clientbase.service.UserService;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,9 @@ public class EventCUDBean implements Serializable {
 
     @Inject
     private EventBean eventBean;
+    
+    @Inject
+    private UserService userService;
 
     private Long id;
 
@@ -47,7 +53,10 @@ public class EventCUDBean implements Serializable {
 
     public void add() {
         BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
-        eventService.create(dto);
+        String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        UserDTO user = userService.getUserByEmail(userEmail);
+        
+        eventService.create(user, dto);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
         eventBean.update();

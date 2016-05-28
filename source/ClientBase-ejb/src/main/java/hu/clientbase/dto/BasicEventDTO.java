@@ -2,12 +2,15 @@ package hu.clientbase.dto;
 
 import hu.clientbase.entity.Event;
 import hu.clientbase.entity.EventType;
-import hu.clientbase.entity.Note;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-public class BasicEventDTO {
+public class BasicEventDTO implements Serializable {
+
+    private static final long serialVersionUID = -5706191305558878248L;
 
     private Long id;
     private EventType type;
@@ -86,4 +89,29 @@ public class BasicEventDTO {
         this.notes = notes;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BasicEventDTO other = (BasicEventDTO) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

@@ -43,8 +43,8 @@ public class NoteCBean implements Serializable {
     
     public void add()
     {
-
-       eventService.addNoteToEvent(selectedEvent, new NoteDTO(tag, content));
+       String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+       eventService.addNoteToEvent(selectedEvent, new NoteDTO(tag, content + "\n(" + userService.getUserByEmail(userEmail).getName() + ")"));
        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Note added succesfully."));
        eventBean.update();
        Ajax.update("notes_form");

@@ -103,7 +103,7 @@ public class UserService {
         return ret;
     }
 
-    public UserDTO getUserByEmail(String eMail) throws NoSuchAlgorithmException {
+    public UserDTO getUserByEmail(String eMail) {
         return new UserDTO(userFacade.getUserByEmail(eMail));
     }
 

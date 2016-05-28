@@ -43,7 +43,7 @@
 
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4">Name:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" style="padding-top: 7px;">
                                             <h:outputText value="#{events.selectedEvent.name}"/>
 
                                         </div>
@@ -51,14 +51,14 @@
 
                                     <div class="form-group row" >
                                         <label class="control-label col-sm-4" >Type:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-8" style="padding-top: 7px;">
                                             <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
                                         </div>
                                     </div>
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4" >Date of Start:</label>
-                                        <div class="col-sm-8">
+                                        <label class="control-label col-sm-4" >Start:</label>
+                                        <div class="col-sm-8" style="padding-top: 7px;">
                                             <h:outputText  value="#{events.selectedEvent.dateOfStart}">
                                                 <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
                                             </h:outputText>
@@ -66,8 +66,8 @@
                                     </div>
 
                                     <div class="form-group row" >
-                                        <label class="control-label col-sm-4">Date of End:</label>
-                                        <div class="col-sm-8">
+                                        <label class="control-label col-sm-4">End:</label>
+                                        <div class="col-sm-8" style="padding-top: 7px;">
                                             <h:outputText value="#{events.selectedEvent.dateOfEnd}">
                                                 <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
                                             </h:outputText>
@@ -83,23 +83,25 @@
                                     class="form-horizontal"
                                     id="notes_form">
                                 <p:panel id="event_data" header="Notes">
-                                    <div class="pull-right" style="position:relative;top:-35px;">
-
-
-                                        <p:commandButton title="Add note"
-                                                         icon="ui-icon-plus"
-                                                         action="#{noteC.openAddDialog(events.selectedEvent)}"
-                                                         style="margin-right: 8px;">
-                                            <f:ajax />
-                                        </p:commandButton>
+                                    <div class="row">
+                                        <div class="pull-right" style="position:relative;top:-35px;">
+                                            <p:commandButton title="Add note"
+                                                             icon="ui-icon-plus"
+                                                             action="#{noteC.openAddDialog(events.selectedEvent)}"
+                                                             style="margin-right: 8px;">
+                                                <f:ajax />
+                                            </p:commandButton>
+                                        </div>
                                     </div>
+                                    
                                     <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
                                         <c:forEach var="_note" items="#{events.selectedEvent.notes}">
-                                            <p:panel header="#{_note.tag}" style="padding-bottom: 10px;">
-                                                <h:outputText value="#{_note.content}" />
+                                            <p:panel header="#{_note.tag.toString()}" style="margin-bottom: 5px;">
+                                                <h:outputText class="preformatted" value="#{_note.content}" />
                                             </p:panel>
                                         </c:forEach>
                                     </div>
+                                    
                                 </p:panel> 
                             </h:form>
 

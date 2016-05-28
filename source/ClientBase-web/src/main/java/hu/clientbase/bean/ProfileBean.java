@@ -54,11 +54,7 @@ public class ProfileBean {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
         UserDTO user = new UserDTO();
-        try {
-            user = userService.getUserByEmail(eMail);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(ProfileBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        user = userService.getUserByEmail(eMail);
         id = user.getId();
         email = user.getEmail();
         password = user.getPassword();

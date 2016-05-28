@@ -2,6 +2,7 @@ package hu.clientbase.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ public class Invitation implements Serializable {
     @Basic
     private String description;
 
-    @OneToOne(targetEntity = Event.class)
+    @OneToOne(targetEntity = Event.class,cascade = CascadeType.ALL)
     private Event event;
 
     @OneToOne(targetEntity = User.class)
@@ -29,6 +30,11 @@ public class Invitation implements Serializable {
         // Entity - parameterless constructor
     }
 
+    public Invitation(Event event, User recipient) {
+        this.event = event;
+        this.recipient = recipient;
+    }
+    
     public Long getId() {
         return this.id;
     }
