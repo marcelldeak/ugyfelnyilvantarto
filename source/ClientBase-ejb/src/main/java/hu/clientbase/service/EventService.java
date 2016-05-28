@@ -29,8 +29,8 @@ public class EventService {
         User user = entityFacade.find(User.class, userDTO.getId());
         
         Invitation i = new Invitation(event, user);
-        
         entityFacade.create(i);
+
         
     }
     

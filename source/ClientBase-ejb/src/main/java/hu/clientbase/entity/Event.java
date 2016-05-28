@@ -4,6 +4,7 @@ import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.shared.ejb.SharedEventDTO;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -87,6 +88,7 @@ public class Event implements Serializable {
         this.dateOfEnd = dto.getDateOfEnd();
         this.dateOfStart = dto.getDateOfStart();
         this.type = dto.getType();
+        notes = new ArrayList<>();
     }
 
     public Long getId() {
@@ -135,29 +137,5 @@ public class Event implements Serializable {
 
     public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
-    }
-
-    @PostPersist
-    public void sendEventToCreatedTopic() {
-        try {
-            SharedEventDTO sharedEventDTO = new SharedEventDTO(type.toString(),
-                    dateOfStart, dateOfEnd, name);
-
-            Message message = context.createObjectMessage(sharedEventDTO);
-            Customer customer = customerFacade.getCustomerForEvent(this);
-            message.setStringProperty("Type", type.toString());
-            message.setStringProperty("Customer name", customer==null?"":customer.getName());
-
-            context.createProducer().send(createdTopic, message);
-        } catch (JMSException ex) {
-            Logger.getLogger(Event.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    @PostRemove
-    public void sendEventToRemovedTopic() {
-        SharedEventDTO sharedEventDTO = new SharedEventDTO(type.toString(), dateOfStart, dateOfEnd, name);
-        context.createProducer().send(removedTopic, sharedEventDTO);
     }
 }

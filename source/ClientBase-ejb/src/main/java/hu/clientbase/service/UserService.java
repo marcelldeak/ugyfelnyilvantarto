@@ -104,7 +104,7 @@ public class UserService {
     }
 
     public UserDTO getUserByEmail(String eMail) {
-        return new UserDTO(userFacade.getUserByEmail(eMail));
+                return new UserDTO(userFacade.getUserByEmail(eMail));
     }
 
     public void update(UserDTO user) throws NoSuchAlgorithmException {

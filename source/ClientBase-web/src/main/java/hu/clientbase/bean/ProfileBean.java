@@ -156,7 +156,7 @@ public class ProfileBean {
         }
 
         userService.updatePicture(id, picture);
-        
+
         init();
     }
 
