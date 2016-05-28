@@ -1,6 +1,7 @@
 package hu.clientbase.service;
 
 import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.dto.NoteDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.Event;
@@ -9,12 +10,23 @@ import hu.clientbase.entity.Note;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
+
+import hu.clientbase.shared.ejb.SharedEventDTO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Topic;
 
 @Stateless
 public class EventService {
@@ -35,8 +47,9 @@ public class EventService {
         Invitation i = new Invitation(event, user);
 
         entityFacade.create(i);
-    }
 
+    }
+    
     public void update(BasicEventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
 
@@ -50,6 +63,7 @@ public class EventService {
         Event event = entityFacade.find(Event.class, dto.getId());
         eventFacade.deleteInvitationsForEventByEventId(dto.getId());
         entityFacade.delete(event);
+
     }
 
     public Event find(BasicEventDTO dto) {
@@ -76,6 +90,12 @@ public class EventService {
         List<BasicEventDTO> ret = new LinkedList<>();
 
         eventFacade.getNextEventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+
+        return ret;
+    }
+
+    public List<BasicEventDTO> getNext10Events() {
+        List<BasicEventDTO> ret = new LinkedList<>();
 
         return ret;
     }
