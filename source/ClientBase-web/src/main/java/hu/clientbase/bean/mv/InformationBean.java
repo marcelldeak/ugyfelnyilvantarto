@@ -32,11 +32,7 @@ public class InformationBean implements Serializable {
     @PostConstruct
     private void init() {
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        try {
-            nextEvents = eventService.getNext10EventsForUser(userService.getUserByEmail(userEmail));
-        } catch (NoSuchAlgorithmException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
-        }
+        nextEvents = eventService.getNext10EventsForUser(userService.getUserByEmail(userEmail));
     }
 
     public void openSelectedEventDetails(BasicEventDTO dto) {

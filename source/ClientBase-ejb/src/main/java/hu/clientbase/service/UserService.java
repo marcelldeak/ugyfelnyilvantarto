@@ -5,6 +5,7 @@ import hu.clientbase.entity.PendingRegistration;
 import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
+import hu.clientbase.facade.EventFacade;
 import hu.clientbase.facade.UserFacade;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +23,9 @@ public class UserService {
 
     @Inject
     private UserFacade userFacade;
+    
+    @Inject
+    private EventFacade eventFacade;
 
     public void create(UserDTO dto) {
         User u = new User(dto);
@@ -33,6 +37,7 @@ public class UserService {
 
     public void delete(UserDTO dto) {
         User u = entityFacade.find(User.class, dto.getId());
+        eventFacade.deleteInvitationsForUserByUserId(u.getId());
         entityFacade.delete(u);
     }
 

@@ -23,7 +23,7 @@ public class EventFacade {
     public List<Event> getNext10EventsForUserByUserId(Long id) {
         return em.createQuery("SELECT e FROM Invitation i JOIN  i.event e JOIN i.recipient u WHERE e.dateOfStart >= CURRENT_TIMESTAMP AND u.id = :id ORDER BY e.dateOfStart", Event.class).setParameter("id", id).setMaxResults(10).getResultList();
     }
-    
+
     public List<Event> getNextEventsForUserByUserId(Long id) {
         return em.createQuery("SELECT e FROM Invitation i JOIN  i.event e JOIN i.recipient u WHERE e.dateOfStart >= CURRENT_TIMESTAMP AND u.id = :id ORDER BY e.dateOfStart", Event.class).setParameter("id", id).getResultList();
     }
@@ -34,5 +34,9 @@ public class EventFacade {
 
     public void deleteInvitationsForEventByEventId(Long id) {
         em.createQuery("DELETE FROM Invitation i WHERE i.event.id = :id").setParameter("id", id).executeUpdate();
+    }
+
+    public void deleteInvitationsForUserByUserId(Long id) {
+        em.createQuery("DELETE FROM Invitation i where i.recipient.id = :id").setParameter("id", id).executeUpdate();
     }
 }

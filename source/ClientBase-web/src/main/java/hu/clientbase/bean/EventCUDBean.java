@@ -74,12 +74,8 @@ public class EventCUDBean implements Serializable {
 
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         UserDTO user = new UserDTO();
-        try {
-            user = userService.getUserByEmail(userEmail);
-        } catch (NoSuchAlgorithmException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
-        }
-
+        user = userService.getUserByEmail(userEmail);
+      
         eventService.create(user, eventDTO);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));

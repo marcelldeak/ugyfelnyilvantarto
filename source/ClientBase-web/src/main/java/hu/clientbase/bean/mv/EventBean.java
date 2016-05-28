@@ -39,11 +39,8 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     @Override
     public void update() {
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        try {
-            events = eventService.getNextEventsForUser(userService.getUserByEmail(userEmail));
-        } catch (NoSuchAlgorithmException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
-        }
+        events = eventService.getNextEventsForUser(userService.getUserByEmail(userEmail));
+       
         if (selectedEvent != null && events.contains(selectedEvent)) {
             selectedEvent = events.get(events.indexOf(selectedEvent));
             invitableUsers = eventService.getNotInvitedUsers(selectedEvent);
