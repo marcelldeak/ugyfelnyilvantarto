@@ -9,8 +9,10 @@ import hu.clientbase.entity.Note;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -23,15 +25,16 @@ public class EventService {
     @Inject
     private EventFacade eventFacade;
     
+    @Inject
+    private UserService userService;
+    
     public void create(UserDTO userDTO, BasicEventDTO eventDTO) {
         Event event = new Event(eventDTO);
         
         User user = entityFacade.find(User.class, userDTO.getId());
-        
         Invitation i = new Invitation(event, user);
-        entityFacade.create(i);
-
         
+        entityFacade.create(i);
     }
     
     public void update(BasicEventDTO dto) {
@@ -41,11 +44,11 @@ public class EventService {
         event.setDateOfStart(dto.getDateOfStart());
         event.setName(dto.getName());
         event.setType(dto.getType());
-        
     }
     
     public void delete(BasicEventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
+        eventFacade.deleteInvitationsForEventByEventId(dto.getId());
         entityFacade.delete(event);
     }
     
@@ -75,5 +78,21 @@ public class EventService {
         event.getNotes().add(new Note(noteDTO));
         
         entityFacade.update(event);
+    }
+    
+    public List<UserDTO> getNotInvitedUsers(BasicEventDTO dto) {
+        List invitedUsersList = new LinkedList<>();
+        eventFacade.getInvitedUsersForEventByEventId(dto.getId()).stream().forEach(u -> invitedUsersList.add(new UserDTO(u)));
+        
+        Set<UserDTO> users = new HashSet<>(userService.getUsers());
+        Set<UserDTO> invitedUsers = new HashSet<>(invitedUsersList);
+        
+        users.removeAll(invitedUsers);
+        
+        List<UserDTO> ret = new LinkedList<>();
+        
+        ret.addAll(users);
+        
+        return ret;
     }
 }
