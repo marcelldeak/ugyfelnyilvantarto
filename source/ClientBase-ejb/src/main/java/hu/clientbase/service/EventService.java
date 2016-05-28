@@ -4,13 +4,16 @@ import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
-import hu.clientbase.validate.InterceptorBinding;
+import hu.clientbase.validate.LoggerInterceptor;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import hu.clientbase.validate.ValidatorInterceptor;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class EventService {
 
     @Inject
@@ -19,13 +22,13 @@ public class EventService {
     @Inject
     private EventFacade eventFacade;
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void create(BasicEventDTO dto) {
         Event event = new Event(dto);
 
         entityFacade.create(event);
     }
-
+    @Interceptors({ValidatorInterceptor.class})
     public void update(BasicEventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
 

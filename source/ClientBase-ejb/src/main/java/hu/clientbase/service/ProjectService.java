@@ -5,11 +5,14 @@ import hu.clientbase.entity.Customer;
 import hu.clientbase.entity.Project;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.ProjectFacade;
-import hu.clientbase.validate.InterceptorBinding;
+import hu.clientbase.validate.LoggerInterceptor;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import hu.clientbase.validate.ValidatorInterceptor;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class ProjectService {
 
     @Inject
@@ -18,7 +21,7 @@ public class ProjectService {
     @Inject
     private ProjectFacade projectFacade;
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void create(BasicProjectDTO projectDTO) {
         Project project = new Project(projectDTO);
         entityFacade.create(project);

@@ -124,7 +124,7 @@
                      tabindex="-1"
                      role="dialog"
                      data-backdrop="static">
-                    <div class="modal-dialog ">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="row" style="text-align: center;">
@@ -209,7 +209,7 @@
                                                     <div class="col-sm-8">
                                                         <p:outputLabel for="p_deadline"
                                                                        value="#{ProjectCUD.date}">
-                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" mindate="#{ProjectCUD.currentDate}" />
+                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" />
                                                         </p:outputLabel>
                                                     </div>
                                                 </div>
@@ -315,7 +315,7 @@
                                                 class="form-horizontal"
                                                 id="project_edit_form">
 
-                                            <p:panel id="project_data_edit" header="Details">
+                                            <p:panel id="project_data" header="Details">
 
                                                 <div class="form-group row" >
                                                     <label class="control-label col-sm-4" for="p_name">Name:</label>
@@ -344,11 +344,11 @@
                                                     </h:selectOneMenu>
                                                 </div>
                                                 <div class="form-group row" >
-                                                    <label class="control-label col-sm-4" for="p_deadline_edit">Deadline:</label>
+                                                    <label class="control-label col-sm-4" for="p_deadline">Deadline:</label>
                                                     <div class="col-sm-8">
-                                                        <p:outputLabel for="p_deadline_edit"
+                                                        <p:outputLabel for="p_deadline"
                                                                        value="#{ProjectCUD.date}">
-                                                            <p:calendar id="p_deadline_edit" value="#{ProjectCUD.date}" mode="inline" mindate="#{ProjectCUD.currentDate}" />
+                                                            <p:calendar id="p_deadline" value="#{ProjectCUD.date}" mode="inline" />
                                                         </p:outputLabel>
                                                     </div>
                                                 </div>  
@@ -359,7 +359,7 @@
                                             <div class="form-group row row-centered"
                                                  style="padding-top: 10px;">
                                                 <p:commandButton value="Save changes"
-                                                                 update="project_data_edit"
+                                                                 update="project_data"
                                                                  validateClient="true"
                                                                  style="margin-right:10px"
                                                                  action="#{ProjectCUD.edit()}">

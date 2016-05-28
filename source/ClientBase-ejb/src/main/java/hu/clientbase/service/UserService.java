@@ -6,13 +6,16 @@ import hu.clientbase.entity.Role;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.UserFacade;
-import hu.clientbase.validate.InterceptorBinding;
+import hu.clientbase.validate.LoggerInterceptor;
+import hu.clientbase.validate.ValidatorInterceptor;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class UserService {
 
     @Inject
@@ -21,7 +24,7 @@ public class UserService {
     @Inject
     private UserFacade userFacade;
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void create(UserDTO dto) {
         User u = new User(dto);
         u.setActive(false);
@@ -89,6 +92,7 @@ public class UserService {
     }
 
     public boolean isEmailExist(String email) {
+
         return entityFacade.findAll(User.class).stream().anyMatch(user -> user.getEmail().equals(email));
     }
 

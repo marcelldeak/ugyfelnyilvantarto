@@ -19,14 +19,15 @@ import org.omnifaces.util.Ajax;
 @ViewScoped
 public class ProjectBean implements Serializable {
 
+    
     private static final long serialVersionUID = -961683443281866021L;
-
+    
     private BasicProjectDTO selectedProject;
 
     private List<BasicProjectDTO> projects;
 
     private List<BasicProjectDTO> filteredProjects;
-
+    
     private String SelectedProjectDeadlineToString;
 
     @Inject
@@ -43,10 +44,8 @@ public class ProjectBean implements Serializable {
 
     public void openProjedtDetails(BasicProjectDTO dto) {
         selectedProject = dto;
-        if (dto.getDeadline() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            SelectedProjectDeadlineToString = sdf.format(dto.getDeadline().getTime());
-        }
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SelectedProjectDeadlineToString = sdf.format(dto.getDeadline().getTime());
         update();
         Ajax.update("project_details");
         Ajax.oncomplete("$('#project_details_dialog').modal('show')");

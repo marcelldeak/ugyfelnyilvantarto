@@ -3,15 +3,18 @@ package hu.clientbase.service.mv;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
 import hu.clientbase.facade.EventFacade;
+import hu.clientbase.validate.LoggerInterceptor;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import javax.interceptor.Interceptors;
 
 @Stateless
 @LocalBean
+@Interceptors({LoggerInterceptor.class})
 public class EventModel {
 
     @Inject

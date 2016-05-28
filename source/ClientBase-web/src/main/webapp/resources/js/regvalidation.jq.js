@@ -4,10 +4,7 @@ function start_validation() {
         $.growl.error({ message: "Enter your first name." });
         fail = true;
     }
-    else if (document.getElementById('registerForm:firstName').value.length < 2) {
-        $.growl.error({ message: "Your first name has to be at least 2 caracters long." });
-        fail = true;
-    }
+
 
     if (document.getElementById('registerForm:lastName').value.length <= 0) {
         $.growl.error({ message: "Enter your last name." });
@@ -66,3 +63,4 @@ function reg_success() {
     document.getElementById('registerForm:password').value = "";
     document.getElementById('registerForm:confirmPassword').value = "";
 }
+

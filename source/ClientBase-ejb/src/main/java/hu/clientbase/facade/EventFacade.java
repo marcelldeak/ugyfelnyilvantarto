@@ -1,8 +1,6 @@
 package hu.clientbase.facade;
 
-import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.entity.Event;
-import java.util.LinkedList;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

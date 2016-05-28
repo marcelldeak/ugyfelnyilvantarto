@@ -1,5 +1,7 @@
 package hu.clientbase.validate;
 
+import hu.clientbase.exception.ValidationException;
+import hu.clientbase.producer.ValidatorQualifier;
 import java.util.Optional;
 import java.util.Set;
 import javax.inject.Inject;
@@ -7,14 +9,14 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 @Interceptor
-@InterceptorBinding
+@InterceptorBind
 public class ValidatorInterceptor {
 
     @Inject
+    @ValidatorQualifier
     private Validator validator;
 
     @AroundInvoke
@@ -38,6 +40,7 @@ public class ValidatorInterceptor {
                 + e.getPropertyPath().toString()
                 + "  ").reduce(String::concat);
         if (errorMessage.isPresent()) {
+            System.out.println("----------- EXCEPTIONT DOBTAM -----------------");
             throw new ValidationException(errorMessage.get());
         }
     }

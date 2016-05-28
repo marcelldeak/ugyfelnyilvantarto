@@ -1,5 +1,6 @@
 package hu.clientbase.bean;
 
+
 import hu.clientbase.bean.mv.ProjectBean;
 import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.entity.ProjectStatus;

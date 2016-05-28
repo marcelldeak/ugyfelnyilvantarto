@@ -9,13 +9,16 @@ import hu.clientbase.entity.ContactChannel;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.facade.EntityFacade;
-import hu.clientbase.validate.InterceptorBinding;
+import hu.clientbase.validate.LoggerInterceptor;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
+import hu.clientbase.validate.ValidatorInterceptor;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class CustomerService {
 
     @Inject
@@ -33,7 +36,7 @@ public class CustomerService {
         return ret;
     }
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void create(CustomerDTO dto) {
         Address address = new Address(dto.getAddress());
         Customer customer = new Customer(dto);
@@ -42,7 +45,7 @@ public class CustomerService {
 
         entityFacade.create(customer);
     }
-
+    @Interceptors({ValidatorInterceptor.class})
     public void update(CustomerDTO dto) {
         Customer customer = entityFacade.find(Customer.class, dto.getId());
 
@@ -63,7 +66,7 @@ public class CustomerService {
         entityFacade.delete(customer);
     }
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void addContactToCustomer(CustomerDTO customerDTO, ContactDTO contactDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         customer.getContacts().add(new Contact(contactDTO));
@@ -79,7 +82,7 @@ public class CustomerService {
 
         return ret;
     }
-
+    @Interceptors({ValidatorInterceptor.class})
     public void updateContact(ContactDTO dto) {
         Contact contact = entityFacade.find(Contact.class, dto.getId());
 
@@ -99,7 +102,7 @@ public class CustomerService {
         entityFacade.delete(contact);
     }
 
-    @InterceptorBinding
+    @Interceptors({ValidatorInterceptor.class})
     public void addContactChannel(ContactDTO contactDTO, ContactChannelDTO contactChannelDTO) {
         Contact contact = entityFacade.find(Contact.class, contactDTO.getId());
 
@@ -107,7 +110,7 @@ public class CustomerService {
 
         entityFacade.update(contact);
     }
-
+    @Interceptors({ValidatorInterceptor.class})
     public void updateContactChannel(ContactChannelDTO dto) {
         ContactChannel contactChannel = entityFacade.find(ContactChannel.class, dto.getId());
         contactChannel.setValue(dto.getValue());

@@ -31,4 +31,9 @@ public class UserFacade {
     public List<User> getUsers() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
+    
+    public boolean isEmailExist(String email)
+    {
+        return em.createQuery("SELECT COALESCE(COUNT(u.id),0) FROM User u WHERE u.email = :email",Long.class).setParameter("email", email).getSingleResult() > 0;
+    }
 }
