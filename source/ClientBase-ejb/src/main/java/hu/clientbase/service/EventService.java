@@ -10,19 +10,23 @@ import hu.clientbase.entity.Note;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
+
 import hu.clientbase.shared.ejb.SharedEventDTO;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Topic;
-import javax.persistence.Transient;
 
 @Stateless
 public class EventService {
@@ -32,16 +36,15 @@ public class EventService {
 
     @Inject
     private EventFacade eventFacade;
+    @Inject
+    private UserService userService;
 
-    @Transient
     @Inject
     private JMSContext context;
 
-    @Transient
     @Resource(lookup = "java:/jms/topic/CreatedTopic")
     private Topic createdTopic;
 
-    @Transient
     @Resource(lookup = "java:/jms/topic/RemovedTopic")
     private Topic removedTopic;
 
@@ -72,11 +75,11 @@ public class EventService {
         event.setDateOfStart(dto.getDateOfStart());
         event.setName(dto.getName());
         event.setType(dto.getType());
-
     }
 
     public void delete(BasicEventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
+        eventFacade.deleteInvitationsForEventByEventId(dto.getId());
         entityFacade.delete(event);
 
         SharedEventDTO sharedEventDTO = new SharedEventDTO(dto.getName(), dto.getType().toString(), dto.getDateOfStart(), dto.getDateOfEnd());
@@ -109,5 +112,21 @@ public class EventService {
         event.getNotes().add(new Note(noteDTO));
 
         entityFacade.update(event);
+    }
+
+    public List<UserDTO> getNotInvitedUsers(BasicEventDTO dto) {
+        List invitedUsersList = new LinkedList<>();
+        eventFacade.getInvitedUsersForEventByEventId(dto.getId()).stream().forEach(u -> invitedUsersList.add(new UserDTO(u)));
+
+        Set<UserDTO> users = new HashSet<>(userService.getUsers());
+        Set<UserDTO> invitedUsers = new HashSet<>(invitedUsersList);
+
+        users.removeAll(invitedUsers);
+
+        List<UserDTO> ret = new LinkedList<>();
+
+        ret.addAll(users);
+
+        return ret;
     }
 }

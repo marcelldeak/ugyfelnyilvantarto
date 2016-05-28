@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -20,10 +21,10 @@ public class Invitation implements Serializable {
     @Basic
     private String description;
 
-    @OneToOne(targetEntity = Event.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Event.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Event event;
 
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User recipient;
 
     public Invitation() {

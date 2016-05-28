@@ -3,6 +3,7 @@ package hu.clientbase.dto;
 import hu.clientbase.entity.User;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class UserDTO implements Serializable {
 
@@ -114,5 +115,29 @@ public class UserDTO implements Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserDTO other = (UserDTO) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
 }

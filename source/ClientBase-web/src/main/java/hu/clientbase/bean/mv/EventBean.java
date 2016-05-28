@@ -1,6 +1,7 @@
 package hu.clientbase.bean.mv;
 
 import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.EventService;
 
 import javax.faces.model.SelectItem;
@@ -8,6 +9,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import org.omnifaces.util.Ajax;
 
@@ -27,19 +29,25 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     private List<BasicEventDTO> events;
 
     private List<BasicEventDTO> filteredEvents;
+    
+    private List<UserDTO> invitableUsers;
+    
+    private List<UserDTO> selectedUsers;
 
     @Override
     public void update() {
         events = eventService.getAllEventsAsDTO();
         if (selectedEvent != null) {
             selectedEvent = events.get(events.indexOf(selectedEvent));
-        }
+            invitableUsers = eventService.getNotInvitedUsers(selectedEvent);
+        } 
+        selectedUsers = new ArrayList<>();
     }
 
     public void openSelectedEventDetails(BasicEventDTO dto) {
         selectedEvent = dto;
         update();
-        Ajax.update("event_details_form", "notes_form");
+        Ajax.update("event_details_form", "notes_form","invite");
         Ajax.oncomplete("$('#event_details_dialog').modal('show')");
     }
 
@@ -83,4 +91,19 @@ public class EventBean extends AbstractBaseBean implements Serializable {
         this.eventItems = eventItems;
     }
 
+    public List<UserDTO> getInvitableUsers() {
+        return invitableUsers;
+    }
+
+    public void setInvitableUsers(List<UserDTO> invitableUsers) {
+        this.invitableUsers = invitableUsers;
+    }
+
+    public List<UserDTO> getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(List<UserDTO> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
 }
