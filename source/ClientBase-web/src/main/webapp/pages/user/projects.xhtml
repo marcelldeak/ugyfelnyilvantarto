@@ -53,16 +53,6 @@
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
                                             <h4>Projects</h4>
                                         </div>
-
-                                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
-                                            <p:commandButton title="New Project"
-                                                             icon="ui-icon-plus"
-                                                             action="#{ProjectCUD.openAddDialog()}"
-                                                             style="margin-top: 7px;">
-                                                <f:ajax />
-                                            </p:commandButton>
-                                        </div>
-
                                     </div>
                                 </f:facet>
 
@@ -87,23 +77,6 @@
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
-
-                                <p:column style="text-align: center;width: 56px">
-                                    <p:commandButton title="Edit"
-                                                     icon="ui-icon-pencil"
-                                                     action="#{ProjectCUD.openEditDialog(_project)}">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
-
-                                <p:column style="text-align: center;width: 56px">
-                                    <p:commandButton icon="ui-icon-trash"
-                                                     title="Delete"
-                                                     action="#{ProjectCUD.openDeleteDialog(_project)}">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
-
                             </p:dataTable>
                         </h:form>
                     </div>

@@ -1,8 +1,11 @@
 package hu.clientbase.bean.mv;
 
+import hu.clientbase.bean.ProjectCUDBean;
+import hu.clientbase.dto.BasicProjectDTO;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
+import hu.clientbase.service.ProjectService;
 import org.omnifaces.util.Ajax;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -20,10 +23,16 @@ public class CustomersBean implements Serializable {
     @Inject
     private transient CustomerService customerService;
 
+    @Inject
+    private ProjectService projectservice;
+
+    @Inject
+    private ProjectCUDBean projectManager;
+
     private CustomerDTO selectedCustomer;
-    
+
     private List<CustomerDTO> filteredCustomers;
-    
+
     private List<CustomerDTO> customers;
 
     private List<ContactDTO> contactPersons;
@@ -32,17 +41,19 @@ public class CustomersBean implements Serializable {
     private void init() {
         update();
     }
+
     public void update() {
         customers = customerService.getAllCustomers();
         if (selectedCustomer != null) {
             contactPersons = customerService.getContactsByCustomer(selectedCustomer);
+            projectManager.updateView();
         }
     }
 
     public void openSelectedCustomerDetails(CustomerDTO dto) {
         selectedCustomer = dto;
         update();
-        Ajax.update("customer_details", "customer_details_right_panel:contacts_list");
+        Ajax.update("customer_details", "customer_details_right_panel:contacts_list", "customer_details_right_panel:a_form");
         Ajax.oncomplete("$('#customer_details_dialog').modal('show')");
     }
 

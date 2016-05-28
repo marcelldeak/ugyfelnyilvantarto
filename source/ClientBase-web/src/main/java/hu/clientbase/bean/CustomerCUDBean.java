@@ -1,6 +1,7 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.CustomersBean;
+import hu.clientbase.bean.mv.ProjectBean;
 import hu.clientbase.dto.AddressDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
@@ -18,17 +19,20 @@ import java.io.Serializable;
 public class CustomerCUDBean implements Serializable {
 
     private static final long serialVersionUID = 258979332215257295L;
-    
+
     @Inject
     private transient CustomerService customerService;
-    
+
     @Inject
     private CustomersBean customerBean;
+
+    @Inject
+    private ProjectCUDBean projectBean;
     
     private Long id;
-    
+
     private String name;
-    
+
     private String vatNumber;
 
     private String city;
@@ -36,32 +40,33 @@ public class CustomerCUDBean implements Serializable {
     private String zipCode;
 
     private String street;
-    
+
     private String country;
-    
+
     private CustomerDTO customerToDelete;
+
     
     private static final String CUSTOMERS_LIST = "c_list_form:c_list_table";
-    
-    public void openAddDialog()
-    {
+
+    public void openAddDialog() {
+        projectBean.updateView();
+        Ajax.update("a_form:projects");
         Ajax.oncomplete("$('#customer_add_dialog').modal('show')");
     }
-    
+
     public void add() {
-        
+
         CustomerDTO dto = new CustomerDTO(name, vatNumber, new AddressDTO(city, zipCode, street, country));
-        
+
         customerService.create(dto);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer added succesfully."));
         customerBean.update();
         Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("clearAndCloseAddCustomerDialog(true)");
     }
-    
-    public void openEditDialog(CustomerDTO dto)
-    {
+
+    public void openEditDialog(CustomerDTO dto) {
         id = dto.getId();
         name = dto.getName();
         vatNumber = dto.getVatNumber();
@@ -72,9 +77,8 @@ public class CustomerCUDBean implements Serializable {
         Ajax.update("customer_edit_form");
         Ajax.oncomplete("$('#customer_edit_dialog').modal('show')");
     }
-    
-    public void edit()
-    {
+
+    public void edit() {
         CustomerDTO dto = new CustomerDTO(name, vatNumber, new AddressDTO(city, zipCode, street, country));
         dto.setId(id);
         customerService.update(dto);
@@ -83,20 +87,19 @@ public class CustomerCUDBean implements Serializable {
         Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("clearAndCloseEditCustomerDialog(true)");
     }
-    
-   public void openDeleteDialog(CustomerDTO dto) {
+
+    public void openDeleteDialog(CustomerDTO dto) {
         customerToDelete = dto;
         Ajax.update("customer_delete_name");
         Ajax.oncomplete("$('#customer_delete_dialog').modal('show')");
     }
-    
-    public void delete()
-    {
+
+    public void delete() {
         customerService.delete(customerToDelete);
         customerBean.update();
         Ajax.update(CUSTOMERS_LIST);
         Ajax.oncomplete("$('#customer_delete_dialog').modal('hide')");
-        
+
     }
 
     public String getName() {
@@ -154,5 +157,5 @@ public class CustomerCUDBean implements Serializable {
     public void setCustomerToDelete(CustomerDTO customerToDelete) {
         this.customerToDelete = customerToDelete;
     }
-    
+
 }

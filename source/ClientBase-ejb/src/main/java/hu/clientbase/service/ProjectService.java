@@ -1,6 +1,7 @@
 package hu.clientbase.service;
 
 import hu.clientbase.dto.BasicProjectDTO;
+import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.entity.Project;
 import hu.clientbase.facade.EntityFacade;
@@ -19,9 +20,11 @@ public class ProjectService {
     @Inject
     private ProjectFacade projectFacade;
 
-    public void create(BasicProjectDTO projectDTO) {
-        Project project = new Project(projectDTO);
-        entityFacade.create(project);
+    public void create(BasicProjectDTO projectDTO, CustomerDTO customerDTO) {
+        Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
+        customer.getProjects().add(new Project(projectDTO));
+        entityFacade.update(customer);
+
     }
 
     public void delete(BasicProjectDTO dto) {
@@ -44,14 +47,29 @@ public class ProjectService {
         entityFacade.update(tempProject);
     }
 
-    public List<BasicProjectDTO> getAllProject(){
+    public Project find(BasicProjectDTO dto) {
+        return entityFacade.find(Project.class, dto.getId());
+    }
+
+    public List<BasicProjectDTO> getAllProject() {
         List<BasicProjectDTO> result = new LinkedList<>();
-        
-        for(Project p : projectFacade.getAllProjects()){
+
+        for (Project p : projectFacade.getAllProjects()) {
             result.add(new BasicProjectDTO(p));
         }
-        
+
         return result;
     }
-    
+
+    public List<BasicProjectDTO> getAllProjectForCustomer(CustomerDTO customer) {
+        Customer tempCustomer = entityFacade.find(Customer.class, customer.getId());
+
+        List<BasicProjectDTO> ret = new LinkedList<>();
+
+        tempCustomer.getProjects().stream().forEach((project) -> {
+            ret.add(new BasicProjectDTO(project));
+        });
+        return ret;
+    }
+
 }

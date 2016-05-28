@@ -74,6 +74,7 @@ function clearAddContactChannelModal() {
 function clearAddProjectModal() {
     $('#project_add_dialog').modal('hide');
     $('#project_add_form').trigger('reset');
+    $('#customer_details_dialog').modal('show');
 
 }
 
@@ -81,9 +82,11 @@ function clearAndCloseEditProjectDialog(delayed) {
 
     if (!delayed) {
         $('#project_edit_dialog').modal('hide');
+        $('#customer_details_dialog').modal('show');
     } else {
         setTimeout(function () {
             $('#project_edit_dialog').modal('hide');
+            $('#customer_details_dialog').modal('show');
         }, 1000);
     }
 }
@@ -94,6 +97,7 @@ function clearAndCloseAddProjectDialog(delayed) {
         clearAddProjectModal();
     } else {
         setTimeout(clearAddProjectModal, 1000);
+;
     }
 }
 

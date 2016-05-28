@@ -48,8 +48,7 @@ public class HomeBackingBean {
         
         for(BasicEventDTO event : events){
             timeLine.add(new TimelineEvent(event.getName(),event.getDateOfStart(),event.getDateOfEnd()));
-        }
-        
+        }        
     }
 
     public TimelineModel getTimeLine() {

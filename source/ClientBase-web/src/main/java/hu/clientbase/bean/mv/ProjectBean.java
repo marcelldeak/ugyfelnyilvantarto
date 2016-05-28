@@ -49,7 +49,7 @@ public class ProjectBean implements Serializable {
         }
         update();
         Ajax.update("project_details");
-        Ajax.oncomplete("$('#project_details_dialog').modal('show')");
+        Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#project_details_dialog').modal('show')");
     }
 
     public List<BasicProjectDTO> getFilteredProjects() {
