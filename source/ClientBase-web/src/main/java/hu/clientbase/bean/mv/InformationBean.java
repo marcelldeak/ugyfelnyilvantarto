@@ -4,6 +4,7 @@ import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -31,7 +32,11 @@ public class InformationBean implements Serializable {
     @PostConstruct
     private void init() {
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        nextEvents = eventService.getNext10EventsForUser(userService.getUserByEmail(userEmail));
+        try {
+            nextEvents = eventService.getNext10EventsForUser(userService.getUserByEmail(userEmail));
+        } catch (NoSuchAlgorithmException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+        }
     }
 
     public void openSelectedEventDetails(BasicEventDTO dto) {

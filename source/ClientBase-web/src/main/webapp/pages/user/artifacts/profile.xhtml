@@ -23,14 +23,14 @@
                                     <img id="profile_picture"
                                          class="media-object" 
                                          src="#{profile.getProfileImgPath()}"
+                                         alt="#{profile.getProfileImgPath()}"
                                          style="height:97px; margin: auto;display:inherit;"/>
                                     Upload another picture..
-                                    <p:fileUpload class="text-center center-block well well-sm" 
-                                                  allowTypes="\\.(jpe?g|png)" mode="simple"
-                                                  value="#{profile.file}"
-                                                  invalidFileMessage="Invalid file type" >
+                                    <p:fileUpload class="text-center center-block well well-sm"
+                                                  mode="simple" value="#{profile.file}"
+                                                  update="@form">
                                     </p:fileUpload>
-                                    <p:commandButton class="btn btn-info" value="Upload" action="#{profile.uploadImage()}"/>
+                                    <p:commandButton class="btn btn-info" ajax="false" value="Upload" action="#{profile.uploadImage}"/>
                                 </h:form>
                             </div>
                         </div>

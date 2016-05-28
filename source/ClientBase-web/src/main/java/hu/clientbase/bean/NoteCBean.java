@@ -7,6 +7,7 @@ import hu.clientbase.entity.Tag;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -44,7 +45,11 @@ public class NoteCBean implements Serializable {
     public void add()
     {
        String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-       eventService.addNoteToEvent(selectedEvent, new NoteDTO(tag, content + "\n(" + userService.getUserByEmail(userEmail).getName() + ")"));
+        try {
+            eventService.addNoteToEvent(selectedEvent, new NoteDTO(tag, content + "\n(" + userService.getUserByEmail(userEmail).getName() + ")"));
+        } catch (NoSuchAlgorithmException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+        }
        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Note added succesfully."));
        eventBean.update();
        Ajax.update("notes_form");

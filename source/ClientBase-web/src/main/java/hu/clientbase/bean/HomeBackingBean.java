@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+
 import org.omnifaces.util.Ajax;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.extensions.model.timeline.TimelineEvent;

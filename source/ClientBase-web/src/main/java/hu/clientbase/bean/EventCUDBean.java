@@ -4,7 +4,6 @@ import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.bean.mv.EventBean;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.dto.CustomerDTO;
-import hu.clientbase.dto.NoteDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
@@ -12,6 +11,7 @@ import hu.clientbase.service.CustomerService;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -73,7 +73,12 @@ public class EventCUDBean implements Serializable {
         customerService.addEventToCustomer(eventDTO, customerDTO);
 
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        UserDTO user = userService.getUserByEmail(userEmail);
+        UserDTO user = new UserDTO();
+        try {
+            user = userService.getUserByEmail(userEmail);
+        } catch (NoSuchAlgorithmException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+        }
 
         eventService.create(user, eventDTO);
 

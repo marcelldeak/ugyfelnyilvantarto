@@ -8,6 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,11 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     @Override
     public void update() {
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        events = eventService.getNextEventsForUser(userService.getUserByEmail(userEmail));
+        try {
+            events = eventService.getNextEventsForUser(userService.getUserByEmail(userEmail));
+        } catch (NoSuchAlgorithmException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+        }
         if (selectedEvent != null && events.contains(selectedEvent)) {
             selectedEvent = events.get(events.indexOf(selectedEvent));
             invitableUsers = eventService.getNotInvitedUsers(selectedEvent);

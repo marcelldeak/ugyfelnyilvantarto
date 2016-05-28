@@ -12,11 +12,8 @@ import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -24,7 +21,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.omnifaces.util.Ajax;
-import org.omnifaces.util.Faces;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "profile")
@@ -43,6 +39,8 @@ public class ProfileBean {
     private Date dateOfBirth;
     private String picture;
 
+    private String confirmPassword;
+
     private UploadedFile upFile;
 
     public ProfileBean() {
@@ -54,7 +52,11 @@ public class ProfileBean {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
         UserDTO user = new UserDTO();
-        user = userService.getUserByEmail(eMail);
+        try {
+            user = userService.getUserByEmail(eMail);
+        } catch (NoSuchAlgorithmException ex) {
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+        }
         id = user.getId();
         email = user.getEmail();
         password = user.getPassword();
@@ -62,6 +64,8 @@ public class ProfileBean {
         firstName = user.getFirstName();
         dateOfBirth = user.getDateOfBirth().getTime();
         picture = user.getPicture();
+
+        confirmPassword = user.getPassword();
     }
 
     public Long getId() {
@@ -120,12 +124,20 @@ public class ProfileBean {
         this.picture = picture;
     }
 
-    public UploadedFile getFile() {
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public UploadedFile getUpFile() {
         return upFile;
     }
 
-    public void setFile(UploadedFile file) {
-        this.upFile = file;
+    public void setUpFile(UploadedFile upFile) {
+        this.upFile = upFile;
     }
 
     public void uploadImage() throws NoSuchAlgorithmException {
@@ -145,7 +157,7 @@ public class ProfileBean {
 
         picture = filename + extension;
 
-        Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
+        Path folder = Paths.get(System.getProperty("jboss.server.data.dir"), "Clientbase", "profile_images");
         File file = new File(folder.toString() + File.separatorChar + picture);
         file.mkdirs();
 
@@ -184,9 +196,10 @@ public class ProfileBean {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         String contextPath = request.getContextPath();
 
+        String fileURL = Paths.get(System.getProperty("jboss.server.data.dir"), "Clientbase", "profile_images", picture)
+                .toUri().toString();
+
         if (!picture.equals("null") && picture != null) {
-            String fileURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                    + request.getContextPath() + "/resources/profile_images/" + picture;
             return fileURL;
         } else {
             return contextPath + "/resources/imgs/facebook-avatar.jpg";
