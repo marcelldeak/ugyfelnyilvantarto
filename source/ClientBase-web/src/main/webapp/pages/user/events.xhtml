@@ -52,15 +52,6 @@
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
                                             <h4>Events</h4>
                                         </div>
-
-                                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
-                                            <p:commandButton title="New event"
-                                                             icon="ui-icon-plus"
-                                                             action="#{eventCUD.openAddDialog()}"
-                                                             style="margin-top: 7px;">
-                                                <f:ajax />
-                                            </p:commandButton>
-                                        </div>
                                     </div>
                                 </f:facet>
 
@@ -79,31 +70,19 @@
                                     <h:outputText value="#{_event.type.toString()}"/>
                                 </p:column>
 
-                                <p:column headerText="Starting date"
-                                          style="text-align: center"
-                                          filterBy="#{_event.dateOfStart}"
-                                          filterMatchMode="startsWith"
-                                          >
+                                <p:column headerText="Start"
+                                          style="text-align: center">
                                     <h:outputText value="#{_event.dateOfStart}">
                                         <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
                                     </h:outputText>
                                 </p:column>
 
-                                <p:column headerText="Ending Date" 
-                                          style="text-align: center" 
-                                          filterBy="#{_event.dateOfEnd}"
-                                          filterMatchMode="contains"
-                                          >
+                                <p:column headerText="End" 
+                                          style="text-align: center">
                                     <h:outputText value="#{_event.dateOfEnd}">
                                         <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
                                     </h:outputText>
                                 </p:column>
-
-                                <p:column headerText="Number of Notes"
-                                          style="text-align: center" >
-                                    <h:outputText value="5" />
-                                </p:column>
-
                                 <p:column style="text-align: center;
                                           width: 56px">
                                     <p:commandButton title="Details"
@@ -112,22 +91,7 @@
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
-
-                                <p:column style="text-align: center;width: 56px">
-                                    <p:commandButton title="Edit"
-                                                     icon="ui-icon-pencil"
-                                                     action="#{eventCUD.openEditDialog(_event)}">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
-
-                                <p:column style="text-align: center;width: 56px">
-                                    <p:commandButton icon="ui-icon-trash"
-                                                     title="Delete"
-                                                     action="#{eventCUD.openDeleteDialog(_event)}">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
+                                
                             </p:dataTable>
                         </h:form>
                     </div>

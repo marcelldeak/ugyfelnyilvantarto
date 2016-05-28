@@ -21,7 +21,7 @@ public class EventBean extends AbstractBaseBean implements Serializable {
 
     @Inject
     private EventService eventService;
-    
+
     @Inject
     private UserService userService;
 
@@ -30,9 +30,9 @@ public class EventBean extends AbstractBaseBean implements Serializable {
     private List<BasicEventDTO> events;
 
     private List<BasicEventDTO> filteredEvents;
-    
+
     private List<UserDTO> invitableUsers;
-    
+
     private List<UserDTO> selectedUsers;
 
     @Override
@@ -42,23 +42,27 @@ public class EventBean extends AbstractBaseBean implements Serializable {
         if (selectedEvent != null) {
             selectedEvent = events.get(events.indexOf(selectedEvent));
             invitableUsers = eventService.getNotInvitedUsers(selectedEvent);
-        } 
+        }
         selectedUsers = new ArrayList<>();
     }
 
     public void openSelectedEventDetails(BasicEventDTO dto) {
         selectedEvent = dto;
         update();
-        Ajax.update("event_details_form", "notes_form","invite");
+        Ajax.update("event_details_form", "notes_form", "invite");
+
         Ajax.oncomplete("$('#event_details_dialog').modal('show')");
+
     }
-    
-    public void inviteUsers()
-    {
-        eventService.inviteUsers(selectedEvent, selectedUsers);
-        Ajax.update("invite");
-        update();
-        Ajax.oncomplete("alert('Invitations sent.');");
+
+    public void inviteUsers() {
+        if (!selectedUsers.isEmpty()) {
+            eventService.inviteUsers(selectedEvent, selectedUsers);
+            Ajax.update("invite");
+            update();
+            Ajax.oncomplete("alert('Invitations sent.');");
+        }
+
     }
 
     public List<BasicEventDTO> getEvents() {
