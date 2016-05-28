@@ -1,6 +1,6 @@
 package hu.clientbase.bean.mv;
 
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
@@ -32,9 +32,9 @@ public class CustomersBean implements Serializable {
 
     private List<ContactDTO> contactPersons;
 
-    private List<BasicEventDTO> events;
+    private List<EventDTO> events;
 
-    private List<BasicEventDTO> filteredEvents;
+    private List<EventDTO> filteredEvents;
 
     @PostConstruct
     private void init() {
@@ -88,23 +88,23 @@ public class CustomersBean implements Serializable {
         this.contactPersons = contactPersons;
     }
 
-    public List<BasicEventDTO> getEvents() {
+    public List<EventDTO> getEvents() {
         return events;
     }
 
-    public void setEvents(List<BasicEventDTO> events) {
+    public void setEvents(List<EventDTO> events) {
         this.events = events;
     }
 
-    public List<BasicEventDTO> getFilteredEvents() {
+    public List<EventDTO> getFilteredEvents() {
         return filteredEvents;
     }
 
-    public void setFilteredEvents(List<BasicEventDTO> filteredEvents) {
+    public void setFilteredEvents(List<EventDTO> filteredEvents) {
         this.filteredEvents = filteredEvents;
     }
 
-    public void openSelectedEventDetails(BasicEventDTO dto) {
+    public void openSelectedEventDetails(EventDTO dto) {
         eventBean.openSelectedEventDetails(dto);
     }
 

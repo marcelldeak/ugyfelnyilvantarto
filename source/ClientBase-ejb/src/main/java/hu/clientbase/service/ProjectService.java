@@ -1,8 +1,9 @@
 package hu.clientbase.service;
 
-import hu.clientbase.dto.BasicProjectDTO;
+import hu.clientbase.dto.ProjectDTO;
 import hu.clientbase.entity.Customer;
 import hu.clientbase.entity.Project;
+import hu.clientbase.facade.CustomerFacade;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.ProjectFacade;
 import java.util.LinkedList;
@@ -19,12 +20,12 @@ public class ProjectService {
     @Inject
     private ProjectFacade projectFacade;
 
-    public void create(BasicProjectDTO projectDTO) {
+    public void create(ProjectDTO projectDTO) {
         Project project = new Project(projectDTO);
         entityFacade.create(project);
     }
 
-    public void delete(BasicProjectDTO dto) {
+    public void delete(ProjectDTO dto) {
         Project tempProject = entityFacade.find(Project.class, dto.getId());
         for (Customer customer : entityFacade.findAll(Customer.class)) {
             if (customer.getProjects().contains(tempProject)) {
@@ -35,7 +36,7 @@ public class ProjectService {
         entityFacade.delete(tempProject);
     }
 
-    public void update(BasicProjectDTO dto) {
+    public void update(ProjectDTO dto) {
         Project tempProject = entityFacade.find(Project.class, dto.getId());
         tempProject.setDeadline(dto.getDeadline());
         tempProject.setName(dto.getName());
@@ -44,14 +45,23 @@ public class ProjectService {
         entityFacade.update(tempProject);
     }
 
-    public List<BasicProjectDTO> getAllProject(){
-        List<BasicProjectDTO> result = new LinkedList<>();
+    public List<ProjectDTO> getAllProject(){
+        List<ProjectDTO> result = new LinkedList<>();
         
         for(Project p : projectFacade.getAllProjects()){
-            result.add(new BasicProjectDTO(p));
+            result.add(new ProjectDTO(p));
         }
         
         return result;
+    }
+    
+    public List<ProjectDTO> getAllProjects() {
+        List<Project> projects = projectFacade.getAllProjects();
+        List<ProjectDTO> ret = new LinkedList<>();
+
+        projects.stream().forEach(p -> ret.add(new ProjectDTO(p)));
+
+        return ret;
     }
     
 }

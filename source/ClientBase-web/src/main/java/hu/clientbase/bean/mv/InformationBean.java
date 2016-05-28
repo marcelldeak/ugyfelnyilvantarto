@@ -1,10 +1,9 @@
 package hu.clientbase.bean.mv;
 
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -27,7 +26,7 @@ public class InformationBean implements Serializable {
     @Inject
     private UserService userService;
 
-    private List<BasicEventDTO> nextEvents;
+    private List<EventDTO> nextEvents;
 
     @PostConstruct
     private void init() {
@@ -35,15 +34,15 @@ public class InformationBean implements Serializable {
         nextEvents = eventService.getNext10EventsForUser(userService.getUserByEmail(userEmail));
     }
 
-    public void openSelectedEventDetails(BasicEventDTO dto) {
+    public void openSelectedEventDetails(EventDTO dto) {
         eventBean.openSelectedEventDetails(dto);
     }
 
-    public List<BasicEventDTO> getNextEvents() {
+    public List<EventDTO> getNextEvents() {
         return nextEvents;
     }
 
-    public void setNextEvents(List<BasicEventDTO> nextEvents) {
+    public void setNextEvents(List<EventDTO> nextEvents) {
         this.nextEvents = nextEvents;
     }
 

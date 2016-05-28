@@ -1,7 +1,7 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.ProjectBean;
-import hu.clientbase.dto.BasicProjectDTO;
+import hu.clientbase.dto.ProjectDTO;
 import hu.clientbase.entity.ProjectStatus;
 import hu.clientbase.service.ProjectService;
 import java.io.Serializable;
@@ -37,7 +37,7 @@ public class ProjectCUDBean implements Serializable {
 
     private Date date;
 
-    private BasicProjectDTO projectToDelete;
+    private ProjectDTO projectToDelete;
 
     public void openAddDialog() {
         Ajax.oncomplete("$('#project_add_dialog').modal('show')");
@@ -49,7 +49,7 @@ public class ProjectCUDBean implements Serializable {
         return cal;
     }
 
-    public void openDeleteDialog(BasicProjectDTO dto) {
+    public void openDeleteDialog(ProjectDTO dto) {
         projectToDelete = dto;
         Ajax.update("project_delete_name");
         Ajax.oncomplete("$('#project_delete_dialog').modal('show')");
@@ -70,7 +70,7 @@ public class ProjectCUDBean implements Serializable {
         }
 
         deadline = dateToCalendar(date);
-        BasicProjectDTO dto = new BasicProjectDTO(name, deadline, ProjectStatus.NOT_STARTED);
+        ProjectDTO dto = new ProjectDTO(name, deadline, ProjectStatus.NOT_STARTED);
 
         ProjectService.create(dto);
         projectBean.update();
@@ -82,7 +82,7 @@ public class ProjectCUDBean implements Serializable {
         Ajax.oncomplete("clearAndCloseAddProjectDialog(true)");
     }
 
-    public void openEditDialog(BasicProjectDTO dto) {
+    public void openEditDialog(ProjectDTO dto) {
         id = dto.getId();
         name = dto.getName();
         status = dto.getStatus();
@@ -96,7 +96,7 @@ public class ProjectCUDBean implements Serializable {
         if (date != null) {
             deadline = dateToCalendar(date);
         }
-        BasicProjectDTO dto = new BasicProjectDTO(name, deadline, status);
+        ProjectDTO dto = new ProjectDTO(name, deadline, status);
         dto.setId(id);
         ProjectService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Project edited succesfully."));
@@ -105,11 +105,11 @@ public class ProjectCUDBean implements Serializable {
         Ajax.oncomplete("clearAndCloseEditProjectDialog(true)");
     }
 
-    public BasicProjectDTO getProjectToDelete() {
+    public ProjectDTO getProjectToDelete() {
         return projectToDelete;
     }
 
-    public void setProjectToDelete(BasicProjectDTO projectToDelete) {
+    public void setProjectToDelete(ProjectDTO projectToDelete) {
         this.projectToDelete = projectToDelete;
     }
 

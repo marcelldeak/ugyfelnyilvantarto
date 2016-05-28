@@ -1,6 +1,6 @@
 package hu.clientbase.service;
 
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.ContactChannelDTO;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
@@ -127,24 +127,24 @@ public class CustomerService {
         return entityFacade.find(Customer.class, dto.getId());
     }
     
-    public List<BasicEventDTO> findEventsForCustomer(CustomerDTO dto) {
+    public List<EventDTO> findEventsForCustomer(CustomerDTO dto) {
         Customer customer = entityFacade.find(Customer.class, dto.getId());
-        List<BasicEventDTO> ret = new LinkedList<>();
+        List<EventDTO> ret = new LinkedList<>();
         
         for (Event event : customer.getEvents()) {
-            ret.add(new BasicEventDTO(event));
+            ret.add(new EventDTO(event));
         }
         return ret;
     }
     
-    public void addEventToCustomer(BasicEventDTO eventDTO, CustomerDTO customerDTO) {
+    public void addEventToCustomer(EventDTO eventDTO, CustomerDTO customerDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         Event event = new Event(eventDTO);
         customer.getEvents().add(event);
         entityFacade.update(event);
     }
     
-    public void deleteEventFromCustomer(BasicEventDTO eventDTO, CustomerDTO customerDTO) {
+    public void deleteEventFromCustomer(EventDTO eventDTO, CustomerDTO customerDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         Event event = entityFacade.find(Event.class, eventDTO.getId());
         

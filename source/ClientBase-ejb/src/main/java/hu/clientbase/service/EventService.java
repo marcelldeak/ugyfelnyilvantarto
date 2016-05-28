@@ -1,7 +1,6 @@
 package hu.clientbase.service;
 
-import hu.clientbase.dto.BasicEventDTO;
-import hu.clientbase.dto.CustomerDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.NoteDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.Event;
@@ -10,23 +9,13 @@ import hu.clientbase.entity.Note;
 import hu.clientbase.entity.User;
 import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
-
-import hu.clientbase.shared.ejb.SharedEventDTO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Topic;
 
 @Stateless
 public class EventService {
@@ -41,7 +30,7 @@ public class EventService {
 
     private UserService userService;
 
-    public void create(UserDTO userDTO, BasicEventDTO eventDTO) {
+    public void create(UserDTO userDTO, EventDTO eventDTO) {
         Event event = new Event(eventDTO);
 
         User user = entityFacade.find(User.class, userDTO.getId());
@@ -50,7 +39,7 @@ public class EventService {
 
     }
 
-    public void update(BasicEventDTO dto) {
+    public void update(EventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
 
         event.setDateOfEnd(dto.getDateOfEnd());
@@ -59,48 +48,48 @@ public class EventService {
         event.setType(dto.getType());
     }
 
-    public void delete(BasicEventDTO dto) {
+    public void delete(EventDTO dto) {
         Event event = entityFacade.find(Event.class, dto.getId());
         eventFacade.deleteInvitationsForEventByEventId(dto.getId());
         entityFacade.delete(event);
 
     }
 
-    public Event find(BasicEventDTO dto) {
+    public Event find(EventDTO dto) {
         return entityFacade.find(Event.class, dto.getId());
     }
 
-    public List<BasicEventDTO> getAllEventsAsDTO() {
+    public List<EventDTO> getAllEventsAsDTO() {
         List<Event> events = eventFacade.getAllEvents();
-        List<BasicEventDTO> ret = new LinkedList<>();
-        events.stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+        List<EventDTO> ret = new LinkedList<>();
+        events.stream().forEach(e -> ret.add(new EventDTO(e)));
 
         return ret;
     }
 
-    public List<BasicEventDTO> getNext10EventsForUser(UserDTO dto) {
-        List<BasicEventDTO> ret = new LinkedList<>();
+    public List<EventDTO> getNext10EventsForUser(UserDTO dto) {
+        List<EventDTO> ret = new LinkedList<>();
 
-        eventFacade.getNext10EventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new BasicEventDTO(e)));
-
-        return ret;
-    }
-
-    public List<BasicEventDTO> getNextEventsForUser(UserDTO dto) {
-        List<BasicEventDTO> ret = new LinkedList<>();
-
-        eventFacade.getNextEventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+        eventFacade.getNext10EventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new EventDTO(e)));
 
         return ret;
     }
 
-    public List<BasicEventDTO> getNext10Events() {
-        List<BasicEventDTO> ret = new LinkedList<>();
+    public List<EventDTO> getNextEventsForUser(UserDTO dto) {
+        List<EventDTO> ret = new LinkedList<>();
+
+        eventFacade.getNextEventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new EventDTO(e)));
 
         return ret;
     }
 
-    public void addNoteToEvent(BasicEventDTO eventDTO, NoteDTO noteDTO) {
+    public List<EventDTO> getNext10Events() {
+        List<EventDTO> ret = new LinkedList<>();
+
+        return ret;
+    }
+
+    public void addNoteToEvent(EventDTO eventDTO, NoteDTO noteDTO) {
         Event event = entityFacade.find(Event.class, eventDTO.getId());
 
         event.getNotes().add(new Note(noteDTO));
@@ -108,7 +97,7 @@ public class EventService {
         entityFacade.update(event);
     }
 
-    public List<UserDTO> getNotInvitedUsers(BasicEventDTO dto) {
+    public List<UserDTO> getNotInvitedUsers(EventDTO dto) {
         List invitedUsersList = new LinkedList<>();
         eventFacade.getInvitedUsersForEventByEventId(dto.getId()).stream().forEach(u -> invitedUsersList.add(new UserDTO(u)));
 
@@ -124,11 +113,28 @@ public class EventService {
         return ret;
     }
 
-    public void inviteUsers(BasicEventDTO eventDTO, List<UserDTO> userDTOs) {
+    public void inviteUsers(EventDTO eventDTO, List<UserDTO> userDTOs) {
         Event event = entityFacade.find(Event.class, eventDTO.getId());
 
         userDTOs.stream().map((u) -> entityFacade.find(User.class, u.getId())).map((user) -> new Invitation(event, user)).forEach((i) -> {
             entityFacade.create(i);
         });
+    }
+    
+    public List<EventDTO> getAllEvents() {
+        List<Event> events = eventFacade.getAllEvents();
+        List<EventDTO> ret = new LinkedList<>();
+
+        events.stream().forEach(p -> ret.add(new EventDTO(p)));
+
+        return ret;
+    }
+    
+    public List<String> nameOfEvents() {
+        List<String> names = new ArrayList<>();
+        for (Event event : eventFacade.getAllEvents()) {
+            names.add(event.getName());
+        }
+        return names;
     }
 }

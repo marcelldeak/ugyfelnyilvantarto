@@ -5,7 +5,7 @@ import hu.clientbase.entity.ProjectStatus;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class BasicProjectDTO implements Serializable {
+public class ProjectDTO implements Serializable {
 
     private static final long serialVersionUID = 258979332215257296L;
 
@@ -17,18 +17,18 @@ public class BasicProjectDTO implements Serializable {
 
     private ProjectStatus status;
 
-    public BasicProjectDTO() {
+    public ProjectDTO() {
         // default
     }
 
-    public BasicProjectDTO(Project p) {
+    public ProjectDTO(Project p) {
         this.id = p.getId();
         this.name = p.getName();
         this.deadline = p.getDeadline();
         this.status = p.getStatus();
     }
 
-    public BasicProjectDTO(String name, Calendar deadline) {
+    public ProjectDTO(String name, Calendar deadline) {
         if (status == null) {
             this.status = ProjectStatus.IN_PROGRESS;
         }
@@ -36,7 +36,7 @@ public class BasicProjectDTO implements Serializable {
         this.deadline = deadline;
     }
 
-    public BasicProjectDTO(String name, Calendar deadline, ProjectStatus status) {
+    public ProjectDTO(String name, Calendar deadline, ProjectStatus status) {
         this.name = name;
         this.deadline = deadline;
         this.status = status;

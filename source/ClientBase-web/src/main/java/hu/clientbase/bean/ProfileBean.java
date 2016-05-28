@@ -5,6 +5,7 @@ import hu.clientbase.service.UserService;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,20 +14,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateful;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import org.omnifaces.util.Ajax;
 import org.primefaces.model.UploadedFile;
 
-@ManagedBean(name = "profile")
+@Named("profile")
 @ViewScoped
-@Stateful
-public class ProfileBean {
+public class ProfileBean implements Serializable {
+
+    private static final long serialVersionUID = -6749396864436794339L;
 
     @Inject
     private UserService userService;
@@ -43,16 +44,12 @@ public class ProfileBean {
 
     private UploadedFile upFile;
 
-    public ProfileBean() {
-        // default constuctor
-    }
 
     @PostConstruct
     private void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
-        UserDTO user = new UserDTO();
-        user = userService.getUserByEmail(eMail);
+        UserDTO user = userService.getUserByEmail(eMail);
        
         id = user.getId();
         email = user.getEmail();

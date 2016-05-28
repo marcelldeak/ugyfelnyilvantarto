@@ -1,8 +1,8 @@
 package hu.clientbase.bean.mv;
 
-import hu.clientbase.dto.BasicProjectDTO;
+import hu.clientbase.dto.ProjectDTO;
 import hu.clientbase.entity.Project;
-import hu.clientbase.service.mv.ProjectModel;
+import hu.clientbase.service.ProjectService;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -21,16 +21,16 @@ public class ProjectBean implements Serializable {
 
     private static final long serialVersionUID = -961683443281866021L;
 
-    private BasicProjectDTO selectedProject;
+    private ProjectDTO selectedProject;
 
-    private List<BasicProjectDTO> projects;
+    private List<ProjectDTO> projects;
 
-    private List<BasicProjectDTO> filteredProjects;
+    private List<ProjectDTO> filteredProjects;
 
     private String SelectedProjectDeadlineToString;
 
     @Inject
-    private ProjectModel model;
+    private ProjectService projectService;
 
     @PostConstruct
     private void init() {
@@ -38,10 +38,10 @@ public class ProjectBean implements Serializable {
     }
 
     public void update() {
-        projects = model.getAllProjects();
+        projects = projectService.getAllProjects();
     }
 
-    public void openProjedtDetails(BasicProjectDTO dto) {
+    public void openProjedtDetails(ProjectDTO dto) {
         selectedProject = dto;
         if (dto.getDeadline() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -52,15 +52,15 @@ public class ProjectBean implements Serializable {
         Ajax.oncomplete("$('#project_details_dialog').modal('show')");
     }
 
-    public List<BasicProjectDTO> getFilteredProjects() {
+    public List<ProjectDTO> getFilteredProjects() {
         return filteredProjects;
     }
 
-    public void setFilteredProjects(List<BasicProjectDTO> filteredProjects) {
+    public void setFilteredProjects(List<ProjectDTO> filteredProjects) {
         this.filteredProjects = filteredProjects;
     }
 
-    public BasicProjectDTO getSelectedProject() {
+    public ProjectDTO getSelectedProject() {
         return selectedProject;
     }
 
@@ -72,15 +72,15 @@ public class ProjectBean implements Serializable {
         this.SelectedProjectDeadlineToString = SelectedProjectDeadlineToString;
     }
 
-    public void setSelectedProject(BasicProjectDTO selectedProject) {
+    public void setSelectedProject(ProjectDTO selectedProject) {
         this.selectedProject = selectedProject;
     }
 
-    public List<BasicProjectDTO> getProjects() {
+    public List<ProjectDTO> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<BasicProjectDTO> projects) {
+    public void setProjects(List<ProjectDTO> projects) {
         this.projects = projects;
     }
 

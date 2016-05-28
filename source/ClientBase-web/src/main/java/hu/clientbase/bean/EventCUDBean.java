@@ -2,7 +2,7 @@ package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.bean.mv.EventBean;
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.EventType;
@@ -11,7 +11,6 @@ import hu.clientbase.service.CustomerService;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -54,7 +53,7 @@ public class EventCUDBean implements Serializable {
 
     private List<Note> notes;
 
-    private BasicEventDTO eventToDelete;
+    private EventDTO eventToDelete;
 
     private final Date currentDate = new Date();
 
@@ -67,7 +66,7 @@ public class EventCUDBean implements Serializable {
     }
 
     public void add() {
-        BasicEventDTO eventDTO = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
+        EventDTO eventDTO = new EventDTO(type, dateOfStart, dateOfEnd, name);
         CustomerDTO customerDTO = customersBean.getSelectedCustomer();
 
         customerService.addEventToCustomer(eventDTO, customerDTO);
@@ -75,7 +74,7 @@ public class EventCUDBean implements Serializable {
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         UserDTO user = new UserDTO();
         user = userService.getUserByEmail(userEmail);
-      
+
         eventService.create(user, eventDTO);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
@@ -86,7 +85,7 @@ public class EventCUDBean implements Serializable {
         Ajax.oncomplete("resetHideShow('event_add_form','event_add_dialog', 'customer_details_dialog',true)");
     }
 
-    public void openEditDialog(BasicEventDTO dto) {
+    public void openEditDialog(EventDTO dto) {
         id = dto.getId();
         name = dto.getName();
         dateOfStart = dto.getDateOfEnd();
@@ -96,7 +95,7 @@ public class EventCUDBean implements Serializable {
     }
 
     public void edit() {
-        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
+        EventDTO dto = new EventDTO(type, dateOfStart, dateOfEnd, name);
         dto.setId(id);
 
         eventService.update(dto);
@@ -106,7 +105,7 @@ public class EventCUDBean implements Serializable {
         Ajax.oncomplete("resetHideShow('event_edit_form','event_edit_dialog','customer_details_dialog',true)");
     }
 
-    public void openDeleteDialog(BasicEventDTO dto) {
+    public void openDeleteDialog(EventDTO dto) {
         eventToDelete = dto;
         Ajax.update("event_delete_form");
         Ajax.oncomplete("hideShow('customer_details_dialog','event_delete_dialog',true)");
