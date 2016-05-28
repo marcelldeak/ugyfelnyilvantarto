@@ -91,6 +91,7 @@ public class EventCUDBean implements Serializable {
 
     public void delete() {
         eventService.delete(eventToDelete);
+        eventBean.setSelectedEvent(null);
         eventBean.update();
         Ajax.update("e_list_form:e_list_table");
         Ajax.oncomplete("clearAndCloseDeleteEventDialog(true)");

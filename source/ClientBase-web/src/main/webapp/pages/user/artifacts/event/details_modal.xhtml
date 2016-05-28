@@ -36,66 +36,76 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <h:form role="form"
-                                        class="form-horizontal"
-                                        id="event_details_form">
+                                    <h:form role="form"
+                                            class="form-horizontal"
+                                            id="event_details_form">
 
-                                    <p:panel id="event_data" header="Details">
+                                        <p:panel id="event_data" header="Details">
 
-                                        <div class="form-group row" >
-                                            <label class="control-label col-sm-4">Name:</label>
-                                            <div class="col-sm-8" style="padding-top: 7px;">
-                                                <h:outputText value="#{events.selectedEvent.name}"/>
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4">Name:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.name}"/>
 
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-group row" >
-                                            <label class="control-label col-sm-4" >Type:</label>
-                                            <div class="col-sm-8" style="padding-top: 7px;">
-                                                <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4" >Type:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-group row" >
-                                            <label class="control-label col-sm-4" >Start:</label>
-                                            <div class="col-sm-8" style="padding-top: 7px;">
-                                                <h:outputText  value="#{events.selectedEvent.dateOfStart}">
-                                                    <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
-                                                </h:outputText>
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4" >Start:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText  value="#{events.selectedEvent.dateOfStart}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                    </h:outputText>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-group row" >
-                                            <label class="control-label col-sm-4">End:</label>
-                                            <div class="col-sm-8" style="padding-top: 7px;">
-                                                <h:outputText value="#{events.selectedEvent.dateOfEnd}">
-                                                    <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
-                                                </h:outputText>
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4">End:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.dateOfEnd}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                    </h:outputText>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </p:panel>
-                                </h:form>
-                                    </div>
+                                        </p:panel>
+                                    </h:form>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <h:form id="invite">
-                                    <p:panel id="invite_panel" header="Invite user">
-                                        <p:dataTable id="invitable_users"
-                                                     value="#{events.invitableUsers}"
-                                                     var="_user"
-                                                     selection="#{events.selectedUsers}"
-                                                     rowKey="#{_user.id}"
-                                                     scrollable="true"
-                                                     scrollHeight="150">
-                                                     <p:column selectionMode="multiple" style="width:36px;text-align:center"/>
-                                                     <p:column headerText="Name">
-                                                         <h:outputText value="#{_user.name}" />
-                                                     </p:column>
-                                        </p:dataTable>
-                                    </p:panel>
-                                </h:form>
+                                    <h:form id="invite">
+                                        <p:panel id="invite_panel" header="Invite user">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                    <p:dataTable id="invitable_users"
+                                                                 value="#{events.invitableUsers}"
+                                                                 var="_user"
+                                                                 selection="#{events.selectedUsers}"
+                                                                 rowKey="#{_user.id}"
+                                                                 scrollable="true"
+                                                                 scrollHeight="150"
+                                                                 emptyMessage="All users are invited.">
+                                                        <p:column selectionMode="multiple" style="width:36px;text-align:center"/>
+                                                        <p:column headerText="Name">
+                                                            <h:outputText value="#{_user.name}" />
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </div>
+                                            </div>
+                                            <div class="row row-centered">
+                                                <p:commandButton value="Invite users" update="invite" action="#{events.inviteUsers()}">
+                                                    <f:ajax />
+                                                </p:commandButton>
+                                            </div>
+                                        </p:panel>
+                                    </h:form>
                                 </div>
                             </div>
                         </div>

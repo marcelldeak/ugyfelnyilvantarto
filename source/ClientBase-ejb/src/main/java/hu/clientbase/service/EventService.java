@@ -95,4 +95,13 @@ public class EventService {
         
         return ret;
     }
+    
+    public void inviteUsers(BasicEventDTO eventDTO, List<UserDTO> userDTOs)
+    {
+        Event event = entityFacade.find(Event.class, eventDTO.getId());
+        
+        userDTOs.stream().map((u) -> entityFacade.find(User.class, u.getId())).map((user) -> new Invitation(event, user)).forEach((i) -> {
+            entityFacade.create(i);
+        });
+    }
 }
