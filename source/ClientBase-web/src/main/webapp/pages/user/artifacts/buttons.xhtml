@@ -5,29 +5,19 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <div class="btn-group">
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-envelope"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-bell"></span>
+                <span class="glyphicon glyphicon-calendar"></span>
             </button>
-            <ul class="dropdown-menu">
-                <li>Upcoming events</li>
-                <li><hr /></li>
+            <ul class="dropdown-menu" style="text-align: center">
+                <li style="padding-top: 10px;"><b>Upcoming events</b></li>
+                <li><hr style="margin-top: 10px;margin-bottom: 10px;" /></li>
                 <c:choose>
                     <c:when test="#{information.nextEvents == null || information.nextEvents.size() == 0}">
-                        <li>No upcoming events.</li>
+                        <li style="padding-top: 10px">No upcoming events.</li>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="_event" items="#{information.nextEvents}">
-                            <li><p:commandLink action="#{information.openSelectedEventDetails(_event)}">#{_event.name}</p:commandLink></li>
+                            <li><p:commandLink action="#{information.openSelectedEventDetails(_event)}">#{_event.name} (#{_event.dateOfStart.toLocaleString()})</p:commandLink></li>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
@@ -37,14 +27,13 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-user">
                 <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="text-align: center;">
                 <li><a href="#">Profile</a></li>
                 <li role="separator" class="divider"></li>
                 <li><p:commandLink value="Logout" action="#{login.logout}"/></li>
             </ul>
         </div>
     </div>
-
 
     <ui:include src="profile.xhtml" />
 

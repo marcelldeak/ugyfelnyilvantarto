@@ -97,7 +97,7 @@ public class EventCUDBean implements Serializable {
     public void edit() {
         BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
         dto.setId(id);
-        
+
         eventService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event edited succesfully."));
         eventBean.update();
@@ -115,9 +115,15 @@ public class EventCUDBean implements Serializable {
         CustomerDTO customerDTO = customersBean.getSelectedCustomer();
         customerService.deleteEventFromCustomer(eventToDelete, customerDTO);
         eventService.delete(eventToDelete);
+
         customersBean.update();
+
+        eventBean.setSelectedEvent(null);
+        eventBean.update();
+
         Ajax.update("customer_details_right_panel:e_list_form:e_list_table");
         Ajax.oncomplete("hideShow('event_delete_dialog','customer_details_dialog', true)");
+
     }
 
     public Long getId() {

@@ -36,24 +36,15 @@ public class EventService {
 
     @Inject
     private EventFacade eventFacade;
+
     @Inject
+
     private UserService userService;
 
-    @Inject
-    private JMSContext context;
-
-    @Resource(lookup = "java:/jms/topic/CreatedTopic")
-    private Topic createdTopic;
-
-    @Resource(lookup = "java:/jms/topic/RemovedTopic")
-    private Topic removedTopic;
-
     public void create(UserDTO userDTO, BasicEventDTO eventDTO) {
-
         Event event = new Event(eventDTO);
 
         User user = entityFacade.find(User.class, userDTO.getId());
-
         Invitation i = new Invitation(event, user);
         entityFacade.create(i);
 
@@ -73,8 +64,6 @@ public class EventService {
         eventFacade.deleteInvitationsForEventByEventId(dto.getId());
         entityFacade.delete(event);
 
-        SharedEventDTO sharedEventDTO = new SharedEventDTO(dto.getName(), dto.getType().toString(), dto.getDateOfStart(), dto.getDateOfEnd());
-        context.createProducer().send(removedTopic, sharedEventDTO);
     }
 
     public Event find(BasicEventDTO dto) {
@@ -89,10 +78,24 @@ public class EventService {
         return ret;
     }
 
-    public List<BasicEventDTO> getNext10Events() {
+    public List<BasicEventDTO> getNext10EventsForUser(UserDTO dto) {
         List<BasicEventDTO> ret = new LinkedList<>();
 
-        eventFacade.getNext10Events().stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+        eventFacade.getNext10EventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+
+        return ret;
+    }
+
+    public List<BasicEventDTO> getNextEventsForUser(UserDTO dto) {
+        List<BasicEventDTO> ret = new LinkedList<>();
+
+        eventFacade.getNextEventsForUserByUserId(dto.getId()).stream().forEach(e -> ret.add(new BasicEventDTO(e)));
+
+        return ret;
+    }
+
+    public List<BasicEventDTO> getNext10Events() {
+        List<BasicEventDTO> ret = new LinkedList<>();
 
         return ret;
     }
@@ -119,5 +122,13 @@ public class EventService {
         ret.addAll(users);
 
         return ret;
+    }
+
+    public void inviteUsers(BasicEventDTO eventDTO, List<UserDTO> userDTOs) {
+        Event event = entityFacade.find(Event.class, eventDTO.getId());
+
+        userDTOs.stream().map((u) -> entityFacade.find(User.class, u.getId())).map((user) -> new Invitation(event, user)).forEach((i) -> {
+            entityFacade.create(i);
+        });
     }
 }

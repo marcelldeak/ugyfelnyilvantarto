@@ -20,8 +20,12 @@ public class EventFacade {
 
     }
 
-    public List<Event> getNext10Events() {
-        return em.createQuery("SELECT e FROM Event e WHERE e.dateOfStart >= CURRENT_TIMESTAMP ORDER BY e.dateOfStart", Event.class).setMaxResults(10).getResultList();
+    public List<Event> getNext10EventsForUserByUserId(Long id) {
+        return em.createQuery("SELECT e FROM Invitation i JOIN  i.event e JOIN i.recipient u WHERE e.dateOfStart >= CURRENT_TIMESTAMP AND u.id = :id ORDER BY e.dateOfStart", Event.class).setParameter("id", id).setMaxResults(10).getResultList();
+    }
+    
+    public List<Event> getNextEventsForUserByUserId(Long id) {
+        return em.createQuery("SELECT e FROM Invitation i JOIN  i.event e JOIN i.recipient u WHERE e.dateOfStart >= CURRENT_TIMESTAMP AND u.id = :id ORDER BY e.dateOfStart", Event.class).setParameter("id", id).getResultList();
     }
 
     public List<User> getInvitedUsersForEventByEventId(Long id) {
