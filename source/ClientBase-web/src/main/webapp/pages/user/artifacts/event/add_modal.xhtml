@@ -56,7 +56,6 @@
 
                                             <oou:importConstants type="hu.clientbase.entity.EventType"/>
                                             <h:selectOneMenu value="#{eventCUD.type}" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all">
-                                                <f:selectItem itemLabel="Please select one" noSelectionOption="false"/>
                                                 <f:selectItems value="#{EventType.values()}" var="_eventType" itemValue="#{_eventType}" itemLabel="#{_eventType.toString()}" />
                                             </h:selectOneMenu>
                                         </div>
@@ -66,8 +65,7 @@
                                         <label class="control-label col-sm-4" for="e_name">Date of Start:</label>
                                         <div class="col-sm-8">
                                             <p:calendar id="date_of_start" value="#{eventCUD.dateOfStart}" pattern="yyyy/MM/dd HH:mm:ss" 
-                                                        showOn="button" 
-                                                        required="true" label="Date of start"/>
+                                                        showOn="button" required="true" label="Date of start" mindate="#{eventCUD.currentDate}"/>
                                         </div>
                                     </div>
 
@@ -75,7 +73,7 @@
                                         <label class="control-label col-sm-4" for="e_name">Date of End:</label>
                                         <div class="col-sm-8">
                                             <p:calendar id="date_of_end" value="#{eventCUD.dateOfEnd}" pattern="yyyy/MM/dd HH:mm:ss" 
-                                                        required="true" label="Date of end"/>
+                                                        required="true" label="Date of end" mindate="#{eventCUD.currentDate}"/>
                                         </div>
                                     </div>
 

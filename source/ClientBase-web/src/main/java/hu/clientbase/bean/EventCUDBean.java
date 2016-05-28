@@ -1,5 +1,6 @@
 package hu.clientbase.bean;
 
+import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.bean.mv.EventBean;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.dto.NoteDTO;
@@ -29,9 +30,12 @@ public class EventCUDBean implements Serializable {
 
     @Inject
     private EventBean eventBean;
-    
+
     @Inject
     private UserService userService;
+
+    @Inject
+    private CustomersBean customersBean;
 
     private Long id;
 
@@ -47,6 +51,12 @@ public class EventCUDBean implements Serializable {
 
     private BasicEventDTO eventToDelete;
 
+    private final Date currentDate = new Date();
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
     public void openAddDialog() {
         Ajax.oncomplete("$('#event_add_dialog').modal('show')");
     }
@@ -55,8 +65,8 @@ public class EventCUDBean implements Serializable {
         BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
         UserDTO user = userService.getUserByEmail(userEmail);
-        
-        eventService.create(user, dto);
+
+        eventService.create(user, dto,customersBean.getSelectedCustomer());
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
         eventBean.update();

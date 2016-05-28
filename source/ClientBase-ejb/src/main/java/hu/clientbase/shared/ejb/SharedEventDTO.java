@@ -16,7 +16,7 @@ public class SharedEventDTO implements Serializable{
         //No-arg constructor
     }
 
-    public SharedEventDTO(String type, Date dateOfStart, Date dateOfEnd, String name) {
+    public SharedEventDTO(String name, String type, Date dateOfStart, Date dateOfEnd ) {
         this.type = type;
         this.dateOfStart = dateOfStart;
         this.dateOfEnd = dateOfEnd;
