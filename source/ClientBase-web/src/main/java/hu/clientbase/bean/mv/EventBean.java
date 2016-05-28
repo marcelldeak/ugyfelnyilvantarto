@@ -3,14 +3,14 @@ package hu.clientbase.bean.mv;
 import hu.clientbase.dto.BasicEventDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.EventService;
-
-import javax.faces.model.SelectItem;
+import hu.clientbase.service.UserService;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.context.FacesContext;
 import org.omnifaces.util.Ajax;
 
 @Named("events")
@@ -21,10 +21,11 @@ public class EventBean extends AbstractBaseBean implements Serializable {
 
     @Inject
     private EventService eventService;
+    
+    @Inject
+    private UserService userService;
 
     private BasicEventDTO selectedEvent;
-
-    private List<SelectItem> eventItems;
 
     private List<BasicEventDTO> events;
 
@@ -36,7 +37,8 @@ public class EventBean extends AbstractBaseBean implements Serializable {
 
     @Override
     public void update() {
-        events = eventService.getAllEventsAsDTO();
+        String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        events = eventService.getNextEventsForUser(userService.getUserByEmail(userEmail));
         if (selectedEvent != null) {
             selectedEvent = events.get(events.indexOf(selectedEvent));
             invitableUsers = eventService.getNotInvitedUsers(selectedEvent);
@@ -89,14 +91,6 @@ public class EventBean extends AbstractBaseBean implements Serializable {
 
     public void setEventService(EventService eventService) {
         this.eventService = eventService;
-    }
-
-    public List<SelectItem> getEventItems() {
-        return eventItems;
-    }
-
-    public void setEventItems(List<SelectItem> eventItems) {
-        this.eventItems = eventItems;
     }
 
     public List<UserDTO> getInvitableUsers() {
