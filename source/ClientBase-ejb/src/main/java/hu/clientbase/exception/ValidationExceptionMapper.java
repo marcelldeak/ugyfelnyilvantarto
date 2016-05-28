@@ -10,7 +10,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
 
     @Override
     public Response toResponse(ValidationException exception) {
-        System.out.println("--------------- EXCEPTION ÉRKEZETT -----------------");
        return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO(exception.getLocalizedMessage())).build();
     }
+    
 }

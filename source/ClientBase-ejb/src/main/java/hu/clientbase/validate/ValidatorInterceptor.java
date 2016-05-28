@@ -40,7 +40,6 @@ public class ValidatorInterceptor {
                 + e.getPropertyPath().toString()
                 + "  ").reduce(String::concat);
         if (errorMessage.isPresent()) {
-            System.out.println("----------- EXCEPTIONT DOBTAM -----------------");
             throw new ValidationException(errorMessage.get());
         }
     }
