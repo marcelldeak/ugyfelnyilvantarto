@@ -5,7 +5,7 @@ import javax.ejb.ApplicationException;
 
 
 @ApplicationException
-public class ValidationException extends IllegalArgumentException implements Serializable{
+public class ValidationException extends Exception implements Serializable{
 
     public ValidationException() {
         super();
