@@ -88,5 +88,10 @@
         <error-code>403</error-code>
         <location>/WEB-INF/error/403.xhtml</location>
     </error-page>
+    
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/error/error.xhtml</location>
+    </error-page>
 
 </web-app>

@@ -101,11 +101,6 @@
                                     <h:outputText value="#{_admin.email}" />
                                 </p:column>
 
-                                <p:column style="text-align: center;width: 56px" >
-                                    <p:commandButton title="Details" icon="ui-icon-person" onclick="alert('User details')">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
                                 <p:column style="text-align: center;width: 56px">
                                     <p:commandButton icon="ui-icon-trash" title="Delete" action="#{admin.deleteUserQuestion(_admin)}">
                                         <f:ajax />
@@ -148,11 +143,7 @@
                                     <h:outputText value="#{_auser.email}" />
                                 </p:column>
 
-                                <p:column style="text-align: center;width: 56px" >
-                                    <p:commandButton title="Details" icon="ui-icon-person" onclick="alert('User details')">
-                                        <f:ajax />
-                                    </p:commandButton>
-                                </p:column>
+                                
                                 <p:column style="text-align: center;width: 56px">
                                     <p:commandButton icon="ui-icon-trash" title="Delete" action="#{admin.deleteUserQuestion(_auser)}">
                                         <f:ajax />

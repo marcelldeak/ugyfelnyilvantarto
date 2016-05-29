@@ -101,7 +101,8 @@ public class EventCUDBean implements Serializable {
         eventService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event edited succesfully."));
         eventBean.update();
-        Ajax.update("e_list_form:e_list_table");
+        customersBean.update();
+        Ajax.update("customer_details_right_panel:e_list_form");
         Ajax.oncomplete("resetHideShow('event_edit_form','event_edit_dialog','customer_details_dialog',true)");
     }
 
@@ -121,7 +122,7 @@ public class EventCUDBean implements Serializable {
         eventBean.setSelectedEvent(null);
         eventBean.update();
 
-        Ajax.update("customer_details_right_panel:e_list_form:e_list_table");
+        Ajax.update("customer_details_right_panel:e_list_form");
         Ajax.oncomplete("hideShow('event_delete_dialog','customer_details_dialog', true)");
     }
 

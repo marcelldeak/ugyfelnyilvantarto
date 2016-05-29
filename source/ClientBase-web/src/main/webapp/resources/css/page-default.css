@@ -193,6 +193,10 @@ h6 {
     padding: 20px;
 }
 
+ #c_modal
+ {
+        width: 90% !important;
+}
 
 #logo {
     padding-top: 3px;
@@ -216,7 +220,7 @@ h6 {
         padding-right: 150px;
         padding-top: 6px;
     }
-
+   
 
 
 }
