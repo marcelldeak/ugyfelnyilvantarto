@@ -17,4 +17,8 @@ public class ProjectFacade {
     public List<Project> getAllProjects() {
         return em.createQuery("SELECT p FROM Project p", Project.class).getResultList();
     }
+    
+    public List<Project> getAllProjectOrderedByDate(){
+        return em.createQuery("select p from Project p where p.status not like 'FINISHED' order by p.deadline asc", Project.class).getResultList();
+    }
 }

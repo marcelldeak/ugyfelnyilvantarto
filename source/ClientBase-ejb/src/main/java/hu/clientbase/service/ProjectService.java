@@ -45,10 +45,10 @@ public class ProjectService {
         entityFacade.update(tempProject);
     }
 
-    public List<ProjectDTO> getAllProject(){
+    public List<ProjectDTO> getAllProjectOrderedByDate(){
         List<ProjectDTO> result = new LinkedList<>();
         
-        for(Project p : projectFacade.getAllProjects()){
+        for(Project p : projectFacade.getAllProjectOrderedByDate()){
             result.add(new ProjectDTO(p));
         }
         

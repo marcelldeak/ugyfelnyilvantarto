@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class EventDTO implements Serializable {
+public class EventDTO implements Serializable, Comparable<EventDTO> {
 
     private static final long serialVersionUID = -5706191305558878248L;
 
@@ -112,6 +112,11 @@ public class EventDTO implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(EventDTO e) {
+        return getDateOfStart().compareTo(e.getDateOfStart());
     }
     
 }

@@ -130,6 +130,16 @@ public class EventService {
         return ret;
     }
     
+    public List<EventDTO> getAllEventOrderedByDate(){
+        List<EventDTO> result = new LinkedList<>();
+        
+        for(Event e : eventFacade.getAllEventOrderedByDate()){
+            result.add(new EventDTO(e));
+        }
+        
+        return result;
+    }
+    
     public List<String> nameOfEvents() {
         List<String> names = new ArrayList<>();
         for (Event event : eventFacade.getAllEvents()) {

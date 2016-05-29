@@ -17,7 +17,10 @@ public class EventFacade {
 
     public List<Event> getAllEvents() {
         return em.createQuery("SELECT n FROM Event n", Event.class).getResultList();
-
+    }
+    
+    public List<Event> getAllEventOrderedByDate(){
+        return em.createQuery("select e from Event e order by e.dateOfStart asc", Event.class).getResultList();
     }
 
     public List<Event> getNext10EventsForUserByUserId(Long id) {

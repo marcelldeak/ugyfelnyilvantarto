@@ -5,7 +5,7 @@ import hu.clientbase.entity.ProjectStatus;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class ProjectDTO implements Serializable {
+public class ProjectDTO implements Serializable,Comparable<ProjectDTO> {
 
     private static final long serialVersionUID = 258979332215257296L;
 
@@ -74,4 +74,8 @@ public class ProjectDTO implements Serializable {
         this.status = status;
     }
 
+    @Override
+    public int compareTo(ProjectDTO p) {
+    return getDeadline().compareTo(p.getDeadline());
+  }
 }
