@@ -20,12 +20,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import org.omnifaces.util.Ajax;
+import org.omnifaces.util.Faces;
 import org.primefaces.model.UploadedFile;
 
 @Named("profile")
 @ViewScoped
-public class ProfileBean implements Serializable {
+public class ProfileBackingBean implements Serializable {
 
     private static final long serialVersionUID = -6749396864436794339L;
 
@@ -44,13 +44,28 @@ public class ProfileBean implements Serializable {
 
     private UploadedFile upFile;
 
+    private Date minBirthDate;
+    private Date maxBirthDate;
 
+    public ProfileBackingBean() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        
+        calendar.set(calendar.get(Calendar.YEAR)-18, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        maxBirthDate = calendar.getTime();
+        
+        calendar.set(calendar.get(Calendar.YEAR)-70, 0, 0);
+        minBirthDate = calendar.getTime();
+    }
+
+    
+    
     @PostConstruct
     private void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
         UserDTO user = userService.getUserByEmail(eMail);
-       
+
         id = user.getId();
         email = user.getEmail();
         password = user.getPassword();
@@ -134,6 +149,22 @@ public class ProfileBean implements Serializable {
         this.upFile = upFile;
     }
 
+    public Date getMinBirthDate() {
+        return minBirthDate;
+    }
+
+    public void setMinBirthDate(Date minBirthDate) {
+        this.minBirthDate = minBirthDate;
+    }
+
+    public Date getMaxBirthDate() {
+        return maxBirthDate;
+    }
+
+    public void setMaxBirthDate(Date maxBirthDate) {
+        this.maxBirthDate = maxBirthDate;
+    }
+
     public void uploadImage() throws NoSuchAlgorithmException {
         String filename = email.replaceAll("(\\.|@)", "_");
         String extension = ".";
@@ -151,7 +182,8 @@ public class ProfileBean implements Serializable {
 
         picture = filename + extension;
 
-        Path folder = Paths.get(System.getProperty("jboss.server.data.dir"), "Clientbase", "profile_images");
+        Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
+
         File file = new File(folder.toString() + File.separatorChar + picture);
         file.mkdirs();
 
@@ -181,8 +213,6 @@ public class ProfileBean implements Serializable {
         }
 
         init();
-
-        Ajax.updateAll();
     }
 
     public String getProfileImgPath() {
@@ -190,13 +220,12 @@ public class ProfileBean implements Serializable {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         String contextPath = request.getContextPath();
 
-        String fileURL = Paths.get(System.getProperty("jboss.server.data.dir"), "Clientbase", "profile_images", picture)
-                .toUri().toString();
+        String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         if (!picture.equals("null") && picture != null) {
-            return fileURL;
+            return fileUrl + "/resources/profile_images/" + picture;
         } else {
-            return contextPath + "/resources/imgs/facebook-avatar.jpg";
+            return fileUrl + "/resources/profile_images/" + "avatar.jpg";
         }
 
     }

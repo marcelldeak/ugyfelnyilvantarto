@@ -23,21 +23,20 @@
                                     <img id="profile_picture"
                                          class="media-object" 
                                          src="#{profile.getProfileImgPath()}"
-                                         alt="#{profile.getProfileImgPath()}"
                                          style="height:97px; margin: auto;display:inherit;"/>
                                     Upload another picture..
                                     <p:fileUpload class="text-center center-block well well-sm"
-                                                  mode="simple" value="#{profile.file}"
-                                                  update="@form">
+                                                  mode="simple" value="#{profile.upFile}">
                                     </p:fileUpload>
-                                    <p:commandButton class="btn btn-info" ajax="false" value="Upload" action="#{profile.uploadImage}"/>
+                                    <p:commandButton class="btn btn-info" ajax="false" value="Upload" type="submit" 
+                                                     update="@form" action="#{profile.uploadImage()}"/>
                                 </h:form>
                             </div>
                         </div>
                         <!--right column -->
                         <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
                             <h3>Profile info</h3>
-                            <h:form  class="form-horizontal" role="form">
+                            <h:form  id="profile_info_col" class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="col-lg-3">First name:</label>
                                     <div class="col-lg-8">
@@ -75,11 +74,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-lg-3">Confirm password:</label>
+                                    <div class="col-lg-8">
+                                        <p:password id="confirmPassword"
+                                                    value="#{profile.confirmPassword}" 
+                                                    size="40" label="confirmPassword">
+                                        </p:password>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-3">Date of birth:</label>
                                     <div class="col-lg-8">
                                         <p:calendar  id="dateOfBirth"
                                                      value="#{profile.dateOfBirth}" 
-                                                     pattern="dd-MM-yyyy" mask="true" />
+                                                     pattern="dd-MM-yyyy" mask="true" 
+                                                     mindate="#{profile.minBirthDate}"
+                                                     maxdate="#{profile.maxBirthDate}"/>
                                     </div>
                                 </div>
                                 
@@ -88,7 +98,8 @@
                                     <div class="col-md-8">
                                         <p:commandButton class="btn btn-info" 
                                                          type="submit" value="Save Changes" 
-                                                         action="#{profile.saveChanges()}">
+                                                         action="#{profile.saveChanges()}"
+                                                         update="@form">
                                             <f:ajax />
                                         </p:commandButton>
                                         <span/>
