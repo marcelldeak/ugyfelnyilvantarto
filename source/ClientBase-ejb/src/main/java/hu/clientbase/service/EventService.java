@@ -11,13 +11,16 @@ import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.EventFacade;
 import java.util.ArrayList;
 import java.util.HashSet;
+import hu.clientbase.validate.LoggerInterceptor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class EventService {
 
     @Inject
@@ -26,8 +29,8 @@ public class EventService {
     @Inject
     private EventFacade eventFacade;
 
-    @Inject
 
+    @Inject
     private UserService userService;
 
     public void create(UserDTO userDTO, EventDTO eventDTO) {
@@ -36,10 +39,10 @@ public class EventService {
         User user = entityFacade.find(User.class, userDTO.getId());
         Invitation i = new Invitation(event, user);
         entityFacade.create(i);
-
     }
 
     public void update(EventDTO dto) {
+
         Event event = entityFacade.find(Event.class, dto.getId());
 
         event.setDateOfEnd(dto.getDateOfEnd());

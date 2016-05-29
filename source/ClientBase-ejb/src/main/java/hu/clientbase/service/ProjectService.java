@@ -8,10 +8,13 @@ import hu.clientbase.facade.EntityFacade;
 import hu.clientbase.facade.ProjectFacade;
 import java.util.LinkedList;
 import java.util.List;
+import hu.clientbase.validate.LoggerInterceptor;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class ProjectService {
 
     @Inject
@@ -24,6 +27,7 @@ public class ProjectService {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         customer.getProjects().add(new Project(projectDTO));
         entityFacade.update(customer);
+
     }
 
     public void delete(ProjectDTO dto) {

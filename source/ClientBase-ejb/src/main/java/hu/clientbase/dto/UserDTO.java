@@ -4,15 +4,23 @@ import hu.clientbase.entity.User;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class UserDTO implements Serializable {
 
     private static final long serialVersionUID = -329046416249720809L;
 
     private Long id;
+    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
     private String email;
+    @Size(min = 6)
     private String password;
+    @Size(min = 2)
     private String lastName;
+    @Size(min = 2)
     private String firstName;
     private Boolean active;
     private Calendar dateOfBirth;

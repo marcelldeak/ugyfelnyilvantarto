@@ -10,12 +10,16 @@ import hu.clientbase.facade.UserFacade;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import hu.clientbase.validate.LoggerInterceptor;
+import hu.clientbase.validate.ValidatorInterceptor;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
+import javax.interceptor.Interceptors;
 
 @Stateless
+@Interceptors({LoggerInterceptor.class})
 public class UserService {
 
     @Inject
@@ -27,6 +31,7 @@ public class UserService {
     @Inject
     private EventFacade eventFacade;
 
+    @Interceptors({ValidatorInterceptor.class})
     public void create(UserDTO dto) {
         User u = new User(dto);
         u.setActive(false);
@@ -95,6 +100,7 @@ public class UserService {
     }
 
     public boolean isEmailExist(String email) {
+
         return entityFacade.findAll(User.class).stream().anyMatch(user -> user.getEmail().equals(email));
     }
 

@@ -30,6 +30,7 @@ public class CustomersBean implements Serializable {
     @Inject
     private ProjectCUDBean projectManager;
 
+    @Inject
     private EventBean eventBean;
 
     private CustomerDTO selectedCustomer;

@@ -3,13 +3,17 @@ package hu.clientbase.dto;
 import hu.clientbase.entity.Note;
 import hu.clientbase.entity.Tag;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class NoteDTO implements Serializable {
 
     private static final long serialVersionUID = 645249867234114601L;
 
     private Long id;
     private Tag tag;
+    @NotNull
     private String content;
 
     public NoteDTO() {

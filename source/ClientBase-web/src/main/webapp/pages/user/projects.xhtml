@@ -89,7 +89,7 @@
                      tabindex="-1"
                      role="dialog"
                      data-backdrop="static">
-                    <div class="modal-dialog ">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="row" style="text-align: center;">
@@ -280,7 +280,7 @@
                                                 class="form-horizontal"
                                                 id="project_edit_form">
 
-                                            <p:panel id="project_data_edit" header="Details">
+                                            <p:panel id="project_data" header="Details">
 
                                                 <div class="form-group row" >
                                                     <label class="control-label col-sm-4" for="p_name">Name:</label>
@@ -309,7 +309,7 @@
                                                     </h:selectOneMenu>
                                                 </div>
                                                 <div class="form-group row" >
-                                                    <label class="control-label col-sm-4" for="p_deadline_edit">Deadline:</label>
+                                                    <label class="control-label col-sm-4" for="p_deadline">Deadline:</label>
                                                     <div class="col-sm-8">
                                                         <p:outputLabel for="p_deadline_edit"
                                                                        value="#{ProjectCUD.date.toLocaleString().split(' ')[0]}" style="padding-top: 7px;">
@@ -324,7 +324,7 @@
                                             <div class="form-group row row-centered"
                                                  style="padding-top: 10px;">
                                                 <p:commandButton value="Save changes"
-                                                                 update="project_data_edit"
+                                                                 update="project_data"
                                                                  validateClient="true"
                                                                  style="margin-right:10px"
                                                                  action="#{ProjectCUD.edit()}">

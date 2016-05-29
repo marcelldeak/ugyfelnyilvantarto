@@ -52,8 +52,6 @@ public class ProjectCUDBean implements Serializable {
     
     private static final String PROJECT_LIST = "customer_details_right_panel:a_form:projects";
 
-
-
     public void openAddDialog() {
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#project_add_dialog').modal('show')");
     }
@@ -145,7 +143,12 @@ public class ProjectCUDBean implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-    
+
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -160,10 +163,6 @@ public class ProjectCUDBean implements Serializable {
     
     public void setName(String name) {
         this.name = name;
-    }
-    
-    public Date getCurrentDate() {
-        return currentDate;
     }
     
     public Calendar getDeadline() {

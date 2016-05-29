@@ -4,17 +4,25 @@ import hu.clientbase.entity.Project;
 import hu.clientbase.entity.ProjectStatus;
 import java.io.Serializable;
 import java.util.Calendar;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import hu.clientbase.validate.ValidatorAnnotation;
 
+@ValidatorAnnotation
 public class ProjectDTO implements Serializable,Comparable<ProjectDTO> {
 
     private static final long serialVersionUID = 258979332215257296L;
 
     private Long id;
 
+    @NotNull
+    @Size(min = 2)
     private String name;
 
+    @NotNull
     private Calendar deadline;
 
+    @NotNull
     private ProjectStatus status;
 
     public ProjectDTO() {
