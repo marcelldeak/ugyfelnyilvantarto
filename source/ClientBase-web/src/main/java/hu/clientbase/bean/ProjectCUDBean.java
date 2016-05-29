@@ -83,7 +83,6 @@ public class ProjectCUDBean implements Serializable {
         Ajax.oncomplete("$('#project_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show')");
         
     }
-    
     public void add() {
         Customer tempCustomer;
         if (date == null) {
