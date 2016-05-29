@@ -174,7 +174,6 @@ public class ProjectCUDBean implements Serializable {
     }
     
     public List<ProjectDTO> getProjects() {
-        Ajax.update(PROJECT_LIST);
         projects = ProjectService.getAllProjectForCustomer(customerBean.getSelectedCustomer());
         return projects;
     }

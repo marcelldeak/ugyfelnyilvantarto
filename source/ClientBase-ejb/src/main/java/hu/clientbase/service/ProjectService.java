@@ -50,7 +50,6 @@ public class ProjectService {
         entityFacade.update(tempProject);
     }
 
-
     public Project find(ProjectDTO dto) {
         return entityFacade.find(Project.class, dto.getId());
     }
@@ -67,9 +66,7 @@ public class ProjectService {
 
     public List<ProjectDTO> getAllProjectForCustomer(CustomerDTO customer) {
         Customer tempCustomer = entityFacade.find(Customer.class, customer.getId());
-
         List<ProjectDTO> ret = new LinkedList<>();
-
         tempCustomer.getProjects().stream().forEach((project) -> {
             ret.add(new ProjectDTO(project));
         });

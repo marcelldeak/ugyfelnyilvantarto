@@ -1,7 +1,7 @@
 package hu.clientbase.entity;
 
 public enum ProjectStatus {
-    NOT_STARTED("Not started"),
+    NOT_STARTED("Not Started"),
     PAUSED("Paused"),
     IN_PROGRESS("In Progress"),
     FINISHED("Finished");
