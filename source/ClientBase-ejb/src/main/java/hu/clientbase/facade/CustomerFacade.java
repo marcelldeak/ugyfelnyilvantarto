@@ -22,7 +22,5 @@ public class CustomerFacade {
     public Customer getCustomerForEvent(Event event) {
         return em.createQuery("SELECT c FROM Customer c WHERE :event MEMBER OF c.events", Customer.class).getSingleResult();
 
-        /*SELECT c.name FROM crm_db.customer_event CV INNER join crm_db.customer C ON CV.customer_id = c.id 
-        INNER JOIN crm_db.event E on CV.events_id = e.id WHERE E.id = 12; */
     }
 }

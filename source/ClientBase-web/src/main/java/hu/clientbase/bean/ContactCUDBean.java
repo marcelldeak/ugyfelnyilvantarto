@@ -4,7 +4,6 @@ import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.service.CustomerService;
 import org.omnifaces.util.Ajax;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;

@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class BasicEventDTO implements Serializable {
+public class EventDTO implements Serializable, Comparable<EventDTO> {
 
     private static final long serialVersionUID = -5706191305558878248L;
 
@@ -19,11 +19,11 @@ public class BasicEventDTO implements Serializable {
     private String name;
     private List<NoteDTO> notes;
 
-    public BasicEventDTO() {
+    public EventDTO() {
         notes = new LinkedList<>();
     }
 
-    public BasicEventDTO(Event e) {
+    public EventDTO(Event e) {
         this.id = e.getId();
         this.type = e.getType();
         this.dateOfStart = e.getDateOfStart();
@@ -34,7 +34,7 @@ public class BasicEventDTO implements Serializable {
         e.getNotes().stream().forEach(n -> notes.add(new NoteDTO(n)));
     }
 
-    public BasicEventDTO(EventType type, Date dateOfStart, Date dateOfEnd, String name) {
+    public EventDTO(EventType type, Date dateOfStart, Date dateOfEnd, String name) {
         this.type = type;
         this.dateOfStart = dateOfStart;
         this.dateOfEnd = dateOfEnd;
@@ -107,11 +107,16 @@ public class BasicEventDTO implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final BasicEventDTO other = (BasicEventDTO) obj;
+        final EventDTO other = (EventDTO) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(EventDTO e) {
+        return getDateOfStart().compareTo(e.getDateOfStart());
     }
     
 }

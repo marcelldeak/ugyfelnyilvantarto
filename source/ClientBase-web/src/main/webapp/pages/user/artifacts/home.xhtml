@@ -6,34 +6,163 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions">
 
-    <div class="container">
+    <h:form>
         <div class="row">
-            <pe:timeline  value="#{home.getTimeLine()}" height="250px" zoomable="true" stackEvents="true" 
-                          showCurrentTime="true" eventStyle="box" style="margin-bottom: 10px">
-                <p:ajax event="select" listener="#{home.selectEventOnTimeline}"/>
-            </pe:timeline>
+            <div class="col-lg-12 col-md-12">
+                <pe:timeline  value="#{home.getTimeLine()}" height="500px" zoomable="true" stackEvents="true" 
+                              showCurrentTime="true" eventStyle="box" style="margin-bottom: 10px">
+                </pe:timeline>
+            </div>
         </div>
         <div class="row">
-            <p:dataList id="notification-list" value="" var="notification" paginator="true" style="margin-bottom: 10px">
-                <f:facet name="header" class="header">
-                    <p:selectOneMenu class="" value="#{home.numberOfNotifications}" style="width:50px" valueChangeListener="#{home.changeNumberOfNotifications()}">
-                        <f:selectItem itemLabel="5" itemValue="5" />
-                        <f:selectItem itemLabel="10" itemValue="10" />
-                        <f:selectItem itemLabel="15" itemValue="15" />
-                        <f:selectItem itemLabel="20" itemValue="20" />
-                    </p:selectOneMenu>
-                    Last #{home.numberOfNotifications} notification
-                </f:facet>
-
-            </p:dataList>
+            <div class="col-lg-12 col-md-12">
+                <p:dataList id="notification-list" value="#{home.notifications}" var="notification" paginator="true" style="margin-bottom: 10px">
+                    <f:facet name="header" class="header">
+                        <p:selectOneMenu class="" value="#{home.numberOfNotifications}" style="width:50px; float: right;" valueChangeListener="#{home.changeNumberOfNotifications()}" >
+                            <f:selectItem itemLabel="5" itemValue="5" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                            <f:selectItem itemLabel="15" itemValue="15" />
+                            <f:selectItem itemLabel="20" itemValue="20" />
+                        </p:selectOneMenu>
+                        <h6 style="position: relative; left: 24px">Last notifications</h6>
+                    </f:facet>
+                    <a data-toggle="modal" data-target="#event_details_modal" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                        <h:outputText value="#{notification.getName()}, starts at #{notification.dateOfStart}" style="display:inline-block"/>
+                    </a>
+                </p:dataList>
+            </div>
         </div>
         <div class="row">
-            <p:dataList value="" var="project" paginator="true" style="margin-bottom: 10px">
-                <f:facet name="header" class="header">
-                    <h6>Projects will expire on this week</h6>
-                </f:facet>
+            <div class="col-lg-12 col-md-12">
+                <p:dataList value="#{home.projectsExpireOnThisWeek}" var="project" paginator="true" rows="10" style="margin-bottom: 10px">
+                    <f:facet name="header" class="header">
+                        <h6>Projects expire this week</h6>
+                    </f:facet>
+                    <a data-toggle="modal" data-target="#project_details_modal" title="View Detail" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                        <h:outputText value="#{project.getName()}, expires on #{project.getDeadline()}" style="display:inline-block"/>
+                    </a>
+                </p:dataList>
+            </div>
+        </div>
+    </h:form>
+    <!-- EVENT DETAIL MODAL -->
 
-            </p:dataList>
+    <div class="modal fade"
+         id="home_event_details_modal"
+         tabindex="-1"
+         data-keyboard="false"
+         data-backdrop="static"
+         role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div class="row"
+                         style="text-align: center;">
+                        <button type="button"
+                                class="close"
+                                style="margin-right: 20px"
+                                onclick="hideShow('event_details_dialog', 'customer_details_dialog', true)">
+                            <span aria-hidden="true">&#215;</span>                                  
+                        </button>
+                        <h4 class="modal-title">Event details</h4>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <h:form role="form"
+                                            class="form-horizontal">
+
+                                        <p:panel id="event_data" header="Details">
+
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4">Name:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.name}"/>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4" >Type:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4" >Start:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText  value="#{events.selectedEvent.dateOfStart}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                    </h:outputText>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row" >
+                                                <label class="control-label col-sm-4">End:</label>
+                                                <div class="col-sm-8" style="padding-top: 7px;">
+                                                    <h:outputText value="#{events.selectedEvent.dateOfEnd}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                    </h:outputText>
+                                                </div>
+                                            </div>
+                                        </p:panel>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT DETAIL MODAL -->
+
+    <div class="modal fade"
+         id="home_project_details_modal"
+         tabindex="-1"
+         role="dialog"
+         data-backdrop="static">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                style="margin-right: 20px">
+                            <span aria-hidden="true">&#215;</span>                                  
+                        </button>
+
+                        <h4 class="modal-title">Project details</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                            <div >
+                                <h:form id="project_details">
+                                    <p:panel id="c_basic_data" header="#{projectView.selectedProject.name}" style="text-align: center;">
+                                        <h:outputText value="ID :#{projectView.selectedProject.id}" /><br/>
+                                        <h:outputText value="Name : #{projectView.selectedProject.name}" /><br />
+                                        <h:outputText value="Status : #{projectView.selectedProject.status}" /><br />
+                                        <h:outputText value="Date of end: #{projectView.selectedProjectDeadlineToString}" /><br />
+                                    </p:panel>
+
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 

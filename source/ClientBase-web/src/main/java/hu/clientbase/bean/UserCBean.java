@@ -3,7 +3,6 @@ package hu.clientbase.bean;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.service.UserService;
 import org.omnifaces.util.Ajax;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

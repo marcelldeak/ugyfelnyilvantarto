@@ -36,3 +36,21 @@ function clearAndCloseEditEventDialog(delayed) {
     }
 
 }
+
+function resetHideShow(reset, hide, show, delayed) {
+    if (!delayed) {
+        setTimeout(function () {
+        }, 1000);
+    }
+    $('#' + reset).trigger('reset');
+    $('#' + hide).modal('hide');
+    $('#' + show).modal('show');
+}
+function hideShow(hide, show, delayed) {
+    if (!delayed) {
+        setTimeout(function () {
+        }, 1000);
+    }
+    $('#' + hide).modal('hide');
+    $('#' + show).modal('show');
+}

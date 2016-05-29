@@ -5,6 +5,7 @@ import hu.clientbase.service.UserService;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,25 +13,21 @@ import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateful;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
 import org.primefaces.model.UploadedFile;
 
-@ManagedBean(name = "profile")
+@Named("profile")
 @ViewScoped
-@Stateful
-public class ProfileBean {
+public class ProfileBackingBean implements Serializable {
+
+    private static final long serialVersionUID = -6749396864436794339L;
 
     @Inject
     private UserService userService;
@@ -43,18 +40,32 @@ public class ProfileBean {
     private Date dateOfBirth;
     private String picture;
 
+    private String confirmPassword;
+
     private UploadedFile upFile;
 
-    public ProfileBean() {
-        // default constuctor
+    private Date minBirthDate;
+    private Date maxBirthDate;
+
+    public ProfileBackingBean() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        
+        calendar.set(calendar.get(Calendar.YEAR)-18, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        maxBirthDate = calendar.getTime();
+        
+        calendar.set(calendar.get(Calendar.YEAR)-70, 0, 0);
+        minBirthDate = calendar.getTime();
     }
 
+    
+    
     @PostConstruct
     private void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
-        UserDTO user = new UserDTO();
-        user = userService.getUserByEmail(eMail);
+        UserDTO user = userService.getUserByEmail(eMail);
+
         id = user.getId();
         email = user.getEmail();
         password = user.getPassword();
@@ -62,6 +73,8 @@ public class ProfileBean {
         firstName = user.getFirstName();
         dateOfBirth = user.getDateOfBirth().getTime();
         picture = user.getPicture();
+
+        confirmPassword = user.getPassword();
     }
 
     public Long getId() {
@@ -120,12 +133,36 @@ public class ProfileBean {
         this.picture = picture;
     }
 
-    public UploadedFile getFile() {
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public UploadedFile getUpFile() {
         return upFile;
     }
 
-    public void setFile(UploadedFile file) {
-        this.upFile = file;
+    public void setUpFile(UploadedFile upFile) {
+        this.upFile = upFile;
+    }
+
+    public Date getMinBirthDate() {
+        return minBirthDate;
+    }
+
+    public void setMinBirthDate(Date minBirthDate) {
+        this.minBirthDate = minBirthDate;
+    }
+
+    public Date getMaxBirthDate() {
+        return maxBirthDate;
+    }
+
+    public void setMaxBirthDate(Date maxBirthDate) {
+        this.maxBirthDate = maxBirthDate;
     }
 
     public void uploadImage() throws NoSuchAlgorithmException {
@@ -146,6 +183,7 @@ public class ProfileBean {
         picture = filename + extension;
 
         Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
+
         File file = new File(folder.toString() + File.separatorChar + picture);
         file.mkdirs();
 
@@ -175,8 +213,6 @@ public class ProfileBean {
         }
 
         init();
-
-        Ajax.updateAll();
     }
 
     public String getProfileImgPath() {
@@ -184,12 +220,12 @@ public class ProfileBean {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         String contextPath = request.getContextPath();
 
+        String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
         if (!picture.equals("null") && picture != null) {
-            String fileURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                    + request.getContextPath() + "/resources/profile_images/" + picture;
-            return fileURL;
+            return fileUrl + "/resources/profile_images/" + picture;
         } else {
-            return contextPath + "/resources/imgs/facebook-avatar.jpg";
+            return fileUrl + "/resources/profile_images/" + "avatar.jpg";
         }
 
     }

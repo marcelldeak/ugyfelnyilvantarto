@@ -1,7 +1,8 @@
 package hu.clientbase.bean.mv;
 
+
 import hu.clientbase.bean.ProjectCUDBean;
-import hu.clientbase.dto.BasicProjectDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.ContactDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
@@ -29,6 +30,8 @@ public class CustomersBean implements Serializable {
     @Inject
     private ProjectCUDBean projectManager;
 
+    private EventBean eventBean;
+
     private CustomerDTO selectedCustomer;
 
     private List<CustomerDTO> filteredCustomers;
@@ -36,6 +39,10 @@ public class CustomersBean implements Serializable {
     private List<CustomerDTO> customers;
 
     private List<ContactDTO> contactPersons;
+
+    private List<EventDTO> events;
+
+    private List<EventDTO> filteredEvents;
 
     @PostConstruct
     private void init() {
@@ -47,6 +54,7 @@ public class CustomersBean implements Serializable {
         if (selectedCustomer != null) {
             contactPersons = customerService.getContactsByCustomer(selectedCustomer);
             projectManager.updateView();
+            events = customerService.findEventsForCustomer(selectedCustomer);
         }
     }
 
@@ -87,6 +95,26 @@ public class CustomersBean implements Serializable {
 
     public void setContactPersons(List<ContactDTO> contactPersons) {
         this.contactPersons = contactPersons;
+    }
+
+    public List<EventDTO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventDTO> events) {
+        this.events = events;
+    }
+
+    public List<EventDTO> getFilteredEvents() {
+        return filteredEvents;
+    }
+
+    public void setFilteredEvents(List<EventDTO> filteredEvents) {
+        this.filteredEvents = filteredEvents;
+    }
+
+    public void openSelectedEventDetails(EventDTO dto) {
+        eventBean.openSelectedEventDetails(dto);
     }
 
 }

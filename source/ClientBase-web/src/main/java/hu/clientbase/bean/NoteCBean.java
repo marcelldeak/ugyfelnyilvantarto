@@ -1,7 +1,7 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.EventBean;
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.NoteDTO;
 import hu.clientbase.entity.Tag;
 import hu.clientbase.service.EventService;
@@ -33,9 +33,9 @@ public class NoteCBean implements Serializable {
     
     private String content;
     
-    private BasicEventDTO selectedEvent;
+    private EventDTO selectedEvent;
     
-    public void openAddDialog(BasicEventDTO dto)
+    public void openAddDialog(EventDTO dto)
     {
         selectedEvent = dto;
         Ajax.oncomplete("$('#event_details_dialog').modal('hide');$('#note_add_dialog').modal('show')");
@@ -45,8 +45,11 @@ public class NoteCBean implements Serializable {
     {
        String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
        eventService.addNoteToEvent(selectedEvent, new NoteDTO(tag, content + "\n(" + userService.getUserByEmail(userEmail).getName() + ")"));
+       
        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Note added succesfully."));
        eventBean.update();
+       tag = null;
+       content = null;
        Ajax.update("notes_form");
        Ajax.oncomplete("clearAndCloseAddNoteDialog(true);");
        

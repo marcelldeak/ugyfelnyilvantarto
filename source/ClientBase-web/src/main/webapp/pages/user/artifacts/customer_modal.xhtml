@@ -582,10 +582,105 @@
                                             </div>
                                         </div>
                                     </p:tab>
-                                    <p:tab title="Events">
-                                        <h:panelGrid columns="2" cellpadding="10">
+                                    
+                                    <!-- EVENTS -->
 
-                                            Events
+                                    <p:tab title="Events">
+                                        <div class="row row-centered">                                                        
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                                                            
+                                                <p:commandButton id="add_event_button"
+                                                                 title="New event"
+                                                                 icon="ui-icon-plus"
+                                                                 class="pull-right"
+                                                                 action="#{eventCUD.openAddDialog()}"
+                                                                 style="top: -50px !important;right: -15px !important;">
+                                                    <f:ajax />
+                                                </p:commandButton>
+
+                                            </div>   
+                                        </div>
+                                        <h:panelGrid columns="2" cellpadding="10">
+                                            <h:form id="e_list_form">
+
+                                                <p:dataTable id="e_list_table"
+                                                             var="_event" 
+                                                             value="#{customers.events}" 
+                                                             rowKey="#{_event.id}" 
+                                                             filteredValue="#{customers.filteredEvents}"
+                                                             paginator="true"
+                                                             rows="10"
+                                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             rowsPerPageTemplate="1,5,10,15"
+                                                             paginatorPosition="bottom"
+                                                             emptyMessage="There ara no events in the system."
+                                                             >
+                                                    <f:facet name="header">
+                                                        <div class="row">
+                                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
+                                                                <h4>Events</h4>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </f:facet>
+
+                                                    <p:column headerText="Name"
+                                                              style="text-align: center"
+                                                              filterBy="#{_event.name}"
+                                                              filterMatchMode="contains">
+                                                        <h:outputText value="#{_event.name}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Type" 
+                                                              style="text-align: center" 
+                                                              filterBy="#{_event.type}"
+                                                              filterMatchMode="contains"
+                                                              >
+                                                        <h:outputText value="#{_event.type.toString()}"/>
+                                                    </p:column>
+
+                                                    <p:column headerText="Starting date"
+                                                              style="text-align: center"
+                                                              >
+                                                        <h:outputText value="#{_event.dateOfStart}">
+                                                            <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column headerText="Ending Date" 
+                                                              style="text-align: center" 
+                                                              >
+                                                        <h:outputText value="#{_event.dateOfEnd}">
+                                                            <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column style="text-align: center;
+                                                              width: 56px">
+                                                        <p:commandButton title="Details"
+                                                                         icon="ui-icon-info"
+                                                                         action="#{customers.openSelectedEventDetails(_event)}">
+                                                            <f:ajax />
+                                                        </p:commandButton>
+                                                    </p:column>
+
+
+                                                    <p:column style="text-align: center;width: 56px">
+                                                        <p:commandButton title="Edit"
+                                                                         icon="ui-icon-pencil"
+                                                                         action="#{eventCUD.openEditDialog(_event)}">
+                                                            <f:ajax />
+                                                        </p:commandButton>
+                                                    </p:column>
+
+                                                    <p:column style="text-align: center;width: 56px">
+                                                        <p:commandButton icon="ui-icon-trash"
+                                                                         title="Delete"
+                                                                         action="#{eventCUD.openDeleteDialog(_event)}">
+                                                            <f:ajax />
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:form>
                                         </h:panelGrid>
                                     </p:tab>
 
@@ -1197,4 +1292,5 @@
             </div>
         </div>
     </div>
+
 </ui:composition>

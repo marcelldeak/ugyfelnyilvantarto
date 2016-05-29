@@ -1,11 +1,13 @@
 package hu.clientbase.bean;
 
+import hu.clientbase.bean.mv.CustomersBean;
 import hu.clientbase.bean.mv.EventBean;
-import hu.clientbase.dto.BasicEventDTO;
-import hu.clientbase.dto.NoteDTO;
+import hu.clientbase.dto.EventDTO;
+import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.dto.UserDTO;
 import hu.clientbase.entity.EventType;
 import hu.clientbase.entity.Note;
+import hu.clientbase.service.CustomerService;
 import hu.clientbase.service.EventService;
 import hu.clientbase.service.UserService;
 import java.io.Serializable;
@@ -29,9 +31,15 @@ public class EventCUDBean implements Serializable {
 
     @Inject
     private EventBean eventBean;
-    
+
     @Inject
     private UserService userService;
+
+    @Inject
+    private CustomersBean customersBean;
+
+    @Inject
+    private CustomerService customerService;
 
     private Long id;
 
@@ -45,55 +53,76 @@ public class EventCUDBean implements Serializable {
 
     private List<Note> notes;
 
-    private BasicEventDTO eventToDelete;
+    private EventDTO eventToDelete;
+
+    private final Date currentDate = new Date();
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
 
     public void openAddDialog() {
-        Ajax.oncomplete("$('#event_add_dialog').modal('show')");
+        Ajax.oncomplete("hideShow('customer_details_dialog','event_add_dialog',true)");
     }
 
     public void add() {
-        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
+        EventDTO eventDTO = new EventDTO(type, dateOfStart, dateOfEnd, name);
+        CustomerDTO customerDTO = customersBean.getSelectedCustomer();
+
+        customerService.addEventToCustomer(eventDTO, customerDTO);
+
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        UserDTO user = userService.getUserByEmail(userEmail);
-        
-        eventService.create(user, dto);
+        UserDTO user = new UserDTO();
+        user = userService.getUserByEmail(userEmail);
+
+        eventService.create(user, eventDTO);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
-        eventBean.update();
-        Ajax.update("e_list_form:e_list_table");
-        Ajax.oncomplete("clearAndCloseAddEventDialog(true)");
+
+        customersBean.update();
+        resetFields();
+        Ajax.update("customer_details_right_panel:e_list_form:e_list_table");
+        Ajax.oncomplete("resetHideShow('event_add_form','event_add_dialog', 'customer_details_dialog',true)");
     }
 
-    public void openEditDialog(BasicEventDTO dto) {
+    public void openEditDialog(EventDTO dto) {
         id = dto.getId();
         name = dto.getName();
         dateOfStart = dto.getDateOfEnd();
         dateOfEnd = dto.getDateOfEnd();
         Ajax.update("event_edit_form");
-        Ajax.oncomplete("$('#event_edit_dialog').modal('show')");
+        Ajax.oncomplete("hideShow('customer_details_dialog','event_edit_dialog',true)");
     }
 
     public void edit() {
-        BasicEventDTO dto = new BasicEventDTO(type, dateOfStart, dateOfEnd, name);
+        EventDTO dto = new EventDTO(type, dateOfStart, dateOfEnd, name);
         dto.setId(id);
+
         eventService.update(dto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event edited succesfully."));
         eventBean.update();
         Ajax.update("e_list_form:e_list_table");
-        Ajax.oncomplete("clearAndCloseEditEventDialog(true)");
+        Ajax.oncomplete("resetHideShow('event_edit_form','event_edit_dialog','customer_details_dialog',true)");
     }
 
-    public void openDeleteDialog(BasicEventDTO dto) {
+    public void openDeleteDialog(EventDTO dto) {
         eventToDelete = dto;
         Ajax.update("event_delete_form");
-        Ajax.oncomplete("$('#event_delete_dialog').modal('show')");
+        Ajax.oncomplete("hideShow('customer_details_dialog','event_delete_dialog',true)");
     }
 
     public void delete() {
+        CustomerDTO customerDTO = customersBean.getSelectedCustomer();
+        customerService.deleteEventFromCustomer(eventToDelete, customerDTO);
         eventService.delete(eventToDelete);
+
+        customersBean.update();
+
+        eventBean.setSelectedEvent(null);
         eventBean.update();
-        Ajax.update("e_list_form:e_list_table");
-        Ajax.oncomplete("clearAndCloseDeleteEventDialog(true)");
+
+        Ajax.update("customer_details_right_panel:e_list_form:e_list_table");
+        Ajax.oncomplete("hideShow('event_delete_dialog','customer_details_dialog', true)");
     }
 
     public Long getId() {
@@ -144,4 +173,10 @@ public class EventCUDBean implements Serializable {
         this.notes = notes;
     }
 
+    private void resetFields() {
+        type = null;
+        name = null;
+        dateOfStart = null;
+        dateOfEnd = null;
+    }
 }

@@ -1,20 +1,12 @@
 package hu.clientbase.entity;
 
-import hu.clientbase.dto.BasicEventDTO;
+import hu.clientbase.dto.EventDTO;
 import hu.clientbase.facade.CustomerFacade;
-import hu.clientbase.shared.ejb.SharedEventDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Topic;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +16,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -34,24 +24,12 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Event implements Serializable {
-    
+
     private static final long serialVersionUID = 2480370132530374980L;
-    
+
     @Transient
     @Inject
     private CustomerFacade customerFacade;
-
-    @Transient
-    @Inject
-    private JMSContext context;
-
-    @Transient
-    @Resource(lookup = "java:/jms/topic/CreatedTopic")
-    private Topic createdTopic;
-
-    @Transient
-    @Resource(lookup = "java:/jms/topic/RemovedTopic")
-    private Topic removedTopic;
 
     @Id
     @GeneratedValue
@@ -74,7 +52,7 @@ public class Event implements Serializable {
     @Basic
     private String name;
 
-    @OneToMany(targetEntity = Note.class,fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Note.class, fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     private List<Note> notes;
 
@@ -82,7 +60,7 @@ public class Event implements Serializable {
         // Entity - parameterless constructor
     }
 
-    public Event(BasicEventDTO dto) {
+    public Event(EventDTO dto) {
         this.id = dto.getId();
         this.name = dto.getName();
         this.dateOfEnd = dto.getDateOfEnd();
