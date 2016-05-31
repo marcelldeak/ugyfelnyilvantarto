@@ -1,6 +1,5 @@
 package hu.clientbase.bean.mv;
 
-
 import hu.clientbase.bean.ProjectCUDBean;
 import hu.clientbase.dto.EventDTO;
 import hu.clientbase.dto.ContactDTO;
@@ -29,6 +28,8 @@ public class CustomersBean implements Serializable {
 
     @Inject
     private ProjectCUDBean projectManager;
+
+    private List<CustomerDTO> CustomersToCompare;
 
     @Inject
     private EventBean eventBean;
@@ -104,6 +105,14 @@ public class CustomersBean implements Serializable {
 
     public void setEvents(List<EventDTO> events) {
         this.events = events;
+    }
+
+    public List<CustomerDTO> getCustomersToCompare() {
+        return CustomersToCompare;
+    }
+
+    public void setCustomersToCompare(List<CustomerDTO> CustomersToCompare) {
+        this.CustomersToCompare = CustomersToCompare;
     }
 
     public List<EventDTO> getFilteredEvents() {

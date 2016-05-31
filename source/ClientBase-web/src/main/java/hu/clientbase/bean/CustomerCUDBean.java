@@ -1,7 +1,6 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.bean.mv.CustomersBean;
-import hu.clientbase.bean.mv.ProjectBean;
 import hu.clientbase.dto.AddressDTO;
 import hu.clientbase.dto.CustomerDTO;
 import hu.clientbase.service.CustomerService;
@@ -27,7 +26,7 @@ public class CustomerCUDBean implements Serializable {
 
     @Inject
     private ProjectCUDBean projectBean;
-    
+
     private Long id;
 
     private String name;
@@ -42,15 +41,37 @@ public class CustomerCUDBean implements Serializable {
 
     private String country;
 
+    private CustomerDTO compareItemOne;
+
+    private CustomerDTO compareItemTwo;
+
     private CustomerDTO customerToDelete;
 
-    
     private static final String CUSTOMERS_LIST = "c_list_form:c_list_table";
 
     public void openAddDialog() {
-        projectBean.updateView();
         Ajax.update("a_form:projects");
         Ajax.oncomplete("$('#customer_add_dialog').modal('show')");
+    }
+
+    public void openComapreDialog() {
+        if (customerBean.getCustomersToCompare().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Select two customers to compare!"));
+            Ajax.update("c_list_form:msgs");
+        }
+        if (customerBean.getCustomersToCompare().size() == 1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Select one more customer!"));
+            Ajax.update("c_list_form:msgs");
+        }
+        if (customerBean.getCustomersToCompare().size() > 2) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "You can compare only two customers!"));
+            Ajax.update("c_list_form:msgs");
+        } else if (customerBean.getCustomersToCompare().size() == 2) {
+            compareItemOne = customerBean.getCustomersToCompare().get(0);
+            compareItemTwo = customerBean.getCustomersToCompare().get(1);
+            Ajax.update("customer_compare_dialog:customer_compare");
+            Ajax.oncomplete("$('#customer_compare_dialog').modal('show')");
+        }
     }
 
     public void add() {
@@ -127,6 +148,22 @@ public class CustomerCUDBean implements Serializable {
 
     public String getZipCode() {
         return zipCode;
+    }
+
+    public CustomerDTO getCompareItemOne() {
+        return compareItemOne;
+    }
+
+    public void setCompareItemOne(CustomerDTO compareItemOne) {
+        this.compareItemOne = compareItemOne;
+    }
+
+    public CustomerDTO getCompareItemTwo() {
+        return compareItemTwo;
+    }
+
+    public void setCompareItemTwo(CustomerDTO compareItemTwo) {
+        this.compareItemTwo = compareItemTwo;
     }
 
     public void setZipCode(String zipCode) {

@@ -36,11 +36,14 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                         <h:form id="c_list_form">
-
+                            <p:remoteCommand name="rc" update="msgs" actionListener="#{customerCUD.openComapreDialog()}" />
+                            <p:growl id="msgs" showDetail="true" />
                             <p:dataTable id="c_list_table"
                                          var="_customer"
                                          value="#{customers.customers}"
                                          rowKey="#{_customer.id}"
+                                         selection="#{customers.customersToCompare}"  
+                                         style="margin-bottom:0"
                                          filteredValue="#{customers.filteredCustomers}"
                                          paginator="true"
                                          rows="10"
@@ -67,7 +70,7 @@
 
                                     </div>
                                 </f:facet>
-
+                                <p:column selectionMode="multiple" style="width:35px;text-align:center;" />
                                 <p:column headerText="Name"
                                           style="text-align: center"
                                           filterBy="#{_customer.name}"
@@ -115,7 +118,9 @@
                                         <f:ajax />
                                     </p:commandButton>
                                 </p:column>
-
+                                <f:facet name="footer">
+                                    <p:commandButton process="c_list_table" onclick="rc()" update="customer_compare:compare_customers" icon="ui-icon-search" value="compare" action="#{customerCUD.openComapreDialog()}" />
+                                </f:facet>
                             </p:dataTable>
                         </h:form>
                     </div>

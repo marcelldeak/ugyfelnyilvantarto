@@ -361,6 +361,58 @@
         </div>
     </div>
 
+    <!-- COMPARE CUSTOMER -->
+
+    <div class="modal fade"
+         id="customer_compare_dialog"
+         tabindex="-1"
+         role="dialog">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row" style="text-align: center;">
+
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                style="margin-right: 20px">
+                            <span aria-hidden="true">&#215;</span>                                  
+                        </button>
+
+                        <h4 class="modal-title">Compare customers</h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="text-align: center;">
+                            <h:form id='customer_compare'>
+                                <p:panelGrid columns="3" id="compare_customers" style="margin: 0 auto;">
+                                    <p:outputLabel value="Name :" />
+                                    <p:outputLabel value="#{customerCUD.compareItemOne.name}" />  
+                                    <p:outputLabel value="#{customerCUD.compareItemTwo.name}" />  
+
+                                    <p:outputLabel value="VAT number :" />                                          
+                                    <p:outputLabel value="#{customerCUD.compareItemOne.vatNumber}" />  
+                                    <p:outputLabel value="#{customerCUD.compareItemTwo.vatNumber}" />  
+
+                                    <p:outputLabel value="Country :" />
+                                    <p:outputLabel value="#{customerCUD.compareItemOne.address.country}" />  
+                                    <p:outputLabel value="#{customerCUD.compareItemTwo.address.country}" /> 
+
+                                    <p:outputLabel value="Number of projects :" />
+                                    <p:outputLabel value="Name :" />  
+                                    <p:outputLabel value="Name :" />
+
+                                </p:panelGrid>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CUSTOMER DETAILS-->
 
     <div class="modal fade"
@@ -582,7 +634,7 @@
                                             </div>
                                         </div>
                                     </p:tab>
-                                    
+
                                     <!-- EVENTS -->
 
                                     <p:tab title="Events">
@@ -712,7 +764,7 @@
                                 data-dismiss="modal"
                                 onclick="$('#customer_details_dialog').modal('show');"
                                 style="margin-right: 20px">
-                            
+
                             <span aria-hidden="true">&#215;</span>                                  
                         </button>
 
