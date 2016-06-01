@@ -1,9 +1,9 @@
 function clearAndCloseAddCustomerDialog(delayed) {
 
     if (!delayed) {
-        clearAddModal();
+        clearAddCModal();
     } else {
-        setTimeout(clearAddModal, 1000);
+        setTimeout(clearAddCModal, 1000);
     }
 }
 
@@ -51,7 +51,7 @@ function clearAndCloseAddContactChannelDialog(delayed) {
     }
 }
 
-function clearAddModal() {
+function clearAddCModal() {
     $('#customer_add_dialog').modal('hide');
     $('#customer_add_form').trigger('reset');
 
