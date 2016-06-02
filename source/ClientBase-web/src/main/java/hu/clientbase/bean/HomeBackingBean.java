@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.omnifaces.util.Ajax;
 import org.primefaces.extensions.model.timeline.TimelineEvent;
 import org.primefaces.extensions.model.timeline.TimelineModel;
 
@@ -66,6 +65,9 @@ public class HomeBackingBean implements Serializable {
                 break;
             }
         }
+        
+        projectsExpireThisWeek = getProjectsExpireOnThisWeek();
+        numberOfNotifications = 5;
     }
 
     public TimelineModel getTimeLine() {
@@ -116,20 +118,23 @@ public class HomeBackingBean implements Serializable {
         this.projectsExpireThisWeek = projectsExpireThisWeek;
     }
 
-    public void changeNumberOfNotifications() {
+    public List<EventDTO> getNNotifications() {
+        Date actualDate = new Date();
+
         List<EventDTO> result = new LinkedList<>();
 
         int i = 1;
         for (EventDTO e : events) {
-            result.add(e);
-            i++;
+            if (e.getDateOfEnd().after(actualDate)) {
+                result.add(e);
+                i++;
+            }
             if (i > numberOfNotifications) {
                 break;
             }
         }
-        setNotifications(result);
+        return result;
 
-        Ajax.update("notification-list");
     }
 
     public List<ProjectDTO> getProjectsExpireOnThisWeek() {

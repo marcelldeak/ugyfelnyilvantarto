@@ -71,8 +71,16 @@ public class ProfileBackingBean implements Serializable {
         password = user.getPassword();
         lastName = user.getLastName();
         firstName = user.getFirstName();
-        dateOfBirth = user.getDateOfBirth().getTime();
-        picture = user.getPicture();
+        if (user.getDateOfBirth() != null) {
+            dateOfBirth = user.getDateOfBirth().getTime();
+        } else {
+            dateOfBirth = maxBirthDate;
+        }
+        if (user.getPicture() != null) {
+            picture = user.getPicture();
+        } else {
+            picture = "null";
+        }
 
         confirmPassword = user.getPassword();
     }
