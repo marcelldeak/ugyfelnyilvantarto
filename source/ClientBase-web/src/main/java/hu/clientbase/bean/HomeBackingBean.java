@@ -45,22 +45,27 @@ public class HomeBackingBean implements Serializable {
     
     @PostConstruct
     public void init() {
+        Calendar actualCalendar = Calendar.getInstance();
+        actualCalendar.setTime(new Date());
         int i = 1;
         
-        projects = projectService.getAllProjects();
-        Collections.sort(projects);
+       projects = projectService.getAllProjectOrderedByDate();
         for (ProjectDTO project : projects) {
-            timeLine.add(new TimelineEvent(project.getName(), project.getDeadline().getTime()));
-            i++;
+            if (project.getDeadline().after(actualCalendar)) {
+                timeLine.add(new TimelineEvent(project.getName(), project.getDeadline().getTime()));
+                i++;
+            }
             if (i > 10) {
                 break;
             }
         }
-        events = eventService.getAllEvents();
-        Collections.sort(events);
+
+        events = eventService.getAllEventOrderedByDate();
         for (EventDTO event : events) {
-            timeLine.add(new TimelineEvent(event.getName(), event.getDateOfStart(), event.getDateOfEnd()));
-            i++;
+            if (event.getDateOfEnd().after(actualCalendar.getTime())) {
+                timeLine.add(new TimelineEvent(event.getName(), event.getDateOfStart(), event.getDateOfEnd()));
+                i++;
+            }
             if (i > 20) {
                 break;
             }
@@ -143,11 +148,11 @@ public class HomeBackingBean implements Serializable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         
-        for(ProjectDTO p : projects){
-            if(p.getDeadline().get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR)){
+        for (ProjectDTO p : projects) {
+            if (p.getDeadline().get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR)) {
                 result.add(p);
             }
-            if(p.getDeadline().get(Calendar.WEEK_OF_YEAR) > calendar.get(Calendar.WEEK_OF_YEAR)){
+            if (p.getDeadline().get(Calendar.WEEK_OF_YEAR) > calendar.get(Calendar.WEEK_OF_YEAR)) {
                 break;
             }
         }

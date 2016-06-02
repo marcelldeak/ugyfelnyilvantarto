@@ -84,4 +84,14 @@ public class ProjectService {
 
         return ret;
     }
+    
+    public List<ProjectDTO> getAllProjectOrderedByDate(){
+        List<ProjectDTO> result = new LinkedList<>();
+        
+        for(Project p : projectFacade.getAllProjectOrderedByDate()){
+            result.add(new ProjectDTO(p));
+        }
+        
+        return result;
+    }
 }
