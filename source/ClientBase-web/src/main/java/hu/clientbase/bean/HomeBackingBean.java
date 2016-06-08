@@ -6,7 +6,6 @@ import hu.clientbase.service.EventService;
 import hu.clientbase.service.ProjectService;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.omnifaces.util.Ajax;
 import org.primefaces.extensions.model.timeline.TimelineEvent;
 import org.primefaces.extensions.model.timeline.TimelineModel;
 
@@ -35,9 +35,11 @@ public class HomeBackingBean implements Serializable {
 
     private List<ProjectDTO> projects;
     private List<ProjectDTO> projectsExpireThisWeek;
+    private ProjectDTO selectedProject;
     
     private List<EventDTO> events;
     private List<EventDTO> notifications;
+    private EventDTO selectedEvent;
 
     public HomeBackingBean() {
         // default constructor
@@ -115,12 +117,28 @@ public class HomeBackingBean implements Serializable {
         this.notifications = notifications;
     }
 
+    public EventDTO getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    public void setSelectedEvent(EventDTO selectedEvent) {
+        this.selectedEvent = selectedEvent;
+    }
+
     public List<ProjectDTO> getProjectsExpireThisWeek() {
         return projectsExpireThisWeek;
     }
 
     public void setProjectsExpireThisWeek(List<ProjectDTO> projectsExpireThisWeek) {
         this.projectsExpireThisWeek = projectsExpireThisWeek;
+    }
+
+    public ProjectDTO getSelectedProject() {
+        return selectedProject;
+    }
+
+    public void setSelectedProject(ProjectDTO selectedProject) {
+        this.selectedProject = selectedProject;
     }
 
     public List<EventDTO> getNNotifications() {
@@ -158,6 +176,20 @@ public class HomeBackingBean implements Serializable {
         }
         
         return result;
+    }
+    
+    public void openSelectedNotificationDetails(EventDTO event){
+        selectedEvent = event;
+        
+        Ajax.update("home_event_details");
+        Ajax.oncomplete("$('#home_event_details_modal').modal('show')");
+    }
+    
+    public void openSelectedProjectDetails(ProjectDTO project){
+        selectedProject = project;
+        
+        Ajax.update("home_project_details");
+        Ajax.oncomplete("$('#home_project_details_modal').modal('show')");
     }
 
 }

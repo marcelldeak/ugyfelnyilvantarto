@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <pe:timeline  value="#{home.getTimeLine()}" height="500px" zoomable="true" stackEvents="true" 
+            <pe:timeline  value="#{home.getTimeLine()}" height="250px" zoomable="true" stackEvents="true" 
                           showCurrentTime="true" eventStyle="box" style="margin-bottom: 10px">
             </pe:timeline>
         </div>
@@ -26,147 +26,128 @@
                             <f:selectItem itemLabel="20" itemValue="20" />
                             <f:ajax render="@form"/>
                         </p:selectOneMenu>
-                        <h6 style="position: relative; left: 24px">Last notifications</h6>
+                        <h6 style="position: relative; left: 24px">Notifications</h6>
                     </f:facet>
-                    <p:outputLabel value="#{notification.name}, starts at #{notification.dateOfStart}, ends at #{notification.dateOfEnd}"/>
+                    <p:commandLink action="#{home.openSelectedNotificationDetails(notification)}" title="View Detail" 
+                                   styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px" update="@form">
+                        <f:ajax />
+                    </p:commandLink>
+                    <p:outputLabel value="#{notification.name}, type: #{notification.type.toString()}"/>
                 </p:dataList>
             </div>
-        </h:form>
-    </div>
-    <div class="row">
-        <h:form>
-            <div class="col-lg-12 col-md-12">
-                <p:dataList value="#{home.getProjectsExpireOnThisWeek()}" var="project" style="margin-bottom: 10px">
-                    <f:facet name="header" class="header">
-                        <h6>Projects expire this week</h6>
-                    </f:facet>
-                    <p:outputLabel value="#{project.name}, project status: #{project.status.toString()}, 
-                                   expires on #{project.deadline.get(5)}. #{project.deadline.get(2)}. 
-                                   at #{project.deadline.get(10)} : #{project.deadline.get(12)}"/>
-                </p:dataList>
-            </div>
-        </h:form>
-    </div>
 
-    <!-- EVENT DETAIL MODAL -->
+            <!-- EVENT DETAIL MODAL -->
 
-    <div class="modal fade"
-         id="home_event_details_modal"
-         tabindex="-1"
-         data-keyboard="false"
-         data-backdrop="static"
-         role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal fade"
+                 id="home_event_details_modal"
+                 tabindex="-1"
+                 data-keyboard="false"
+                 data-backdrop="static"
+                 role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-                <div class="modal-header">
-                    <div class="row"
-                         style="text-align: center;">
-                        <button type="button"
-                                class="close"
-                                style="margin-right: 20px"
-                                onclick="hideShow('event_details_dialog', 'customer_details_dialog', true)">
-                            <span aria-hidden="true">&#215;</span>                                  
-                        </button>
-                        <h4 class="modal-title">Event details</h4>
-                    </div>
-                </div>
+                        <div class="modal-header">
+                            <div class="row"
+                                 style="text-align: center;">
+                                <button type="button"
+                                        class="close"
+                                        data-dismiss="modal"
+                                        style="margin-right: 20px">
+                                    <span aria-hidden="true">&#215;</span>                                  
+                                </button>
+                                <h4 class="modal-title">Event details</h4>
+                            </div>
+                        </div>
 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                        <div class="modal-body">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <h:form role="form"
-                                            class="form-horizontal">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                        <p:panel id="event_data" header="Details">
+                                            <h:form id="home_event_details">
+                                                <p:panel header="#{home.selectedEvent.name}" style="text-align: center;">
+                                                    <h:outputText value="ID :#{home.selectedEvent.id}" /><br/>
+                                                    <h:outputText value="Name : #{home.selectedEvent.name}" /><br />
+                                                    <h:outputText value="Type : #{home.selectedEvent.type}" /><br />
+                                                    <h:outputText value="Date of start: #{home.selectedEvent.dateOfStart}" /><br />
+                                                    <h:outputText value="Date of end: #{home.selectedEvent.dateOfEnd}" /><br />
+                                                </p:panel>
 
-                                            <div class="form-group row" >
-                                                <label class="control-label col-sm-4">Name:</label>
-                                                <div class="col-sm-8" style="padding-top: 7px;">
-                                                    <h:outputText value="#{events.selectedEvent.name}"/>
+                                            </h:form>
 
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row" >
-                                                <label class="control-label col-sm-4" >Type:</label>
-                                                <div class="col-sm-8" style="padding-top: 7px;">
-                                                    <h:outputText value="#{events.selectedEvent.type.toString()}"/> 
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row" >
-                                                <label class="control-label col-sm-4" >Start:</label>
-                                                <div class="col-sm-8" style="padding-top: 7px;">
-                                                    <h:outputText  value="#{events.selectedEvent.dateOfStart}">
-                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
-                                                    </h:outputText>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row" >
-                                                <label class="control-label col-sm-4">End:</label>
-                                                <div class="col-sm-8" style="padding-top: 7px;">
-                                                    <h:outputText value="#{events.selectedEvent.dateOfEnd}">
-                                                        <f:convertDateTime pattern="yyyy.MM.dd HH:mm" />
-                                                    </h:outputText>
-                                                </div>
-                                            </div>
-                                        </p:panel>
-                                    </h:form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+        </h:form>
     </div>
+    <div class="row">
+        <h:form id="home_projects_datalist">
+            <div class="col-lg-12 col-md-12">
+                <p:dataList value="#{home.getProjectsExpireOnThisWeek()}" var="project" style="margin-bottom: 10px">
+                    <f:facet name="header" class="header">
+                        <h6>Projects expire this week</h6>
+                    </f:facet>
+                    <p:commandLink action="#{home.openSelectedProjectDetails(project)}" title="View Detail" 
+                                   styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px" update="@form">
+                        <f:ajax />
+                    </p:commandLink>
+                    <p:outputLabel value="#{project.name}, project status: #{project.status.toString()}"/>
+                </p:dataList>
+            </div>
 
-    <!-- PROJECT DETAIL MODAL -->
+            <!-- PROJECT DETAIL MODAL -->
 
-    <div class="modal fade"
-         id="home_project_details_modal"
-         tabindex="-1"
-         role="dialog"
-         data-backdrop="static">
-        <div class="modal-dialog ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="row" style="text-align: center;">
+            <div class="modal fade"
+                 id="home_project_details_modal"
+                 tabindex="-1"
+                 role="dialog"
+                 data-backdrop="static">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row" style="text-align: center;">
 
-                        <button type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                style="margin-right: 20px">
-                            <span aria-hidden="true">&#215;</span>                                  
-                        </button>
+                                <button type="button"
+                                        class="close"
+                                        data-dismiss="modal"
+                                        style="margin-right: 20px">
+                                    <span aria-hidden="true">&#215;</span>                                  
+                                </button>
 
-                        <h4 class="modal-title">Project details</h4>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
-                            <div >
-                                <h:form id="project_details">
-                                    <p:panel id="c_basic_data" header="#{projectView.selectedProject.name}" style="text-align: center;">
-                                        <h:outputText value="ID :#{projectView.selectedProject.id}" /><br/>
-                                        <h:outputText value="Name : #{projectView.selectedProject.name}" /><br />
-                                        <h:outputText value="Status : #{projectView.selectedProject.status}" /><br />
-                                        <h:outputText value="Date of end: #{projectView.selectedProjectDeadlineToString}" /><br />
-                                    </p:panel>
-
-                                </h:form>
+                                <h4 class="modal-title">Project details</h4>
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                    <div >
+                                        <h:form id="home_project_details">
+                                            <p:panel header="#{home.selectedProject.name}" style="text-align: center;">
+                                                <h:outputText value="ID :#{home.selectedProject.id}" /><br/>
+                                                <h:outputText value="Name : #{home.selectedProject.name}" /><br />
+                                                <h:outputText value="Status : #{home.selectedProject.status}" /><br />
+                                                <h:outputText value="Date of end: #{home.selectedProject.deadline.time}" /><br />
+                                            </p:panel>
 
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+        </h:form>
     </div>
 
 </ui:composition>

@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -40,6 +41,7 @@ public class ProfileBackingBean implements Serializable {
     private Date dateOfBirth;
     private String picture;
 
+    private String newPassword;
     private String confirmPassword;
 
     private UploadedFile upFile;
@@ -50,16 +52,14 @@ public class ProfileBackingBean implements Serializable {
     public ProfileBackingBean() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        
-        calendar.set(calendar.get(Calendar.YEAR)-18, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+
+        calendar.set(calendar.get(Calendar.YEAR) - 18, calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
         maxBirthDate = calendar.getTime();
-        
-        calendar.set(calendar.get(Calendar.YEAR)-70, 0, 0);
+
+        calendar.set(calendar.get(Calendar.YEAR) - 70, 0, 0);
         minBirthDate = calendar.getTime();
     }
 
-    
-    
     @PostConstruct
     private void init() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -71,18 +71,11 @@ public class ProfileBackingBean implements Serializable {
         password = user.getPassword();
         lastName = user.getLastName();
         firstName = user.getFirstName();
-        if (user.getDateOfBirth() != null) {
-            dateOfBirth = user.getDateOfBirth().getTime();
-        } else {
-            dateOfBirth = maxBirthDate;
-        }
-        if (user.getPicture() != null) {
-            picture = user.getPicture();
-        } else {
-            picture = "null";
-        }
-
-        confirmPassword = user.getPassword();
+        dateOfBirth = user.getDateOfBirth().getTime();
+        picture = user.getPicture();
+        
+        newPassword = "";
+        confirmPassword = "";
     }
 
     public Long getId() {
@@ -139,6 +132,14 @@ public class ProfileBackingBean implements Serializable {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getConfirmPassword() {
@@ -209,10 +210,16 @@ public class ProfileBackingBean implements Serializable {
     public void saveChanges() throws NoSuchAlgorithmException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfBirth);
-        UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
-        userService.update(user);
-
+        if (this.newPassword != null) {
+            UserDTO user = new UserDTO(id, email, newPassword, lastName, firstName, Boolean.TRUE, calendar, picture);
+            userService.update(user);
+        } else {
+            UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
+            userService.update(user);
+        }
+        
         FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage("Changes saved succesfully."));
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             request.login(email, password);
