@@ -21,40 +21,41 @@ import org.omnifaces.util.Ajax;
 @Named("ProjectCUD")
 @ViewScoped
 public class ProjectCUDBean implements Serializable {
-
+    
     private static final long serialVersionUID = 258979332215257286L;
-
+    
     @Inject
     private ProjectService ProjectService;
-
+    
     @Inject
     private ProjectBean projectBean;
 
+    
     @Inject
     private CustomersBean customerBean;
-
+    
     private List<ProjectDTO> projects;
-
+    
     private Long id;
-
+    
     private String name;
-
+    
     private Calendar deadline;
-
+    
     private ProjectStatus status;
-
+    
     private Date date;
 
     private ProjectDTO projectToDelete;
-
+    
     private Date currentDate = new Date();
-
+    
     private static final String PROJECT_LIST = "customer_details_right_panel:a_form:projects";
 
     public void openAddDialog() {
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#project_add_dialog').modal('show')");
     }
-
+    
     public void updateView() {
         projectBean.update();
         if (customerBean.getSelectedCustomer() != null) {
@@ -62,28 +63,29 @@ public class ProjectCUDBean implements Serializable {
         }
         Ajax.update(PROJECT_LIST);
     }
-
+    
     public static Calendar dateToCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
+
     public void openDeleteDialog(ProjectDTO dto) {
         projectToDelete = dto;
         Ajax.update("project_delete_name");
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#project_delete_dialog').modal('show')");
     }
-
+    
     public void delete() {
         ProjectService.delete(projectToDelete);
         projectBean.update();
         Ajax.update(PROJECT_LIST);
         Ajax.update("a_form:projects");
         Ajax.oncomplete("$('#project_delete_dialog').modal('hide');$('#customer_details_dialog').modal('show')");
-
+        
     }
-
+    
     public void add() {
         Customer tempCustomer;
         if (date == null) {
@@ -101,6 +103,8 @@ public class ProjectCUDBean implements Serializable {
         Ajax.oncomplete("clearAndCloseAddProjectDialog(true);");
     }
 
+
+
     public void openEditDialog(ProjectDTO dto) {
         id = dto.getId();
         name = dto.getName();
@@ -110,7 +114,7 @@ public class ProjectCUDBean implements Serializable {
         Ajax.update("project_edit_form");
         Ajax.oncomplete("$('#customer_details_dialog').modal('hide');$('#project_edit_dialog').modal('show')");
     }
-
+    
     public void edit() {
         if (date != null) {
             deadline = dateToCalendar(date);
@@ -124,22 +128,24 @@ public class ProjectCUDBean implements Serializable {
         Ajax.oncomplete("clearAndCloseEditProjectDialog(true);");
     }
 
+    
     public ProjectDTO getProjectToDelete() {
         return projectToDelete;
     }
-
+    
     public void setProjectToDelete(ProjectDTO projectToDelete) {
 
         this.projectToDelete = projectToDelete;
     }
-
+    
     public Date getDate() {
         return date;
     }
-
+    
     public void setDate(Date date) {
         this.date = date;
     }
+
 
     public Date getCurrentDate() {
         return currentDate;
@@ -148,27 +154,27 @@ public class ProjectCUDBean implements Serializable {
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public Calendar getDeadline() {
         return deadline;
     }
-
+    
     public void setDeadline(Calendar deadline) {
         this.deadline = deadline;
     }
-
+    
     public List<ProjectDTO> getProjects() {
         if (customerBean.getSelectedCustomer() != null) {
             projects = ProjectService.getAllProjectForCustomer(customerBean.getSelectedCustomer());
@@ -176,25 +182,25 @@ public class ProjectCUDBean implements Serializable {
         Ajax.update(PROJECT_LIST);
         return projects;
     }
-
+    
     public void setProjects(List<ProjectDTO> projects) {
         this.projects = projects;
     }
-
+    
     public ProjectStatus getStatus() {
         return status;
     }
-
+    
     public void setStatus(ProjectStatus status) {
         this.status = status;
     }
-
+    
     public ProjectStatus[] getProjectStatuses() {
         return ProjectStatus.values();
     }
-
+    
     public static String getPROJECT_LIST() {
         return PROJECT_LIST;
     }
-
+    
 }

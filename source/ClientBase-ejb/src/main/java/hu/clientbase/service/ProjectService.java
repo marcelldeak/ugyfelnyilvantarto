@@ -65,7 +65,7 @@ public class ProjectService {
         return result;
     }
 
-    public List<ProjectDTO> getAllProjectForCustomer(CustomerDTO customer) {
+    public List<ProjectDTO> getAllProjectsForCustomer(CustomerDTO customer) {
         Customer tempCustomer = entityFacade.find(Customer.class, customer.getId());
 
         List<ProjectDTO> ret = new LinkedList<>();
@@ -83,5 +83,15 @@ public class ProjectService {
         projects.stream().forEach(p -> ret.add(new ProjectDTO(p)));
 
         return ret;
+    }
+    
+    public List<ProjectDTO> getAllProjectOrderedByDate(){
+        List<ProjectDTO> result = new LinkedList<>();
+        
+        for(Project p : projectFacade.getAllProjectOrderedByDate()){
+            result.add(new ProjectDTO(p));
+        }
+        
+        return result;
     }
 }

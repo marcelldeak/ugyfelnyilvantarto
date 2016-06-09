@@ -16,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
-import hu.clientbase.validate.ValidatorInterceptor;
 import javax.interceptor.Interceptors;
 
 @Stateless

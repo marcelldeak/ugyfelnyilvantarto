@@ -453,20 +453,23 @@
                                                                          value="#{_contact.contactChannels}">
 
                                                                 <p:ajax event="rowEdit" listener="#{contactChannelCUD.onEdit}" update="customer_details_right_panel:contacts_list"/>
+                                                                <div class="row">
+                                                                    <f:facet name="header">
 
-                                                                <f:facet name="header">
-                                                                    Contact channels
-                                                                    <p:commandLink id="add_contact_channel_button"
-                                                                                   title="New contact channel"
+                                                                        Contact channels
+                                                                        <p:commandLink id="add_contact_channel_button"
+                                                                                       title="New contact channel"
 
-                                                                                   class="pull-right"
-                                                                                   action="#{contactChannelCUD.openAddDialog(_contact)}"
-                                                                                   style="position: relative;right: -64px !important;">
-                                                                        <f:ajax />
-                                                                        <span class="ui-icon ui-icon-plus"></span>
-                                                                    </p:commandLink>
+                                                                                       class="pull-right"
+                                                                                       action="#{contactChannelCUD.openAddDialog(_contact)}"
+                                                                                       style="position: relative;right: -64px !important;">
+                                                                            <f:ajax />
+                                                                            <span class="ui-icon ui-icon-plus"></span>
+                                                                        </p:commandLink>
 
-                                                                </f:facet>
+                                                                    </f:facet>
+                                                                </div>
+                                                                <div class="row">
                                                                 <p:column>
                                                                     <h:outputText value="#{_cc.type.toString()}" />
                                                                 </p:column>
@@ -493,8 +496,8 @@
                                                                     </p:commandLink>
 
                                                                 </p:column>
-
-
+                                                                        
+                                                                    </div>
                                                             </p:dataTable>
 
                                                         </div>
@@ -517,72 +520,71 @@
                                                                  style="top: -50px !important;right: -15px !important;">
                                                     <f:ajax />
                                                 </p:commandButton>
-
-
-                                                <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
-
-                                                    <h:form id="a_form">
-
-                                                        <p:dataTable id="projects"
-                                                                     widgetVar="projectTable"
-                                                                     var="_project"
-                                                                     value="#{ProjectCUD.projects}"
-                                                                     rowKey="#{_project.id}"
-                                                                     filteredValue="#{projectView.filteredProjects}"
-                                                                     paginator="true"
-                                                                     rows="5"
-                                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                                     rowsPerPageTemplate="5,10"
-                                                                     paginatorPosition="bottom"
-                                                                     emptyMessage="There are no other projects in the system.">
-
-                                                            <p:column headerText="Name" 
-                                                                      style="text-align: center"
-                                                                      filterBy="#{_project.name}"
-                                                                      filterMatchMode="contains">
-                                                                <h:outputText value="#{_project.name}" />
-                                                            </p:column>
-                                                            <p:column headerText="Status"
-                                                                      style="text-align: center"
-                                                                      filterBy="#{_project.status}"
-                                                                      filterMatchMode="contains">
-                                                                <h:outputText value="#{_project.status}" />
-                                                            </p:column>
-                                                            <p:column style="text-align: center; width: 56px">
-                                                                <p:commandLink
-                                                                    title="Details"
-                                                                    action="#{projectView.openProjedtDetails(_project)}">
-                                                                    <span class="ui-icon ui-icon-info"></span>
-                                                                    <f:ajax />
-                                                                </p:commandLink>
-                                                            </p:column>
-
-                                                            <p:column style="text-align: center;width: 56px">
-                                                                <p:commandLink 
-                                                                    title="Edit"
-                                                                    action="#{ProjectCUD.openEditDialog(_project)}">
-                                                                    <span class="ui-icon ui-icon-pencil"></span>
-                                                                    <f:ajax />
-                                                                </p:commandLink>
-                                                            </p:column>
-
-                                                            <p:column style="text-align: center;width: 56px">
-                                                                <p:commandLink 
-                                                                    title="Delete"
-                                                                    action="#{ProjectCUD.openDeleteDialog(_project)}">
-                                                                    <span class="ui-icon ui-icon-trash"></span>
-                                                                    <f:ajax />
-                                                                </p:commandLink>
-
-                                                            </p:column>
-
-                                                        </p:dataTable>
-                                                    </h:form>
-                                                </div>  
                                             </div>
                                         </div>
+                                        <div class="row row-centered" style="overflow-y: auto;max-height: 480px;" >
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+                                                <h:form id="a_form">
+
+                                                    <p:dataTable id="projects"
+                                                                 widgetVar="projectTable"
+                                                                 var="_project"
+                                                                 value="#{ProjectCUD.projects}"
+                                                                 rowKey="#{_project.id}"
+                                                                 filteredValue="#{projectView.filteredProjects}"
+                                                                 paginator="true"
+                                                                 rows="5"
+                                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                 rowsPerPageTemplate="5,10"
+                                                                 paginatorPosition="bottom"
+                                                                 emptyMessage="There are no other projects in the system.">
+
+                                                        <p:column headerText="Name" 
+                                                                  style="text-align: center"
+                                                                  filterBy="#{_project.name}"
+                                                                  filterMatchMode="contains">
+                                                            <h:outputText value="#{_project.name}" />
+                                                        </p:column>
+                                                        <p:column headerText="Status"
+                                                                  style="text-align: center"
+                                                                  filterBy="#{_project.status}"
+                                                                  filterMatchMode="contains">
+                                                            <h:outputText value="#{_project.status}" />
+                                                        </p:column>
+                                                        <p:column style="text-align: center; width: 56px">
+                                                            <p:commandLink
+                                                                title="Details"
+                                                                action="#{projectView.openProjedtDetails(_project)}">
+                                                                <span class="ui-icon ui-icon-info"></span>
+                                                                <f:ajax />
+                                                            </p:commandLink>
+                                                        </p:column>
+
+                                                        <p:column style="text-align: center;width: 56px">
+                                                            <p:commandLink 
+                                                                title="Edit"
+                                                                action="#{ProjectCUD.openEditDialog(_project)}">
+                                                                <span class="ui-icon ui-icon-pencil"></span>
+                                                                <f:ajax />
+                                                            </p:commandLink>
+                                                        </p:column>
+
+                                                        <p:column style="text-align: center;width: 56px">
+                                                            <p:commandLink 
+                                                                title="Delete"
+                                                                action="#{ProjectCUD.openDeleteDialog(_project)}">
+                                                                <span class="ui-icon ui-icon-trash"></span>
+                                                                <f:ajax />
+                                                            </p:commandLink>
+
+                                                        </p:column>
+
+                                                    </p:dataTable>
+                                                </h:form>
+                                            </div>
+                                        </div>  
                                     </p:tab>
-                                    
+
                                     <!-- EVENTS -->
 
                                     <p:tab title="Events">
@@ -712,7 +714,7 @@
                                 data-dismiss="modal"
                                 onclick="$('#customer_details_dialog').modal('show');"
                                 style="margin-right: 20px">
-                            
+
                             <span aria-hidden="true">&#215;</span>                                  
                         </button>
 
@@ -1279,7 +1281,7 @@
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-lg-offset-9 col-md-offset-9 col-sm-offset-9 col-xs-offset-9">
                             <div class="pull-right">
                                 <h:form class="form-horizontal">
-                                    <p:commandButton value="Yes" type="button" action="#{contactChannelCUD.delete()}">
+                                    <p:commandButton value="Yes" action="#{contactChannelCUD.delete()}">
                                         <f:ajax />
                                     </p:commandButton>
                                     <span style="width:150px;" />
