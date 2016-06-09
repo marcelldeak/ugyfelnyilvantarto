@@ -66,25 +66,26 @@ def main():
     print "Database CRM_DB successfully created."
     table_generation_queries = (
         "DROP TABLE IF EXISTS `CRM_DB`.`hibernate_sequence`, `CRM_DB`.`Event_Note`, `CRM_DB`.`Customer_Project`, `CRM_DB`.`Customer_Event`, `CRM_DB`.`Customer_Contact`, `CRM_DB`.`Contact_Contact_channel`, `CRM_DB`.`Application_user_User_role`, `CRM_DB`.`Application_user_Event`, `CRM_DB`.`Application_user_Contact_channel`, `CRM_DB`.`Project`, `CRM_DB`.`Note`, `CRM_DB`.`Invitation`, `CRM_DB`.`Contact`, `CRM_DB`.`Event`, `CRM_DB`.`Customer`, `CRM_DB`.`Contact_channel`, `CRM_DB`.`User_role`, `CRM_DB`.`Application_user`, `CRM_DB`.`Address`;",
-        "CREATE TABLE `CRM_DB`.`Address` (   `id` bigint(20) NOT NULL,   `city` varchar(255) DEFAULT NULL,   `country` varchar(255) DEFAULT NULL,   `street` varchar(255) DEFAULT NULL,   `zip_code` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Application_user` (   `id` bigint(20) NOT NULL,   `first_name` varchar(255) DEFAULT NULL,   `last_name` varchar(255) DEFAULT NULL,   `picture` varchar(255) DEFAULT NULL,   `active` bit(1) NOT NULL,   `date_of_birth` date DEFAULT NULL,   `email` varchar(255) DEFAULT NULL,   `expiration_date` date DEFAULT NULL,   `password` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`User_role` (   `id` bigint(20) NOT NULL,   `name` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Contact_channel` (   `id` bigint(20) NOT NULL,   `type` varchar(255) DEFAULT NULL,   `contact_channel_value` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Customer` (   `id` bigint(20) NOT NULL,   `logo` varchar(255) DEFAULT NULL,   `name` varchar(255) DEFAULT NULL,   `VAT_number` varchar(255) DEFAULT NULL,   `address_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY `FKfok4ytcqy7lovuiilldbebpd9` (`address_id`),   CONSTRAINT `FKfok4ytcqy7lovuiilldbebpd9` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Event` (   `id` bigint(20) NOT NULL,   `date_of_end` datetime DEFAULT NULL,   `date_of_start` datetime DEFAULT NULL,   `name` varchar(255) DEFAULT NULL,   `type` varchar(255) DEFAULT NULL,   `address_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY `FK33rwy1u815uutxkqndey8tpgc` (`address_id`),   CONSTRAINT `FK33rwy1u815uutxkqndey8tpgc` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Contact` (   `id` bigint(20) NOT NULL,   `first_name` varchar(255) DEFAULT NULL,   `last_name` varchar(255) DEFAULT NULL,   `picture` varchar(255) DEFAULT NULL,   `customer_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY `FKpsk71j0ipgawpogo62nqlfckd` (`customer_id`),   CONSTRAINT `FKpsk71j0ipgawpogo62nqlfckd` FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-        "CREATE TABLE `CRM_DB`.`Invitation` (   `id` bigint(20) NOT NULL,   `description` varchar(255) DEFAULT NULL,   `event_id` bigint(20) DEFAULT NULL,   `recipient_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY `FK188hpvtimp4lfjq92lnen7y8d` (`event_id`),   KEY `FK53r1n98mcyxfqak2ft3flt1s5` (`recipient_id`),   CONSTRAINT `FK188hpvtimp4lfjq92lnen7y8d` FOREIGN KEY (`event_id`) REFERENCES `Event` (`id`),   CONSTRAINT `FK53r1n98mcyxfqak2ft3flt1s5` FOREIGN KEY (`recipient_id`) REFERENCES `Application_user` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Note` (   `id` bigint(20) NOT NULL,   `content` varchar(255) DEFAULT NULL,   `tag` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Project` (   `id` bigint(20) NOT NULL,   `deadline` date DEFAULT NULL,   `name` varchar(255) DEFAULT NULL,   `status` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Application_user_Contact_channel` (   `User_id` bigint(20) NOT NULL,   `contactChannels_id` bigint(20) NOT NULL,   UNIQUE KEY `UK_qa1lujegjx1da8ii57tcg4ikx` (`contactChannels_id`),   KEY `FKrwsbnqqd5lu6grci60yk6sow7` (`User_id`),   CONSTRAINT `FKrwsbnqqd5lu6grci60yk6sow7` FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),   CONSTRAINT `FKt1k5gs65a38dtfyu9kvl53dfk` FOREIGN KEY (`contactChannels_id`) REFERENCES `Contact_channel` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Application_user_Event` (   `User_id` bigint(20) NOT NULL,   `events_id` bigint(20) NOT NULL,   KEY `FKtqe0a2g8p91h8r6c77c9m5dg6` (`events_id`),   KEY `FKld2c        00jgrto9t02q664lbl9u9` (`User_id`),   CONSTRAINT         `FKld2c00jgrto9t02q664lbl9u9` FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),   CONSTRAINT `FKtqe0a2g8p91h8r6c77c9m5dg6` FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Application_user_User_role` (   `users_id` bigint(20) NOT NULL,   `roles_id` bigint(20) NOT NULL,   KEY `FK1q2ybxcwjee2r3ngjgvr93b0r` (`roles_id`),   KEY `FKm5hpn3utwl73bmv4ofwwm02fh` (`users_id`),   CONSTRAINT `FK1q2ybxcwjee2r3ngjgvr93b0r` FOREIGN KEY (`roles_id`) REFERENCES `User_role` (`id`),   CONSTRAINT `FKm5hpn3utwl73bmv4ofwwm02fh` FOREIGN KEY (`users_id`) REFERENCES `Application_user` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Contact_Contact_channel` (   `Contact_id` bigint(20) NOT NULL,   `contactChannels_id` bigint(20) NOT NULL,   UNIQUE KEY `UK_63bwxs4ay6augyyb3qp3ngaci` (`contactChannels_id`),   KEY `FKk1sps27w03ihccn4g826je0rk` (`Contact_id`),   CONSTRAINT `FKk1sps27w03ihccn4g826je0rk` FOREIGN KEY (`Contact_id`) REFERENCES `Contact` (`id`),   CONSTRAINT `FKltdw54jd0jjo1rlurfrxskrui` FOREIGN KEY (`contactChannels_id`) REFERENCES `Contact_channel` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-        "CREATE TABLE `CRM_DB`.`Customer_Contact` (   `Customer_id` bigint(20) NOT NULL,   `contacts_id` bigint(20) NOT NULL,   UNIQUE KEY `UK_o0xq066b1svu8nty9414jdwg7` (`contacts_id`),   KEY `FKku3itqo5n1qawyiot5l7ro24` (`Customer_id`),   CONSTRAINT `FKku3itqo5n1qawyiot5l7ro24` FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   CONSTRAINT `FKlbqv4eqjwplvra01itdw6i8ec` FOREIGN KEY (`contacts_id`) REFERENCES `Contact` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-        "CREATE TABLE `CRM_DB`.`Customer_Event` (   `Customer_id` bigint(20) NOT NULL,   `events_id` bigint(20) NOT NULL,   UNIQUE KEY         `UK_cm2h0j2j5t27gtdwk8epuck3` (`events_id`),   KEY `FK5ojrppm1jssh9mrbfi5tn63qk` (`Customer_id`),   CONSTRAINT `FK5ojrppm1jssh9mrbfi5tn63qk` FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   CONSTRAINT `FKdmyhnnqh5ilfx6v6ijnxcd4h4` FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Customer_Project` (   `Customer_id` bigint(20) NOT NULL,   `projects_id` bigint(20) NOT NULL,   UNIQUE KEY `UK_nm5gtflfu0os480hdxcb0xxyi` (`projects_id`),   KEY `FKdt72mhppcdp8m2o2yty8dw7on` (`Customer_id`),   CONSTRAINT `FKdt72mhppcdp8m2o2yty8dw7on` FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   CONSTRAINT `FKei1kfjyr2k5l7i6jw8o9wb4l` FOREIGN KEY (`projects_id`) REFERENCES `Project` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`Event_Note` (   `Event_id` bigint(20) NOT NULL,   `notes_id` bigint(20) NOT NULL,   UNIQUE KEY `UK_936gnp5eiy6x8fc5ir7ucaawg` (`notes_id`),   KEY `FKn2cknvhtuusxpdu61ouk9qdss` (`Event_id`),   CONSTRAINT `FKn0fho363ve3ufnv4c5s7nc7kn` FOREIGN KEY (`notes_id`) REFERENCES `Note` (`id`),   CONSTRAINT `FKn2cknvhtuusxpdu61ouk9qdss` FOREIGN KEY (`Event_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-        "CREATE TABLE `CRM_DB`.`hibernate_sequence` (   `next_val` bigint(20) DEFAULT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+        "CREATE TABLE `Address` (   `id` bigint(20) NOT NULL,   `city` varchar(255) DEFAULT NULL,   `country` varchar(255) DEFAULT NULL,   `street` varchar(255) DEFAULT NULL,   `zip_code` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Application_user` (   `id` bigint(20) NOT NULL,   `first_name` varchar(255) DEFAULT NULL,   `last_name` varchar(255) DEFAULT NULL,   `active` bit(1) NOT NULL,   `date_of_birth` date DEFAULT NULL,   `email` varchar(255) DEFAULT NULL,   `expiration_date` date DEFAULT NULL,   `password` varchar(255) DEFAULT NULL,   `picture` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Contact` (   `id` bigint(20) NOT NULL,   `first_name` varchar(255) DEFAULT NULL,   `last_name` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Contact_channel` (   `id` bigint(20) NOT NULL,   `type` varchar(255) DEFAULT NULL,   `contact_channel_value` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Customer` (   `id` bigint(20) NOT NULL,   `name` varchar(255) DEFAULT NULL,   `VAT_number` varchar(255) DEFAULT NULL,   `address_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY (`address_id`),   FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Event` (   `id` bigint(20) NOT NULL,   `date_of_end` datetime DEFAULT NULL,   `date_of_start` datetime DEFAULT NULL,   `name` varchar(255) DEFAULT NULL,   `type` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Invitation` (   `id` bigint(20) NOT NULL,   `description` varchar(255) DEFAULT NULL,   `event_id` bigint(20) DEFAULT NULL,   `recipient_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY (`event_id`),   KEY (`recipient_id`),   FOREIGN KEY (`event_id`) REFERENCES `Event` (`id`),   FOREIGN KEY (`recipient_id`) REFERENCES `Application_user` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Note` (   `id` bigint(20) NOT NULL,   `content` varchar(255) DEFAULT NULL,   `tag` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Pending_registrations` (   `id` bigint(20) NOT NULL,   `user_id` bigint(20) DEFAULT NULL,   PRIMARY KEY (`id`),   KEY (`user_id`),   FOREIGN KEY (`user_id`) REFERENCES `Application_user` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Project` (   `id` bigint(20) NOT NULL,   `deadline` date DEFAULT NULL,   `name` varchar(255) DEFAULT NULL,   `status` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `User_role` (   `id` bigint(20) NOT NULL,   `name` varchar(255) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Application_user_Contact_channel` (   `User_id` bigint(20) NOT NULL,   `contactChannels_id` bigint(20) NOT NULL,   UNIQUE KEY (`contactChannels_id`),   KEY (`User_id`),   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),   FOREIGN KEY (`contactChannels_id`) REFERENCES `Contact_channel` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Application_user_Event` (   `User_id` bigint(20) NOT NULL,   `events_id` bigint(20) NOT NULL,   KEY (`events_id`),   KEY (`User_id`),   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`),   FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Application_user_User_role` (   `User_id` bigint(20) NOT NULL,   `roles_id` bigint(20) NOT NULL,   KEY (`roles_id`),   KEY (`User_id`),   FOREIGN KEY (`roles_id`) REFERENCES `User_role` (`id`),   FOREIGN KEY (`User_id`) REFERENCES `Application_user` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Contact_Contact_channel` (   `Contact_id` bigint(20) NOT NULL,   `contactChannels_id` bigint(20) NOT NULL,   UNIQUE KEY (`contactChannels_id`),   KEY (`Contact_id`),   FOREIGN KEY (`Contact_id`) REFERENCES `Contact` (`id`),   FOREIGN KEY (`contactChannels_id`) REFERENCES `Contact_channel` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Customer_Contact` (   `Customer_id` bigint(20) NOT NULL,   `contacts_id` bigint(20) NOT NULL,   UNIQUE KEY (`contacts_id`),   KEY (`Customer_id`),   FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   FOREIGN KEY (`contacts_id`) REFERENCES `Contact` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Customer_Event` (   `Customer_id` bigint(20) NOT NULL,   `events_id` bigint(20) NOT NULL,   UNIQUE KEY (`events_id`),   KEY (`Customer_id`),   FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   FOREIGN KEY (`events_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Customer_Project` (   `Customer_id` bigint(20) NOT NULL,   `projects_id` bigint(20) NOT NULL,   UNIQUE KEY (`projects_id`),   KEY (`Customer_id`),   FOREIGN KEY (`Customer_id`) REFERENCES `Customer` (`id`),   FOREIGN KEY (`projects_id`) REFERENCES `Project` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `Event_Note` (   `Event_id` bigint(20) NOT NULL,   `notes_id` bigint(20) NOT NULL,   UNIQUE KEY (`notes_id`),   KEY (`Event_id`),   FOREIGN KEY (`notes_id`) REFERENCES `Note` (`id`),   FOREIGN KEY (`Event_id`) REFERENCES `Event` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "CREATE TABLE `hibernate_sequence` (   `next_val` bigint(20) DEFAULT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
         )
     cursor.execute("USE CRM_DB;")
     cursor.close()
@@ -98,6 +99,9 @@ def main():
             print "Error. Can't create database tables."
             exit(1)
     cursor.execute("INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('0', 'ADMIN');INSERT INTO `CRM_DB`.`User_role` (`id`, `name`) VALUES ('1', 'USER');")
+    cursor.close()
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO `CRM_DB`.`hibernate_sequence` (`next_val`) VALUES (2);")
     cursor.close()
     cursor = db.cursor()
     print "Database tables successfully created."
@@ -149,6 +153,7 @@ def main():
             break
 
     sxml = '''<?xml version='1.0' encoding='UTF-8'?>
+
 <server xmlns="urn:jboss:domain:4.0">
 
     <extensions>
@@ -258,6 +263,9 @@ def main():
             </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
+            </logger>
+            <logger category="org.jboss.security">
+                <level name="TRACE"/>
             </logger>
             <root-logger>
                 <level name="INFO"/>
@@ -485,6 +493,8 @@ def main():
                 <in-vm-acceptor name="in-vm" server-id="0"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <jms-topic name="RemovedTopic" entries="java:/jms/topic/RemovedTopic"/>
+                <jms-topic name="CreatedTopic" entries="java:/jms/topic/CreatedTopic"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
                 <pooled-connection-factory name="activemq-ra" transaction="xa" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm"/>
@@ -510,28 +520,26 @@ def main():
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:security:1.2">
             <security-domains>
-
                 <security-domain name="secureDomain" cache-type="default">
-                <authentication>
-                    <login-module code="Database" flag="required">
-                        <module-option name="dsJndiName" value="java:/crmDS"/>
-                        <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
-                        <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.users_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
-                        <module-option name="hashAlgorithm" value="SHA-256"/>
-                        <module-option name="hashEncoding" value="base64"/>
-                    </login-module>
-                </authentication>
-                <authorization>
-                    <policy-module code="Database" flag="required">
-                        <module-option name="dsJndiName" value="java:/crmDS"/>
-                        <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
-                        <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.users_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
-                        <module-option name="hashAlgorithm" value="SHA-256"/>
-                        <module-option name="hashEncoding" value="base64"/>
-                    </policy-module>
-                </authorization>
-            </security-domain>
-
+                    <authentication>
+                        <login-module code="Database" flag="required">
+                            <module-option name="dsJndiName" value="java:/crmDS"/>
+                            <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
+                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.user_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
+                            <module-option name="hashAlgorithm" value="SHA-256"/>
+                            <module-option name="hashEncoding" value="base64"/>
+                        </login-module>
+                    </authentication>
+                    <authorization>
+                        <policy-module code="Database" flag="required">
+                            <module-option name="dsJndiName" value="java:/crmDS"/>
+                            <module-option name="principalsQuery" value="select password from Application_user where email=?"/>
+                            <module-option name="rolesQuery" value="SELECT DISTINCT User_role.name AS 'Role', 'Roles' as 'RoleGroup' FROM Application_user_User_role join User_role ON Application_user_User_role.roles_id = User_role.id WHERE Application_user_User_role.user_id=(SELECT id FROM Application_user WHERE Application_user.email=?)"/>
+                            <module-option name="hashAlgorithm" value="SHA-256"/>
+                            <module-option name="hashEncoding" value="base64"/>
+                        </policy-module>
+                    </authorization>
+                </security-domain>
                 <security-domain name="other" cache-type="default">
                     <authentication>
                         <login-module code="Remoting" flag="optional">
@@ -637,7 +645,8 @@ def main():
             <content sha1="471bcc236d5d85690046eb69914c271411029ffe"/>
         </deployment>
     </deployments>
-</server>'''
+</server>
+'''
 
     try:
         f = open(wildfly_home + "/domain/configuration/mgmt-groups.properties",'w')
@@ -673,8 +682,8 @@ def main():
     print "MySQL/MariaDB and WildFly succesfully configured for ClientBase."
     print "The WildFly administrator user is\nadmin:admin\nIt's recommended to change the password."
 
-
+main()
 try:
-    main()
+    pass
 except:
     print "Error occured.\nExiting..."
