@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import org.omnifaces.util.Ajax;
 import org.omnifaces.util.Faces;
 import org.primefaces.model.UploadedFile;
 
@@ -61,7 +62,7 @@ public class ProfileBackingBean implements Serializable {
     }
 
     @PostConstruct
-    private void init() {
+    public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
         String eMail = context.getExternalContext().getRemoteUser();
         UserDTO user = userService.getUserByEmail(eMail);
@@ -73,7 +74,7 @@ public class ProfileBackingBean implements Serializable {
         firstName = user.getFirstName();
         dateOfBirth = user.getDateOfBirth().getTime();
         picture = user.getPicture();
-        
+
         newPassword = "";
         confirmPassword = "";
     }
@@ -178,36 +179,40 @@ public class ProfileBackingBean implements Serializable {
         String filename = email.replaceAll("(\\.|@)", "_");
         String extension = ".";
 
-        switch (upFile.getContentType()) {
-            case "image/jpeg":
-                extension = extension.concat("jpg");
-                break;
-            case "image/png":
-                extension = extension.concat("png");
-                break;
-            default:
-                break;
+        if (upFile.getContentType().equals("image/jpeg") || upFile.getContentType().equals("image/png")) {
+
+            switch (upFile.getContentType()) {
+                case "image/jpeg":
+                    extension = extension.concat("jpg");
+                    break;
+                case "image/png":
+                    extension = extension.concat("png");
+                    break;
+                default:
+                    break;
+            }
+
+            picture = filename + extension;
+
+            Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
+
+            File file = new File(folder.toString() + File.separatorChar + picture);
+            file.mkdirs();
+
+            try (InputStream fileInput = upFile.getInputstream()) {
+                Files.copy(fileInput, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
+            }
+
+            userService.updatePicture(id, picture);
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Wrong file extension. Only png, jpg or jpeg"));
         }
-
-        picture = filename + extension;
-
-        Path folder = Paths.get(Faces.getServletContext().getRealPath(""), "resources", "profile_images");
-
-        File file = new File(folder.toString() + File.separatorChar + picture);
-        file.mkdirs();
-
-        try (InputStream fileInput = upFile.getInputstream()) {
-            Files.copy(fileInput, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
-        }
-
-        userService.updatePicture(id, picture);
-
         init();
     }
 
-    public void saveChanges() throws NoSuchAlgorithmException {
+    public void saveChanges() throws NoSuchAlgorithmException, IOException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfBirth);
         if (this.newPassword != null) {
@@ -217,17 +222,17 @@ public class ProfileBackingBean implements Serializable {
             UserDTO user = new UserDTO(id, email, password, lastName, firstName, Boolean.TRUE, calendar, picture);
             userService.update(user);
         }
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Changes saved succesfully."));
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Changes saved succesfully."));
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {
             request.login(email, password);
         } catch (ServletException ex) {
-            context.getExternalContext().setResponseStatus(404);
+            FacesContext.getCurrentInstance().getExternalContext().setResponseStatus(404);
         }
 
         init();
+
     }
 
     public String getProfileImgPath() {
