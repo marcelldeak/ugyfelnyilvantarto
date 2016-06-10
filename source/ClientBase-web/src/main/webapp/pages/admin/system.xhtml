@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="../../templates/main_template.xhtml">
+
+            <ui:define name="page_title">
+                #{request.remoteUser} [ADMINISTRATION]
+            </ui:define>
+
+            <ui:define name="buttons">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="btn-user">
+                        <a href="" style="color: black"><span class="glyphicon glyphicon-user"></span></a>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><p:commandLink value="Logout" action="#{login.logout}"/></li>
+                    </ul>
+                </div>
+            </ui:define>
+
+            <ui:define name="profile">
+                <img alt="#{request.remoteUser}" src="#{request.contextPath}/resources/imgs/facebook-avatar.jpg" style="height:97px;margin: auto;display:inherit;"/>
+
+                <a href="" class="user-name">#{request.remoteUser}</a>
+            </ui:define>
+
+            <ui:define name="menu">
+                <ui:include src="artifacts/menu.xhtml"></ui:include>
+            </ui:define>
+
+            <ui:define name="page_content">
+                System
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+
+</html>

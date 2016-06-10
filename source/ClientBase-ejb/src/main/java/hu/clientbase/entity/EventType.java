@@ -1,9 +1,20 @@
 package hu.clientbase.entity;
 
 public enum EventType {
-    MEETING,
-    BUSINESS_DINNER,
-    PRODUCT_LAUNCH,
-    SEMINAR,
-    TRAINING;
+    MEETING("Meeting"),
+    BUSINESS_DINNER("Business dinner"),
+    PRODUCT_LAUNCH("Product launch"),
+    SEMINAR("Seminar"),
+    TRAINING("Training");
+    
+    private String eventTypeName;
+
+    private EventType(String eventTypeName) {
+        this.eventTypeName = eventTypeName;
+    }
+
+    @Override
+    public String toString() {
+        return eventTypeName;
+    }  
 }

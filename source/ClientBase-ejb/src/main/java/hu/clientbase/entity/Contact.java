@@ -1,26 +1,20 @@
 package hu.clientbase.entity;
 
-import java.io.Serializable;
+import hu.clientbase.dto.ContactDTO;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity
 public class Contact extends Person implements Serializable {
 
-    @ManyToOne
-    private Customer customer;
-    
+    private static final long serialVersionUID = 3933110442996757720L;
+
     public Contact() {
         // Entity - parameterless constructor
     }
-    
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public Contact(ContactDTO dto) {
+        this.setFirstName(dto.getFirstName());
+        this.setLastName(dto.getLastName());
     }
-    
-    
 }

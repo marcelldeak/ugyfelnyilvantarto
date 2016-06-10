@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="../../templates/main_template.xhtml">
+
+            <ui:define name="page_title">
+                #{request.remoteUser}
+            </ui:define>
+
+            <ui:define name="buttons">
+                <ui:include src="artifacts/buttons.xhtml" />
+            </ui:define>
+
+            <ui:define name="profile">
+                <img alt="#{request.remoteUser}"
+                     src="#{profile.getProfileImgPath()}"
+                     style="height:97px;margin: auto;display:inherit;" />
+
+                <a class="user-name" href="#" data-toggle="modal" data-target="#profile_modal" tabindex="-1">#{request.remoteUser}</a>
+
+            </ui:define>
+
+            <ui:define name="menu">
+                <ui:include src="artifacts/menu.xhtml" />
+            </ui:define>
+
+            <ui:define name="page_content">
+                <div class="row"
+                     style="padding-top: 15px;
+                     padding-bottom: 15px;">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                        <h:form id="c_list_form">
+
+                            <p:dataTable id="c_list_table"
+                                         var="_customer"
+                                         value="#{customers.customers}"
+                                         rowKey="#{_customer.id}"
+                                         filteredValue="#{customers.filteredCustomers}"
+                                         paginator="true"
+                                         rows="10"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="1,5,10,15"
+                                         paginatorPosition="bottom"
+                                         emptyMessage="There are no customers in the system.">
+
+                                <f:facet name="header">
+                                    <div class="row">
+
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xs-offset-2 col-sm-offset-4 col-md-offset-4 col-lg-offset-4">
+                                            <h4>Customers</h4>
+                                        </div>
+
+                                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xs-offset-3 col-sm-offset-2 col-md-offset-2 col-lg-offset-3">
+                                            <p:commandButton title="New customer"
+                                                             icon="ui-icon-plus"
+                                                             action="#{customerCUD.openAddDialog()}"
+                                                             style="margin-top: 7px;">
+                                                <f:ajax />
+                                            </p:commandButton>
+                                        </div>
+
+                                    </div>
+                                </f:facet>
+
+                                <p:column headerText="Name"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.name}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.name}" />
+                                </p:column>
+
+                                <p:column headerText="VAT-number"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.vatNumber}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.vatNumber}" />
+                                </p:column>
+
+                                <p:column headerText="Address"
+                                          style="text-align: center"
+                                          filterBy="#{_customer.address.addressHR}"
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{_customer.address.addressHR}" />
+                                </p:column>
+
+                                <p:column style="text-align: center;
+                                          width: 56px">
+
+                                    <p:commandButton title="Details"
+                                                     icon="ui-icon-info"
+                                                     action="#{customers.openSelectedCustomerDetails(_customer)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+
+                                </p:column>
+
+                                <p:column style="text-align: center;width: 56px">
+                                    <p:commandButton title="Edit"
+                                                     icon="ui-icon-pencil"
+                                                     action="#{customerCUD.openEditDialog(_customer)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                </p:column>
+
+                                <p:column style="text-align: center;width: 56px">
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     title="Delete"
+                                                     action="#{customerCUD.openDeleteDialog(_customer)}">
+                                        <f:ajax />
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+
+                <ui:include src="artifacts/event/delete_modal.xhtml" />
+                <ui:include src="artifacts/event/details_modal.xhtml"/>
+                <ui:include src="artifacts/event/add_modal.xhtml"/>
+                <ui:include src="artifacts/event/edit_modal.xhtml" />
+                <ui:include src="artifacts/profile.xhtml" />
+                <ui:include src="artifacts/customer_modal.xhtml" />
+
+                <script src="#{request.contextPath}/resources/js/customer.js"></script>
+                <script src="#{request.contextPath}/resources/js/event.js"></script>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

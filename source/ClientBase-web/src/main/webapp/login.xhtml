@@ -10,35 +10,26 @@
     </f:metadata>
 
     <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/jquery.growl.css" />
         <title>ClientBase - Login</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-        <!-- Bootstrap -->
-        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
-        <!-- styles -->
-        <link href="#{request.contextPath}/resources/css/styles.css" rel="stylesheet"></link>
-        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
     </h:head>
 
-    <h:body class="login-bg">
-        <div class="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- Logo -->
-                        <div class="logo">
-                            <h1><a href="#{request.contextPath}">ClientBase</a></h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <h:body class="login-bg" style="background: url('#{request.contextPath}/resources/imgs/bg.png') center no-repeat;">
         <div class="page-content container">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+
+                <div class="col-sm-6 col-sm-offset-3 col-xs-12">
                     <div class="login-wrapper">
                         <div class="box">
                             <div class="content-wrap">
+
+                                <img src="#{request.contextPath}/resources/imgs/logo-big.png" alt="ClientBase" width="200" />
+
                                 <h6>Sign In</h6>
 
                                 <form role="form" class="form-horizontal" method="POST" action="j_security_check" onkeypress="if (event.keyCode === 13) {
@@ -46,70 +37,106 @@
                                             return false;
                                         }"> 
 
-                                    <div class="form-group" >
-                                        <label class="control-label col-sm-2" style="text-align: center" for="j_username">Email:</label>
-                                        <div class="col-sm-10">
+                                    <div class="form-group row" >
+                                        <label class="control-label col-sm-4" for="j_username">Email address:</label>
+                                        <div class="col-sm-8">
                                             <p:inputText id="j_username"  required="true" requiredMessage="Please enter your email address"  />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="j_password">Password:</label>
-                                        <div class="col-sm-10">
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-sm-4" for="j_password">Password:</label>
+                                        <div class="col-sm-8">
                                             <p:password id="j_password"  required="true" requiredMessage="Please enter your password" />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-2"></div>
-                                        <div class="col-xs-4">
-                                            <button id="submitButton" type="submit" value="login" class="btn btn-info btn-lg">Login</button> 
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"  >Sign Up</button>
-                                        </div>
-                                        <div class="col-xs-2"></div>
+
+                                    <div class="form-group row">
+                                        <button id="loginButton" type="submit" value="login" class="btn btn-info btn-lg">Login</button> 
+                                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#reg_modal"  >Sign Up</button>
                                     </div>
                                 </form>
 
-                                <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal fade" id="reg_modal" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <div class="modal-header">
+                                            <div class="modal-header" style="text-align: center;">
                                                 <button type="button" class="close" data-dismiss="modal"></button>
-                                                <h4 class="modal-title">Registration</h4>
+                                                <h6 class="modal-title">Registration</h6>
                                             </div>
                                             <div class="modal-body">
-                                                <h:form id="registerForm" >  
-                                                    <h:panelGrid id="reg" columns="2" cellpadding="12" >
-                                                        <p:outputLabel id="fn" for="firstName"  value="Enter Your First Name:" style="font-weight:bold" />
-                                                        <p:inputText id="firstName" value="#{user.firstName}"  size="40" label="firstName" placeholder="first Name ( min. 2 caracters )"
-                                                                     required="true" requiredMessage="Please enter your first name" />          
-                                                        <p:outputLabel for="lastName" value="Enter Your Last Name:" style="font-weight:bold" />
-                                                        <p:inputText id="lastName" value="#{user.lastName}"  size="40" label="lastName" placeholder="last name ( min. 2 caracters )"
-                                                                     required="true" requiredMessage="Please enter your last name" />     
-                                                        <p:outputLabel for="email"  value="Enter Your Email:" style="font-weight:bold"  /> 
-                                                        <p:inputText id="email" required="true" label="email"  size="40" placeholder="email address"
-                                                                     requiredMessage="Please enter your email address."
-                                                                     validatorMessage="Invalid email format"                             
-                                                                     value="#{user.email}">
-                                                            <f:validateRegex
-                                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                                        </p:inputText>         
-                                                        <p:outputLabel for="password"  value="Enter Password :" style="font-weight:bold"  />
-                                                        <p:password id="password" value="#{user.password}"   size="40" label="password" placeholder="password ( min. 6 caracters)"
-                                                                    required="true" requiredMessage="Please enter your password" /> 
-                                                        <p:outputLabel for="confirmPassword"  value="Enter Password again:" style="font-weight:bold"  />  
-                                                        <p:password id="confirmPassword" value="#{user.confirmPassword}"  size="40" placeholder="password ( min. 6 caracters)"  /> 
-                                                    </h:panelGrid>
-                                                    <p:remoteCommand name="rc" update="msgs" actionListener="#{user.register}"  />
-                                                    <p:growl id="msgs" showDetail="true" class="z"/>
-                                                    <p:commandButton update="reg" type="button" onclick="rc()" validateClient="true" value="Create account" class="btn btn-info btn-lg"  />
+                                                <h:form id="registerForm" role="form" class="form-horizontal">
+                                                    
+                                                    
+                                                    <div class="form-group row" >
+                                                        <label class="control-label col-sm-4" for="firstName">First name:</label>
+                                                        <div class="col-sm-8">
+                                                            <p:inputText id="firstName"
+                                                                         value="#{user.firstName}"
+                                                                         size="40"
+                                                                         label="firstName"
+                                                                         placeholder="Enter your first name ( min. 2 caracters )" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row" >
+                                                        <label class="control-label col-sm-4" for="lastName">Last name:</label>
+                                                        <div class="col-sm-8">
+                                                            <p:inputText id="lastName"
+                                                                         value="#{user.lastName}"
+                                                                         size="40"
+                                                                         label="lastName"
+                                                                         placeholder="Enter your last name ( min. 2 caracters )" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row" >
+                                                        <label class="control-label col-sm-4" for="email">Email address:</label>
+                                                        <div class="col-sm-8">
+                                                            <p:inputText id="email"
+                                                                         required="true"
+                                                                         label="email"
+                                                                         size="40"
+                                                                         placeholder="Enter your email address"
+                                                                         value="#{user.email}" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row" >
+                                                        <label class="control-label col-sm-4" for="password">Password:</label>
+                                                        <div class="col-sm-8">
+                                                            <p:password id="password"
+                                                                        value="#{user.password}"
+                                                                        size="40" label="password"
+                                                                        placeholder="Enter your password ( min. 6 caracters)" /> 
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row" >
+                                                        <label class="control-label col-sm-4" for="confirmPassword">Password again:</label>
+                                                        <div class="col-sm-8">
+                                                            <p:password id="confirmPassword"
+                                                                        value="#{user.confirmPassword}"
+                                                                        size="40"
+                                                                        placeholder="Enter your password again ( min. 6 caracters)" />        
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row row-centered" >
+                                                        <p:commandButton 
+                                                                         type="button"
+                                                                         onclick="start_validation()"
+                                                                         value="Create account"
+                                                                         class="btn btn-info btn-default" />
+                                                    </div>
+                                                    <p:remoteCommand name="reg" actionListener="#{user.register()}" />
+                                                    <p:remoteCommand name="check_mail" action="#{user.checkIfEmailExists()}" />
                                                 </h:form> 
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>    
@@ -118,9 +145,9 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://code.jquery.com/jquery.js"></script>
-        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-        <script src="#{request.contextPath}/resources/js/custom.js"></script>
+        <script src="#{request.contextPath}/resources/js/jquery.min.js"></script>
+        <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
+        <script src="#{request.contextPath}/resources/js/jquery.growl.js"></script>
+        <script src="#{request.contextPath}/resources/js/regvalidation.jq.js"></script>
     </h:body>
 </html>

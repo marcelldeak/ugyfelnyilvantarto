@@ -1,5 +1,6 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.AddressDTO;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 
 @Entity
 public class Address implements Serializable {
+
+    private static final long serialVersionUID = -7436338257650562954L;
 
     @Id
     @GeneratedValue
@@ -29,6 +32,13 @@ public class Address implements Serializable {
 
     public Address() {
         // Entity - parameterless constructor
+    }
+
+    public Address(AddressDTO dto) {
+        this.city = dto.getCity();
+        this.zipCode = dto.getZipCode();
+        this.street = dto.getStreet();
+        this.country = dto.getCountry();
     }
 
     public Long getId() {

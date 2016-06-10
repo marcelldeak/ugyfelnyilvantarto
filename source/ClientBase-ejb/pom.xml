@@ -33,7 +33,12 @@
             <version>5.0.7.Final</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>hu.clientbase</groupId>
+            <artifactId>Shared-ejb</artifactId>
+            <version>1.0-SNAPSHOT</version>
 
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/page-default.css" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+        <h:outputScript library="primefaces" name="jquery/jquery-plugins.js" target="head" />
+        <meta http-equiv="refresh" content="30;url=#{request.contextPath}" />
+        <title>ClientBase - Not found</title>
+    </h:head>
+
+    <h:body class="login-bg" style="background: url('#{request.contextPath}/resources/imgs/bg.png') center no-repeat;">
+        <div class="page-content container">
+            <div class="row">
+
+                <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+                    <div class="login-wrapper">
+                        <div class="box">
+                            <div class="content-wrap">
+
+                                <img src="#{request.contextPath}/resources/imgs/logo-big.png" alt="ClientBase" width="200" />
+
+                                <h6>The requested page could not be found</h6>
+
+                                <p>Try checking the URL for errors and press the refresh button.</p>
+                                <p>You will be automatically redirected to the <a href="#{request.contextPath}">start page</a> in 30 seconds.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="#{request.contextPath}/resources/js/bootstrap.min.js"></script>
+    </h:body>
+</html>

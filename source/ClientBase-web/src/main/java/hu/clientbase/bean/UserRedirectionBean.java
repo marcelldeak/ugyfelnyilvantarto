@@ -1,11 +1,12 @@
 package hu.clientbase.bean;
 
 import hu.clientbase.service.UserService;
-import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import org.slf4j.LoggerFactory;
 
 @Named("redirection")
 public class UserRedirectionBean {
@@ -22,12 +23,14 @@ public class UserRedirectionBean {
             try {
                 context.getExternalContext().redirect(contextPath + "/pages/admin/");
             } catch (IOException ex) {
+                LoggerFactory.getLogger(this.getClass()).error(ex.getMessage(), ex);
                 context.getExternalContext().setResponseStatus(404);
             }
         } else {
             try {
                 context.getExternalContext().redirect(contextPath + "/pages/user/");
             } catch (IOException ex) {
+                LoggerFactory.getLogger(this.getClass()).error(ex.getMessage(), ex);
                 context.getExternalContext().setResponseStatus(404);
             }
         }
@@ -43,6 +46,7 @@ public class UserRedirectionBean {
             try {
                 context.getExternalContext().redirect(contextPath + "/pages/");
             } catch (IOException ex) {
+                LoggerFactory.getLogger(this.getClass()).error(ex.getMessage(), ex);
                 context.getExternalContext().setResponseStatus(404);
             }
         }

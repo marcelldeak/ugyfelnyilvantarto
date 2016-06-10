@@ -339,6 +339,8 @@
                 <in-vm-acceptor name="in-vm" server-id="0"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
+                <jms-topic name="RemovedTopic" entries="java:/jms/topic/RemovedTopic"/>
+                <jms-topic name="CreatedTopic" entries="java:/jms/topic/CreatedTopic"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
                 <pooled-connection-factory name="activemq-ra" transaction="xa" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm"/>

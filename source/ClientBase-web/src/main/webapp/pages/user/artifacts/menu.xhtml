@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+    <h:form id="menu_list">
+        <ul class="nav">
+            <li id="nav_home" class="#{navigation.getMenuClass('dashboard')}">
+                <a href="#{request.contextPath}/pages/user/dashboard.xhtml">Home</a>
+            </li>
+            <li id="nav_projects" class="#{navigation.getMenuClass('projects')}">
+                <a href="#{request.contextPath}/pages/user/projects.xhtml">Projects</a>
+            </li>
+            <li id="nav_events" class="#{navigation.getMenuClass('events')}">
+                <a href="#{request.contextPath}/pages/user/events.xhtml">My events</a>
+            </li>
+            <li id="nav_customers" class="#{navigation.getMenuClass('customers')}">
+                <a href="#{request.contextPath}/pages/user/customers.xhtml">Customers</a>
+            </li> 
+        </ul> 
+    </h:form>
+</ui:composition>

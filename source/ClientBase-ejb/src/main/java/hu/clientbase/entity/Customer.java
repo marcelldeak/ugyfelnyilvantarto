@@ -1,10 +1,14 @@
 package hu.clientbase.entity;
 
+import hu.clientbase.dto.CustomerDTO;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -12,6 +16,8 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Customer implements Serializable {
+
+    private static final long serialVersionUID = -5054686787988766419L;
 
     @Id
     @GeneratedValue
@@ -24,23 +30,29 @@ public class Customer implements Serializable {
     @Column(name = "VAT_number")
     private String vatNumber;
 
-    @Basic
-    private String logo;
-
     @OneToMany(targetEntity = Contact.class)
+    @Cascade(CascadeType.ALL)
     private List<Contact> contacts;
 
-    @OneToMany(targetEntity = Project.class)
+    @OneToMany(targetEntity = Project.class, fetch = FetchType.EAGER)
+    @Cascade(CascadeType.ALL)
     private List<Project> projects;
 
     @OneToMany(targetEntity = Event.class)
+    @Cascade(CascadeType.ALL)
     private List<Event> events;
 
     @OneToOne(targetEntity = Address.class)
+    @Cascade(CascadeType.ALL)
     private Address address;
 
     public Customer() {
         // Entity - parameterless constructor
+    }
+
+    public Customer(CustomerDTO dto) {
+        this.name = dto.getName();
+        this.vatNumber = dto.getVatNumber();
     }
 
     public Long getId() {
@@ -65,14 +77,6 @@ public class Customer implements Serializable {
 
     public void setVatNumber(String vatNumber) {
         this.vatNumber = vatNumber;
-    }
-
-    public String getLogo() {
-        return this.logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
     }
 
     public List<Contact> getContacts() {

@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"> 
+
+    <div class="modal fade" id="profile_modal" role="dialog" data-keyboard="false"
+         data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="text-align: center;">
+                    <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                    <h6 class="modal-title">Edit Profile</h6>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <div class="text-center center-block">
+                                <h:form class="form-horizontal" role="form" enctype="multipart/form-data">
+                                    <img id="profile_picture"
+                                         class="media-object" 
+                                         src="#{profile.getProfileImgPath()}"
+                                         style="height:97px; margin: auto;display:inherit;"/>
+                                    Upload another picture..
+                                    <p:fileUpload class="text-center center-block well well-sm"
+                                                  mode="simple" value="#{profile.upFile}">
+                                    </p:fileUpload>
+                                    <p:commandButton class="btn btn-info" ajax="false" value="Upload" type="submit"
+                                                     update="@form" action="#{profile.uploadImage()}"/>
+                                </h:form>
+                            </div>
+                        </div>
+                        <!--right column -->
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
+                            <h3>Profile info</h3>
+                            <h:form class="form-horizontal" role="form">
+                                
+                                <p:messages autoUpdate="true" />
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-4">First name:</label>
+                                    <div class="col-lg-8">
+                                        <p:inputText id="firstName"
+                                                     value="#{profile.firstName}" 
+                                                     size="40" label="firstName"
+                                                     validatorMessage="Invalid firstname">
+                                            <f:validateLength minimum="2" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4">Last name:</label>
+                                    <div class="col-lg-8">
+                                        <p:inputText id="lastName" 
+                                                     value="#{profile.lastName}" 
+                                                     size="40" label="lastName"
+                                                     validatorMessage="Invalid lastname">
+                                            <f:validateLength minimum="2" />
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4">E-mail:</label>
+                                    <div class="col-lg-8">
+                                        <p:inputText id="email"
+                                                     value="#{profile.email}" 
+                                                     size="40" label="email"
+                                                     validatorMessage="Invalid e-mail address">
+                                    <!--        <f:validateRegex pattern="*" /> -->
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4">New password:</label>
+                                    <div class="col-lg-8">
+                                        <p:password id="newPassword"
+                                                    value="#{profile.newPassword}" 
+                                                    size="40" label="newPassword"
+                                                    validatorMessage="Invalid new password">
+                                            <f:validateLength minimum="2" />
+                                        </p:password>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4">Confirm password:</label>
+                                    <div class="col-lg-8">
+                                        <p:password id="confirmPassword"
+                                                    value="#{profile.confirmPassword}" 
+                                                    size="40" label="confirmPassword"
+                                                    validatorMessage="Confirm password must be same like password">
+                                       <!--     <f:validateRegex pattern="*" /> -->
+                                        </p:password>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4">Date of birth:</label>
+                                    <div class="col-lg-8">
+                                        <p:calendar  id="dateOfBirth"
+                                                     value="#{profile.dateOfBirth}" 
+                                                     pattern="dd-MM-yyyy" mask="true" 
+                                                     mindate="#{profile.minBirthDate}"
+                                                     maxdate="#{profile.maxBirthDate}"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-md-4"/>
+                                    <div class="col-md-8">
+                                        <p:commandButton class="btn btn-info" 
+                                                         type="submit" value="Save Changes" 
+                                                         action="#{profile.saveChanges()}"
+                                                         update="@form" validateClient="true">
+                                            <f:ajax />
+                                        </p:commandButton>
+                                        <span/>
+                                        <button class="btn btn-info" data-dismiss="modal" style="height: 40px; font: bold">Close</button>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>
+

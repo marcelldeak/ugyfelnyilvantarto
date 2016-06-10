@@ -1,32 +1,24 @@
 package hu.clientbase.facade;
 
-import java.util.List;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.List;
 
-@Singleton
+@Stateless
 public class EntityFacade {
-    
+
     @PersistenceContext(unitName = "crmPU")
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
-    public EntityFacade() {
-        //default 
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public <T> T create(T entity) {
+   
+    public <T> void create(T entity) {
         entityManager.persist(entity);
-        return entity;
     }
 
-    public <T> T update(T entity) {
-        return entityManager.merge(entity);
+    public <T> void update(T entity) {
+        entityManager.merge(entity);
     }
 
     public <T> void delete(T entity) {
