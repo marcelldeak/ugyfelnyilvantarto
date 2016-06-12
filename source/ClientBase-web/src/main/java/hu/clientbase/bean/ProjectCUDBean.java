@@ -59,7 +59,7 @@ public class ProjectCUDBean implements Serializable {
     public void updateView() {
         projectBean.update();
         if (customerBean.getSelectedCustomer() != null) {
-            projects = ProjectService.getAllProjectForCustomer(customerBean.getSelectedCustomer());
+            projects = ProjectService.getAllProjectsForCustomer(customerBean.getSelectedCustomer());
         }
         Ajax.update(PROJECT_LIST);
     }
@@ -177,7 +177,7 @@ public class ProjectCUDBean implements Serializable {
     
     public List<ProjectDTO> getProjects() {
         if (customerBean.getSelectedCustomer() != null) {
-            projects = ProjectService.getAllProjectForCustomer(customerBean.getSelectedCustomer());
+            projects = ProjectService.getAllProjectsForCustomer(customerBean.getSelectedCustomer());
         }
         Ajax.update(PROJECT_LIST);
         return projects;
