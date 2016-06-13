@@ -12,7 +12,10 @@ public class EntityFacade {
     @PersistenceContext(unitName = "crmPU")
     private EntityManager entityManager;
 
-   
+    public void flush() {
+        entityManager.flush();
+    }
+
     public <T> void create(T entity) {
         entityManager.persist(entity);
     }

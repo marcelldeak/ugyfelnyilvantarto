@@ -115,5 +115,5 @@ public class Event implements Serializable {
 
     public void setDateOfEnd(Date dateOfEnd) {
         this.dateOfEnd = dateOfEnd;
-    }
+    } 
 }

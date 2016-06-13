@@ -104,7 +104,18 @@ def main():
     cursor.execute("INSERT INTO `CRM_DB`.`hibernate_sequence` (`next_val`) VALUES (2);")
     cursor.close()
     cursor = db.cursor()
+    cursor.execute("INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('0', 'Normal', 'User', 'null', 1, '1990-01-01', 'user@clientbase.hu', '2100-01-01', 'BPiZbadjt6lpsQKO4wB1aerzpjVIbdqyEdUSyFud+Ps=');")
+    cursor.execute("INSERT INTO `CRM_DB`.`Application_user_User_role` (`user_id`, `roles_id`) VALUES ('0', '1');")
+    cursor.close()
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO `CRM_DB`.`Application_user` (`id`, `first_name`, `last_name`, `picture`, `active`, `date_of_birth`, `email`, `expiration_date`, `password`) VALUES ('1', 'Admin', 'User', 'null', 1, '1990-01-01', 'admin@clientbase.hu', '2100-01-01', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=');")
+    cursor.execute("INSERT INTO `CRM_DB`.`Application_user_User_role` (`user_id`, `roles_id`) VALUES ('1', '0');")
+    cursor.close()
+    cursor = db.cursor()
     print "Database tables successfully created."
+    print "Sample ClientBase user and administrator added (you can delete these accounts later):"
+    print "\tuser@clientbase.hu : user"
+    print "\tadmin@clientbase.hu : admin"
     user_pass = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(8))
     sql_query = "CREATE USER client_base@localhost IDENTIFIED BY '" + user_pass + "'"
     try:
@@ -668,22 +679,27 @@ def main():
             shutil.rmtree(wildfly_home + "/standalone/configuration/standalone_xml_history")
         if not os.path.isdir(wildfly_home + "/standalone/data/" ):
             os.mkdir(wildfly_home + "/standalone/data/")
+            os.chmod(wildfly_home + "/standalone/data/",0777)
         if not os.path.isdir(wildfly_home + "/standalone/data/content"):
             os.mkdir(wildfly_home + "/standalone/data/content")
+            os.chmod(wildfly_home + "/standalone/data/content",0777)
         if not os.path.isdir(wildfly_home + "/standalone/data/content/47"):
             os.mkdir(wildfly_home + "/standalone/data/content/47")
+            os.chmod(wildfly_home + "/standalone/data/content/47",0777)
         if not os.path.isdir(wildfly_home + "/standalone/data/content/47/1bcc236d5d85690046eb69914c271411029ffe"):
             os.mkdir(wildfly_home + "/standalone/data/content/47/1bcc236d5d85690046eb69914c271411029ffe")
+            os.chmod(wildfly_home + "/standalone/data/content/47/1bcc236d5d85690046eb69914c271411029ffe",0777)
         shutil.copyfile("content",wildfly_home + "/standalone/data/content/47/1bcc236d5d85690046eb69914c271411029ffe/content")
+        os.chmod(wildfly_home + "/standalone/data/content/47/1bcc236d5d85690046eb69914c271411029ffe/content",0777)
     except IOError:
         print("Can't write to the WildFly installation directory, you might consider running this script as superuser.")
         exit(1)
 
     print "MySQL/MariaDB and WildFly succesfully configured for ClientBase."
-    print "The WildFly administrator user is\nadmin:admin\nIt's recommended to change the password."
+    print "The WildFly administrator user is\n\tadmin:admin\nIt's recommended to change the password."
 
-main()
+
 try:
-    pass
+    main()
 except:
     print "Error occured.\nExiting..."

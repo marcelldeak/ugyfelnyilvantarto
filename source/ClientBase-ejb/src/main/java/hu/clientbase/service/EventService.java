@@ -33,14 +33,6 @@ public class EventService {
     @Inject
     private UserService userService;
 
-    public void create(UserDTO userDTO, EventDTO eventDTO) {
-        Event event = new Event(eventDTO);
-
-        User user = entityFacade.find(User.class, userDTO.getId());
-        Invitation i = new Invitation(event, user);
-        entityFacade.create(i);
-    }
-
     public void update(EventDTO dto) {
 
         Event event = entityFacade.find(Event.class, dto.getId());
