@@ -23,6 +23,9 @@ public class ProjectService {
     @Inject
     private ProjectFacade projectFacade;
 
+    
+ 
+    
     public void create(ProjectDTO projectDTO, CustomerDTO customerDTO) {
         Customer customer = entityFacade.find(Customer.class, customerDTO.getId());
         customer.getProjects().add(new Project(projectDTO));

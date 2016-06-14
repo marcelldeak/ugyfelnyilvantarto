@@ -68,14 +68,11 @@ public class EventCUDBean implements Serializable {
     public void add() {
         EventDTO eventDTO = new EventDTO(type, dateOfStart, dateOfEnd, name);
         CustomerDTO customerDTO = customersBean.getSelectedCustomer();
-
-        customerService.addEventToCustomer(eventDTO, customerDTO);
-
+        
         String userEmail = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-        UserDTO user = new UserDTO();
-        user = userService.getUserByEmail(userEmail);
-
-        eventService.create(user, eventDTO);
+        
+        UserDTO user = userService.getUserByEmail(userEmail);
+        customerService.addEventToCustomer(eventDTO, customerDTO,user);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Event added succesfully."));
 

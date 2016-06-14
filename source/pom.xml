@@ -10,7 +10,5 @@
     <module>ClientBase-ear</module>
     <module>ClientBase-ejb</module>
     <module>ClientBase-web</module>
-    <module>Shared-ejb</module>
-    <module>MessageConsumer-web</module>
   </modules>
 </project>
